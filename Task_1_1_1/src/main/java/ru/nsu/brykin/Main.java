@@ -1,10 +1,10 @@
 package ru.nsu.brykin;
 
 /**
- * heap sort, подсчёт времени выполнения
+ * heap sort, подсчёт времени выполнения.
  */
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         int al = 10000;
         int key = 10000;
         int[] a = new int[al];
