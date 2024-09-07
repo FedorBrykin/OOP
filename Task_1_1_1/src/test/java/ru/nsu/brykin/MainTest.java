@@ -39,4 +39,11 @@ class MainTest {
         Heapsort.sort(arr);
         assertArrayEquals(new int[] {0}, arr);
     }
+
+    @Test
+    public void testRandomOrder() {
+        int[] arr = {5, 2, 4, 1, 3};
+        Heapsort.sort(arr);
+        assertArrayEquals(new int[] {1, 2, 3, 4, 5}, arr);
+    }
 }

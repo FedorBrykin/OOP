@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="aedaf098-3c0f-4f0f-98c4-114a2c156333" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/nsu/brykin/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/nsu/brykin/Heapsort.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ru/nsu/brykin/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ru/nsu/brykin/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
