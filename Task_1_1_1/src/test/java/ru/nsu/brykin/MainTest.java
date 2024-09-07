@@ -7,22 +7,36 @@ import org.junit.jupiter.api.Test;
 
 class MainTest {
     @Test
-    void checkMain(){
-        Main.main(null);
+    void checkMain() {
+        Heapsort.main(null);
         assertTrue(true);
     }
+
     @Test
-    public void testSort() {
-        int[] arr1 = {5, 4, 3, 2, 1};
-        Main.sort(arr1);
-        assertArrayEquals(new int[] {1, 2, 3, 4, 5}, arr1);
+    public void testReversed() {
+        int[] arr = {5, 4, 3, 2, 1};
+        Heapsort.sort(arr);
+        assertArrayEquals(new int[] {1, 2, 3, 4, 5}, arr);
+    }
 
-        int[] arr2 = {1, 2, 3, 4, 5};
-        Main.sort(arr2);
-        assertArrayEquals(new int[] {1, 2, 3, 4, 5}, arr2);
+    @Test
+    public void testCorrectOrder() {
+        int[] arr = {1, 2, 3, 4, 5};
+        Heapsort.sort(arr);
+        assertArrayEquals(new int[] {1, 2, 3, 4, 5}, arr);
+    }
 
-        int[] arr3 = {};
-        Main.sort(arr3);
-        assertArrayEquals(new int[] {}, arr3);
+    @Test
+    public void testEmpty() {
+        int[] arr = {};
+        Heapsort.sort(arr);
+        assertArrayEquals(new int[] {}, arr);
+    }
+
+    @Test
+    void testSingleElem() {
+        int[] arr = {0};
+        Heapsort.sort(arr);
+        assertArrayEquals(new int[] {0}, arr);
     }
 }

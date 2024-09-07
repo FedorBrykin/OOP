@@ -3,24 +3,33 @@ package ru.nsu.brykin;
 /**
  * heap sort, подсчёт времени выполнения.
  */
-public class Main {
+public class Heapsort {
+
+    /**
+     * замер скорости работы сортировки.
+     */
+
     public static void main(String[] args) {
-        int al = 10000;
-        int key = 10000;
-        int[] a = new int[al];
-        for (int i = 0; i < al; i++) {
-            a[i] = key;
-            key--;
+        int arrayLen = 10000;
+        int arrayElementValue = 10000;
+        int[] array = new int[arrayLen];
+        for (int i = 0; i < arrayLen; i++) {
+            array[i] = arrayElementValue;
+            arrayElementValue--;
         }
         // Замер времени сортировки
         long startTime = System.nanoTime();
-        sort(a);
+        sort(array);
         long endTime = System.nanoTime();
+        long workTime = endTime - startTime;
+        System.out.println(workTime);
 
     }
+
     /**
-     * heap sort
+     * heap sort.
      */
+
     public static void sort(int[] arr) {
         int n = arr.length;
 
@@ -42,28 +51,29 @@ public class Main {
     /**
      * поиск наибольшего локально
      */
+
     private static void heapify(int[] arr, int n, int i) {
-        int largest = i; // max элемент
+        int largestIndex = i; // max элемент
         int left = 2 * i + 1;
         int right = 2 * i + 2;
 
         // если левый больше
-        if (left < n && arr[left] > arr[largest]) {
-            largest = left;
+        if (left < n && arr[left] > arr[largestIndex]) {
+            largestIndex = left;
         }
 
         // если правый больше
-        if (right < n && arr[right] > arr[largest]) {
-            largest = right;
+        if (right < n && arr[right] > arr[largestIndex]) {
+            largestIndex = right;
         }
 
         // если самый большой != корень
-        if (largest != i) {
+        if (largestIndex != i) {
             int swap = arr[i];
-            arr[i] = arr[largest];
-            arr[largest] = swap;
+            arr[i] = arr[largestIndex];
+            arr[largestIndex] = swap;
 
-            heapify(arr, n, largest);
+            heapify(arr, n, largestIndex);
         }
     }
 }
