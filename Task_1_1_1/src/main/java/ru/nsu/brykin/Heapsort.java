@@ -49,7 +49,7 @@ public class Heapsort {
     }
 
     /**
-     * поиск наибольшего локально
+     * поиск наибольшего локально.
      */
 
     private static void heapify(int[] arr, int n, int i) {
