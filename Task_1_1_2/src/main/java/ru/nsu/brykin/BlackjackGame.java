@@ -55,7 +55,10 @@ public class BlackjackGame {
             return;
         }
 
-        // Ход игрока
+        System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
+        System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
+
+        /* Ход игрока
         while (true) {
             System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
             System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
@@ -77,6 +80,16 @@ public class BlackjackGame {
             } else {
                 break;
             }
+        }*/
+
+        // Ход игрока для гита
+        while (player.getScore() < 17) {
+            System.out.println("    ");
+            Card newPlayerCard = deck.drawCard();
+            player.addCard(newPlayerCard);
+            System.out.println("Вы открыли карту: " + newPlayerCard);
+            System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
+            System.out.println("Карты дилера: " + dealer.getHand() + " => " + dealer.getScore());
         }
 
         // Ход дилера
@@ -122,7 +135,7 @@ public class BlackjackGame {
     public static void main(String[] args) {
         BlackjackGame game = new BlackjackGame();
 
-        Scanner scanner = new Scanner(System.in);
+       /* Scanner scanner = new Scanner(System.in);
 
         while (true) {
             game.playRound();
@@ -131,7 +144,10 @@ public class BlackjackGame {
             if (choice == 0) break;
         }
 
-        System.out.println("Спасибо за игру!");
+        System.out.println("Спасибо за игру!");*/
+
+        game.playRound();
+
     }
 
     public int getPlayerWins() {

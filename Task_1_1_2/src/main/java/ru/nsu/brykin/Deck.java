@@ -23,7 +23,7 @@ class Deck {
         for (String suit : suits) {
             for (int i = 0; i < ranks.length; i++) {
                 int value = 0;
-                if (i <= 9) {
+                if (i < 9) {
                     value = i + 2;
                 } else {
                     value = 10;
