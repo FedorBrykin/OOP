@@ -133,4 +133,12 @@ public class BlackjackGame {
 
         System.out.println("Спасибо за игру!");
     }
+
+    public int getPlayerWins() {
+        return playerWins;
+    }
+
+    public int getDealerWins() {
+        return dealerWins;
+    }
 }
