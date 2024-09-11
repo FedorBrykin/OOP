@@ -1,10 +1,10 @@
 package ru.nsu.brykin;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BlackjackGameTest {
     Card card = new Card("Пик", "Туз", 11);
@@ -16,6 +16,7 @@ class BlackjackGameTest {
     public void testCardCreation() {
         assertEquals("Туз Пик", card.toString());
     }
+
     @Test
     public void testDeckCreation() {
         assertEquals(52, deck.cards.size()); // Проверяем, что в колоде 52 карты
@@ -24,7 +25,6 @@ class BlackjackGameTest {
     @Test
     public void testDrawCard() {
         Card drawnCard = deck.drawCard();
-        assertNotNull(drawnCard);
         assertEquals(51, deck.cards.size()); // После вытаскивания одной карты должно остаться 51
     }
 

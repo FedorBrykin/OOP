@@ -1,6 +1,7 @@
 package ru.nsu.brykin;
 
-import java.util.*;
+
+import java.util.Scanner;
 
 /**
  * сама игра.
