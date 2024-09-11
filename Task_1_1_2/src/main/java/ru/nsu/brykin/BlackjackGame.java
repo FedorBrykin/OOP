@@ -1,8 +1,5 @@
 package ru.nsu.brykin;
 
-
-import java.util.Scanner;
-
 /**
  * сама игра.
  */
@@ -58,30 +55,6 @@ public class BlackjackGame {
         System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
         System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
 
-        /* Ход игрока
-        while (true) {
-            System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
-            System.out.print("Введите “1”, чтобы взять карту, и “0”, чтобы остановиться: ");
-
-            Scanner scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
-            System.out.println("    ");
-            if (choice == 1) {
-                Card newCard = deck.drawCard();
-                player.addCard(newCard);
-                System.out.println("Вы открыли карту: " + newCard);
-                if (player.getScore() > 21) {
-                    System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-                    System.out.println("Вы превысили 21! Вы проиграли раунд!");
-                    dealerWins++;
-                    return;
-                }
-            } else {
-                break;
-            }
-        }*/
-
         // Ход игрока для гита
         while (player.getScore() < 17) {
             System.out.println("    ");
@@ -135,26 +108,7 @@ public class BlackjackGame {
     public static void main(String[] args) {
         BlackjackGame game = new BlackjackGame();
 
-       /* Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            game.playRound();
-            System.out.print("Хотите сыграть еще раз? (1 - да, 0 - нет): ");
-            int choice = scanner.nextInt();
-            if (choice == 0) break;
-        }
-
-        System.out.println("Спасибо за игру!");*/
-
         game.playRound();
 
-    }
-
-    public int getPlayerWins() {
-        return playerWins;
-    }
-
-    public int getDealerWins() {
-        return dealerWins;
     }
 }
