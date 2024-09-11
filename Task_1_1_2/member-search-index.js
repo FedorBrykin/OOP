@@ -1,1 +1,1 @@
-memberSearchIndex = [{"p":"ru.nsu.brykin","c":"Main","l":"Main()","url":"%3Cinit%3E()"},{"p":"ru.nsu.brykin","c":"Main","l":"main(String[])","url":"main(java.lang.String[])"},{"p":"ru.nsu.brykin","c":"Main","l":"sum(int, int)","url":"sum(int,int)"}]
+memberSearchIndex = [{"p":"ru.nsu.brykin","c":"BlackjackGame","l":"BlackjackGame()","u":"%3Cinit%3E()"},{"p":"ru.nsu.brykin","c":"BlackjackGame","l":"main(String[])","u":"main(java.lang.String[])"},{"p":"ru.nsu.brykin","c":"BlackjackGame","l":"playRound()"}];updateSearchResults();
