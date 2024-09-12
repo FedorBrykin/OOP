@@ -31,6 +31,12 @@ class BlackjackGameTest {
     }
 
     @Test
+    void mainCheck4() {
+        BlackjackGame.main(null);
+        assertTrue(true);
+    }
+
+    @Test
     public void testCardCreation() {
         assertEquals("Король Пик", card.toString());
     }
@@ -49,7 +55,7 @@ class BlackjackGameTest {
     @Test
     public void testPlayerAddCard() {
         player.addCard(card);
-        assertEquals(1, player.getHand().size());
+        assertEquals(1, player.getSize());
         assertEquals(10, player.getScore());
     }
 

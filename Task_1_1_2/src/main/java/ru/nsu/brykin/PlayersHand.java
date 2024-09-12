@@ -47,8 +47,25 @@ class PlayersHand {
     /**
      * выдаёт содержимое руки по запросу.
      */
-    public List<Card> getHand() {
-        return hand;
+    public StringBuilder cardsRow() {
+        StringBuilder str = new StringBuilder();
+        for (Card card : hand) {
+            str.append(card.toString());
+            str.append(", ");
+        }
+        return str;
+    }
+
+    public int getSize() {
+        return hand.size();
+    }
+
+    public Card getCard(int num) {
+        if (num == 1) {
+            return hand.getFirst();
+        } else {
+            return hand.get(1);
+        }
     }
 
     /**
