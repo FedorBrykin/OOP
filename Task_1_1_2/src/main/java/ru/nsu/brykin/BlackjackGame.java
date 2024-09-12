@@ -5,8 +5,8 @@ package ru.nsu.brykin;
  */
 public class BlackjackGame {
     private Deck deck;
-    private Player player;
-    private Player dealer;
+    private PlayersHand player;
+    private PlayersHand dealer;
     private int playerWins;
     private int dealerWins;
 
@@ -15,8 +15,8 @@ public class BlackjackGame {
      */
     public BlackjackGame() {
         deck = new Deck();
-        player = new Player();
-        dealer = new Player();
+        player = new PlayersHand();
+        dealer = new PlayersHand();
         playerWins = 0;
         dealerWins = 0;
     }
@@ -32,10 +32,7 @@ public class BlackjackGame {
         System.out.println("Раунд " + (playerWins + dealerWins + 1));
 
         // Раздача карт
-        for (int i = 0; i < 2; i++) {
-            player.addCard(deck.drawCard());
-            dealer.addCard(deck.drawCard());
-        }
+        cardsDealing();
 
         // Проверка на блэкджек
         if (checkBlackjack(player)) {
@@ -55,17 +52,69 @@ public class BlackjackGame {
         System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
         System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
 
-        // Ход игрока для гита
+        // Ход игрока
+        PlayersTurn(player, dealer);
+        if (player.getScore() > 21) {
+            System.out.println("    ");
+            System.out.println("Вы проиграли раунд!");
+            dealerWins++;
+            return;
+        }
+
+        // Ход дилера
+        DealersTurn(player, dealer);
+
+        // Итоги раунда
+        RoundResults(player, dealer);
+
+        System.out.println("Счет: Вы - " + playerWins + ", Дилер - " + dealerWins);
+    }
+
+    /**
+     * проверка на победу сразу.
+     */
+    boolean checkBlackjack(PlayersHand player) {
+        return player.getScore() == 21 && player.getHand().size() == 2;
+    }
+
+    /**
+     * начало игры.
+     */
+    public static void main(String[] args) {
+        BlackjackGame game = new BlackjackGame();
+
+        game.playRound();
+
+    }
+
+    /**
+     * раздача.
+     */
+    private void cardsDealing() {
+        for (int i = 0; i < 2; i++) {
+            player.addCard(deck.drawCard());
+            dealer.addCard(deck.drawCard());
+        }
+    }
+
+    /**
+     * ход игрока.
+     */
+    private void PlayersTurn(PlayersHand player, PlayersHand dealer) {
         while (player.getScore() < 17) {
             System.out.println("    ");
             Card newPlayerCard = deck.drawCard();
             player.addCard(newPlayerCard);
             System.out.println("Вы открыли карту: " + newPlayerCard);
             System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: " + dealer.getHand() + " => " + dealer.getScore());
+            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
         }
+    }
 
-        // Ход дилера
+    /**
+     * ход дилера.
+     */
+    private void DealersTurn(PlayersHand player, PlayersHand dealer) {
         System.out.println("Ход дилера");
         System.out.println("-------");
         System.out.println("Дилер открывает закрытую карту: " + dealer.getHand().get(1));
@@ -79,8 +128,12 @@ public class BlackjackGame {
             System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
             System.out.println("Карты дилера: " + dealer.getHand() + " => " + dealer.getScore());
         }
+    }
 
-        // Итоги раунда
+    /**
+     * итоги раунда.
+     */
+    private void RoundResults(PlayersHand player, PlayersHand dealer) {
         System.out.println("    ");
         if (dealer.getScore() > 21 || player.getScore() > dealer.getScore()) {
             System.out.println("Вы выиграли раунд!");
@@ -91,24 +144,5 @@ public class BlackjackGame {
         } else {
             System.out.println("Ничья!");
         }
-
-        System.out.println("Счет: Вы - " + playerWins + ", Дилер - " + dealerWins);
-    }
-
-    /**
-     * проверка на победу сразу.
-     */
-    boolean checkBlackjack(Player player) {
-        return player.getScore() == 21 && player.getHand().size() == 2;
-    }
-
-    /**
-     * начало игры.
-     */
-    public static void main(String[] args) {
-        BlackjackGame game = new BlackjackGame();
-
-        game.playRound();
-
     }
 }

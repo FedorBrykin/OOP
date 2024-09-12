@@ -8,7 +8,7 @@ import java.util.List;
  * создаёт и перемешивает колоду.
  */
 class Deck {
-    List<Card> cards;
+    private List<Card> cards;
 
     /**
      * создание колоды карт.
@@ -22,16 +22,7 @@ class Deck {
 
         for (String suit : suits) {
             for (int i = 0; i < ranks.length; i++) {
-                int value = 0;
-                if (i < 9) {
-                    value = i + 2;
-                } else {
-                    value = 10;
-                }
-                if (ranks[i].equals("Туз")) {
-                    value = 11;
-                }
-                cards.add(new Card(suit, ranks[i], value));
+                cards.add(new Card(suit, ranks[i], i));
             }
         }
         Collections.shuffle(cards);
@@ -42,5 +33,9 @@ class Deck {
      */
     public Card drawCard() {
         return cards.remove(cards.size() - 1);
+    }
+
+    public int numbers() {
+        return cards.size();
     }
 }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 
 class PlayerTest {
-    Player player = new Player();
+    PlayersHand player = new PlayersHand();
     Card card = new Card("Пики", "Туз", 11);
 
     @Test

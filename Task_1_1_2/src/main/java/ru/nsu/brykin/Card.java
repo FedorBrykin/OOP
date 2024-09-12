@@ -11,7 +11,16 @@ class Card {
     /**
      * собирает все параметры карты.
      */
-    public Card(String suit, String rank, int value) {
+    public Card(String suit, String rank, int i) {
+        int value = 0;
+        if (i < 9) {
+            value = i + 2;
+        } else if (i < 12) {
+            value = 10;
+        }
+        else {
+            value = 11;
+        }
         this.suit = suit;
         this.rank = rank;
         this.value = value;
