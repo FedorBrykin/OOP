@@ -5,15 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 class CardTest {
-    Card card = new Card("Пик", "Туз", 11);
+    Card card = new Card("Пик", "Король", 10);
 
     @Test
     public void testGetValue() {
-        assertEquals(11, card.getValue());
+        assertEquals(10, card.getValue());
     }
 
     @Test
     public void testToString() {
-        assertEquals("Туз Пик", card.toString());
+        assertEquals("Король Пик", card.toString());
     }
 }

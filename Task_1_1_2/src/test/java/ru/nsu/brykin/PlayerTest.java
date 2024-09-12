@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class PlayerTest {
     PlayersHand player = new PlayersHand();
-    Card card = new Card("Пики", "Туз", 11);
+    Card card = new Card("Пики", "Король", 10);
 
     @Test
     public void testAddCard() {
@@ -29,6 +29,6 @@ class PlayerTest {
     public void testGetScore() {
         player.addCard(card);
         List<Card> hand = player.getHand();
-        assertEquals(11, player.getScore());
+        assertEquals(10, player.getScore());
     }
 }
