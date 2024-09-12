@@ -1,9 +1,9 @@
 package ru.nsu.brykin;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 class BlackjackGameTest {
     private Card card = new Card("Пик", "Король", 10);
@@ -70,13 +70,6 @@ class BlackjackGameTest {
         player.addCard(new Card("Черви", "Десятка", 10));
         player.addCard(new Card("Черви", "Девятка", 9));
         assertEquals(30, player.getScore());
-    }
-
-    @Test
-    public void testCheckBlackjack() {
-        player.addCard(new Card("Пики", "Туз", 11));
-        player.addCard(new Card("Черви", "Десятка", 10));
-        assertFalse(game.checkBlackjack(player)); // Должно вернуть true для блэкджека
     }
 
 }

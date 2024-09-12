@@ -37,13 +37,15 @@ public class BlackjackGame {
         // Проверка на блэкджек
         if (checkBlackjack(player)) {
             System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
+            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() +
+                    ", <закрытая карта>]");
             System.out.println("Вы получили блэкджек! Вы выиграли раунд!");
             playerWins++;
             return;
         } else if (checkBlackjack(dealer)) {
             System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
+            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() +
+                    ", <закрытая карта>]");
             System.out.println("Дилер получил блэкджек! Вы проиграли раунд!");
             dealerWins++;
             return;
@@ -53,7 +55,7 @@ public class BlackjackGame {
         System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
 
         // Ход игрока
-        PlayersTurn(player, dealer);
+        playersTurn(player, dealer);
         if (player.getScore() > 21) {
             System.out.println("    ");
             System.out.println("Вы проиграли раунд!");
@@ -62,10 +64,10 @@ public class BlackjackGame {
         }
 
         // Ход дилера
-        DealersTurn(player, dealer);
+        dealersTurn(player, dealer);
 
         // Итоги раунда
-        RoundResults(player, dealer);
+        roundResults(player, dealer);
 
         System.out.println("Счет: Вы - " + playerWins + ", Дилер - " + dealerWins);
     }
@@ -100,21 +102,22 @@ public class BlackjackGame {
     /**
      * ход игрока.
      */
-    private void PlayersTurn(PlayersHand player, PlayersHand dealer) {
+    private void playersTurn(PlayersHand player, PlayersHand dealer) {
         while (player.getScore() < 17) {
             System.out.println("    ");
             Card newPlayerCard = deck.drawCard();
             player.addCard(newPlayerCard);
             System.out.println("Вы открыли карту: " + newPlayerCard);
             System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
+            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() +
+                    ", <закрытая карта>]");
         }
     }
 
     /**
      * ход дилера.
      */
-    private void DealersTurn(PlayersHand player, PlayersHand dealer) {
+    private void dealersTurn(PlayersHand player, PlayersHand dealer) {
         System.out.println("Ход дилера");
         System.out.println("-------");
         System.out.println("Дилер открывает закрытую карту: " + dealer.getHand().get(1));
@@ -133,7 +136,7 @@ public class BlackjackGame {
     /**
      * итоги раунда.
      */
-    private void RoundResults(PlayersHand player, PlayersHand dealer) {
+    private void roundResults(PlayersHand player, PlayersHand dealer) {
         System.out.println("    ");
         if (dealer.getScore() > 21 || player.getScore() > dealer.getScore()) {
             System.out.println("Вы выиграли раунд!");

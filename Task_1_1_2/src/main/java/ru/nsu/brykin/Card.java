@@ -17,8 +17,7 @@ class Card {
             value = i + 2;
         } else if (i < 12) {
             value = 10;
-        }
-        else {
+        } else {
             value = 11;
         }
         this.suit = suit;
