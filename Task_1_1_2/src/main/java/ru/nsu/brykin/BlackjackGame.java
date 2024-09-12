@@ -32,7 +32,7 @@ public class BlackjackGame {
         System.out.println("Раунд " + (playerWins + dealerWins + 1));
 
         // Раздача карт
-        cardsDealing();
+        cardsDealing(player, dealer);
 
         // Проверка на блэкджек
         if (checkBlackjack(player)) {
@@ -90,7 +90,7 @@ public class BlackjackGame {
     /**
      * раздача.
      */
-    private void cardsDealing() {
+    private void cardsDealing(PlayersHand player, PlayersHand dealer) {
         for (int i = 0; i < 2; i++) {
             player.addCard(deck.drawCard());
             dealer.addCard(deck.drawCard());
