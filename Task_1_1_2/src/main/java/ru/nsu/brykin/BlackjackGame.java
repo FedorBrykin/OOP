@@ -9,6 +9,7 @@ public class BlackjackGame {
     private PlayersHand dealer;
     private int playerWins;
     private int dealerWins;
+    private final int maxScore = 21;
 
     /**
      * ход игры.
@@ -43,20 +44,17 @@ public class BlackjackGame {
             playerWins++;
             return;
         } else if (checkBlackjack(dealer)) {
-            System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() +
-                    ", <закрытая карта>]");
+            systemOut();
             System.out.println("Дилер получил блэкджек! Вы проиграли раунд!");
             dealerWins++;
             return;
         }
 
-        System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-        System.out.println("Карты дилера: [" + dealer.getHand().getFirst() + ", <закрытая карта>]");
+        systemOut();
 
         // Ход игрока
         playersTurn(player, dealer);
-        if (player.getScore() > 21) {
+        if (player.getScore() > maxScore) {
             System.out.println("    ");
             System.out.println("Вы проиграли раунд!");
             dealerWins++;
@@ -108,9 +106,7 @@ public class BlackjackGame {
             Card newPlayerCard = deck.drawCard();
             player.addCard(newPlayerCard);
             System.out.println("Вы открыли карту: " + newPlayerCard);
-            System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
-            System.out.println("Карты дилера: [" + dealer.getHand().getFirst() +
-                    ", <закрытая карта>]");
+            systemOut();
         }
     }
 
@@ -147,5 +143,14 @@ public class BlackjackGame {
         } else {
             System.out.println("Ничья!");
         }
+    }
+
+    /**
+     * system prints.
+     */
+    private void systemOut() {
+        System.out.println("Ваши карты: " + player.getHand() + " => " + player.getScore());
+        System.out.println("Карты дилера: [" + dealer.getHand().getFirst() +
+                ", <закрытая карта>]");
     }
 }

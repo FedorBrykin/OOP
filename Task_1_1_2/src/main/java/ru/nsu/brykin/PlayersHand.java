@@ -7,7 +7,7 @@ import java.util.List;
  * вся информация об игроке.
  */
 class PlayersHand {
-    private List<Card> hand;
+    private final List<Card> hand;
 
     /**
      * рука игрока.

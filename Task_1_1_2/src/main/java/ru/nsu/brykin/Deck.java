@@ -35,6 +35,10 @@ class Deck {
         return cards.remove(cards.size() - 1);
     }
 
+
+    /**
+     * возвращает номер.
+     */
     public int numbers() {
         return cards.size();
     }
