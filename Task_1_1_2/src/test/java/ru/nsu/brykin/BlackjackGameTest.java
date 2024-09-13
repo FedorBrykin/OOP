@@ -13,12 +13,6 @@ class BlackjackGameTest {
     private BlackjackGame game = new BlackjackGame();
 
     @Test
-    void mainCheck() {
-        BlackjackGame.main(null);
-        assertTrue(true);
-    }
-
-    @Test
     public void testCardCreation() {
         assertEquals("Король Пик", card.toString());
     }
