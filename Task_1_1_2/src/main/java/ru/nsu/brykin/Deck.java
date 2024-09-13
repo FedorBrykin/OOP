@@ -22,7 +22,7 @@ class Deck {
 
         for (String suit : suits) {
             for (int i = 0; i < ranks.length; i++) {
-                cards.add(new Card(suit, ranks[i], i));
+                cards.add(new Card(suit, ranks[i]));
             }
         }
         Collections.shuffle(cards);

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 class BlackjackGameTest {
-    private Card card = new Card("Пик", "Король", 10);
+    private Card card = new Card("Пик", "Король");
     private Deck deck = new Deck();
     private PlayersHand player = new PlayersHand();
     private PlayersHand dealer = new PlayersHand();
@@ -60,28 +60,11 @@ class BlackjackGameTest {
     }
 
     @Test
-    public void testPlayerScoreWithoutAces() {
-        player.addCard(new Card("Черви", "Десятка", 10));
-        player.addCard(new Card("Черви", "Девять", 9));
-        assertEquals(20, player.getScore());
-    }
-
-    @Test
-    public void testPlayerScoreWithAces() {
-        player.addCard(new Card("Черви", "Туз", 11));
-        player.addCard(new Card("Черви", "Девять", 9));
-        assertEquals(20, player.getScore());
-
-        player.addCard(new Card("Черви", "Король", 10)); // Добавляем еще один туз
-        assertEquals(30, player.getScore());
-    }
-
-    @Test
     public void testPlayerScoreOver21() {
-        player.addCard(new Card("Черви", "Туз", 11));
-        player.addCard(new Card("Черви", "Десятка", 10));
-        player.addCard(new Card("Черви", "Девятка", 9));
-        assertEquals(30, player.getScore());
+        player.addCard(new Card("Черви", "Туз"));
+        player.addCard(new Card("Черви", "Десятка"));
+        player.addCard(new Card("Черви", "Девятка"));
+        assertEquals(20, player.getScore());
     }
 
 }

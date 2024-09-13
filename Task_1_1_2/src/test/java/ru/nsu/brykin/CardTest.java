@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 class CardTest {
-    Card card = new Card("Пик", "Король", 10);
+    Card card = new Card("Пик", "Король");
 
     @Test
     public void testGetValue() {
