@@ -9,7 +9,7 @@ public class BlackjackGame {
     private PlayersHand dealer;
     private int playerWins;
     private int dealerWins;
-    static final int maxScore = 21;
+    static final int MAX_SCORE = 21;
 
     /**
      * ход игры.
@@ -32,37 +32,32 @@ public class BlackjackGame {
         System.out.println("    ");
         System.out.println("Раунд " + (playerWins + dealerWins + 1));
 
-        // Раздача карт
         cardsDealing(player, dealer);
 
         // Проверка на блэкджек
         if (checkBlackjack(player)) {
             outputTextClosedCard();
-            System.out.println("Вы получили блэкджек! Вы выиграли раунд!");
-            playerWins++;
+            System.out.println("Вы получили блэкджек! ");
+            playerWin();
             return;
         } else if (checkBlackjack(dealer)) {
             outputTextClosedCard();
-            System.out.println("Дилер получил блэкджек! Вы проиграли раунд!");
-            dealerWins++;
+            System.out.println("Дилер получил блэкджек! ");
+            playerLose();
             return;
         }
 
         outputTextClosedCard();
 
-        // Ход игрока
         playersTurn(player, dealer);
-        if (player.getScore() > maxScore) {
+        if (player.getScore() > MAX_SCORE) {
             System.out.println("    ");
-            System.out.println("Вы проиграли раунд!");
-            dealerWins++;
+            playerLose();
             return;
         }
 
-        // Ход дилера
         dealersTurn(player, dealer);
 
-        // Итоги раунда
         roundResults(player, dealer);
 
         System.out.println("Счет: Вы - " + playerWins + ", Дилер - " + dealerWins);
@@ -72,7 +67,7 @@ public class BlackjackGame {
      * проверка на победу сразу.
      */
     boolean checkBlackjack(PlayersHand player) {
-        return player.getScore() == maxScore && player.getSize() == 2;
+        return player.getScore() == MAX_SCORE && player.getSize() == 2;
     }
 
     /**
@@ -131,15 +126,29 @@ public class BlackjackGame {
      */
     private void roundResults(PlayersHand player, PlayersHand dealer) {
         System.out.println("    ");
-        if (dealer.getScore() > 21 || player.getScore() > dealer.getScore()) {
-            System.out.println("Вы выиграли раунд!");
-            playerWins++;
+        if (dealer.getScore() > MAX_SCORE || player.getScore() > dealer.getScore()) {
+            playerWin();
         } else if (player.getScore() < dealer.getScore()) {
-            System.out.println("Вы проиграли раунд!");
-            dealerWins++;
+            playerLose();
         } else {
             System.out.println("Ничья!");
         }
+    }
+
+    /**
+     * игрок выиграл.
+     */
+    private void playerWin() {
+        System.out.println("Вы выиграли раунд!");
+        playerWins++;
+    }
+
+    /**
+     * игрок проиграл.
+     */
+    private void playerLose() {
+        System.out.println("Вы проиграли раунд!");
+        dealerWins++;
     }
 
     /**
@@ -151,6 +160,9 @@ public class BlackjackGame {
                 ", <закрытая карта>]");
     }
 
+    /**
+     * карты за столом.
+     */
     private void deckStatus() {
         System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
         System.out.println("Карты дилера: " + dealer.cardsRow() + " => " + dealer.getScore());
