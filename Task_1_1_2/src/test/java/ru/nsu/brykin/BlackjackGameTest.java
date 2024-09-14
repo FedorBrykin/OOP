@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class BlackjackGameTest {
     private Card card = new Card("Пик", "Король");
@@ -59,18 +61,6 @@ class BlackjackGameTest {
         dealer.addCard(new Card("Черви", "Король")); // 10
 
         assertTrue(game.checkBlackjack(dealer), "Дилер получил блэкджек! ");
-    }
-
-    @Test
-    void testPlayersTurnBusted() {
-        PlayersHand playerHand = new PlayersHand();
-        playerHand.addCard(new Card("Черви", "Девятка")); // 9
-        playerHand.addCard(new Card("Черви", "Десятка")); // 10
-        playerHand.addCard(new Card("Черви", "Король")); // 10
-
-        game.playersTurn(playerHand, new PlayersHand());
-
-        assertTrue(playerHand.getScore() > 21, "Вы проиграли раунд!");
     }
 
     @Test
@@ -180,5 +170,45 @@ class BlackjackGameTest {
     void testGetDealerWins() {
         game.getDealerWins();
         assertEquals(0, game.getDealerWins());
+    }
+
+    @Test
+    public void TestDraw() {
+        ByteArrayInputStream in = new ByteArrayInputStream("0\n".getBytes());
+        InputStream inputStream = System.in;
+        System.setIn(in);
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        List<Card> cards = new ArrayList<>();
+        cards.add(new Card("Черви", "Король"));
+        cards.add(new Card("Черви", "Король"));
+        cards.add(new Card("Черви", "Король"));
+        cards.add(new Card("Черви", "Король"));
+        BlackjackGame game = new BlackjackGame(cards);
+        game.playRound();
+
+        final String standardOutput = myOut.toString();
+        assertTrue(standardOutput.contains("Ничья!"));
+    }
+
+    @Test
+    public void Test() {
+        ByteArrayInputStream in = new ByteArrayInputStream("0\n".getBytes());
+        InputStream inputStream = System.in;
+        System.setIn(in);
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+
+        List<Card> cards = new ArrayList<>();
+        cards.add(new Card("Черви", "Король"));
+        cards.add(new Card("Черви", "Туз"));
+        cards.add(new Card("Пики", "Король"));
+        cards.add(new Card("Крести", "Король"));
+        BlackjackGame game = new BlackjackGame(cards);
+        game.playRound();
+
+        final String standardOutput = myOut.toString();
+        assertTrue(standardOutput.contains("Вы выиграли раунд!"));
     }
 }

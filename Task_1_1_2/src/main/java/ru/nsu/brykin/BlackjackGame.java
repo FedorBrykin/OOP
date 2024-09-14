@@ -1,5 +1,8 @@
 package ru.nsu.brykin;
 
+import java.util.List;
+import java.util.Scanner;
+
 /**
  * сама игра.
  */
@@ -16,6 +19,17 @@ public class BlackjackGame {
      */
     public BlackjackGame() {
         deck = new Deck();
+        player = new PlayersHand();
+        dealer = new PlayersHand();
+        playerWins = 0;
+        dealerWins = 0;
+    }
+
+    /**
+     *
+     */
+    public BlackjackGame(List<Card> cards) {
+        deck = new Deck(cards);
         player = new PlayersHand();
         dealer = new PlayersHand();
         playerWins = 0;
@@ -42,11 +56,8 @@ public class BlackjackGame {
             playerLose();
             return;
         }
-        outputTextClosedCard();
         playersTurn(player, dealer);
         if (player.getScore() > MAX_SCORE) {
-            System.out.println("    ");
-            playerLose();
             return;
         }
         dealersTurn(player, dealer);
@@ -83,12 +94,24 @@ public class BlackjackGame {
      * ход игрока.
      */
     void playersTurn(PlayersHand player, PlayersHand dealer) {
-        while (player.getScore() < 17) {
-            System.out.println("    ");
-            Card newPlayerCard = deck.drawCard();
-            player.addCard(newPlayerCard);
-            System.out.println("Вы открыли карту: " + newPlayerCard);
+        while (true) {
             outputTextClosedCard();
+            System.out.print("Введите “1”, чтобы взять карту, и “0”, чтобы остановиться: ");
+            Scanner scanner = new Scanner(System.in);
+            int choice = scanner.nextInt();
+            System.out.println("    ");
+            if (choice == 1) {
+                Card newCard = deck.drawCard();
+                player.addCard(newCard);
+                System.out.println("Вы открыли карту: " + newCard);
+                if (player.getScore() > 21) {
+                    System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
+                    playerLose();
+                    return;
+                }
+            } else {
+                break;
+            }
         }
     }
 
