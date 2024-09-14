@@ -3,11 +3,10 @@ package ru.nsu.brykin;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class BlackjackGameTest {
     private Card card = new Card("Пик", "Король");
@@ -173,7 +172,7 @@ class BlackjackGameTest {
     }
 
     @Test
-    public void TestDraw() {
+    public void testDraw() {
         ByteArrayInputStream in = new ByteArrayInputStream("0\n".getBytes());
         InputStream inputStream = System.in;
         System.setIn(in);
@@ -193,7 +192,7 @@ class BlackjackGameTest {
     }
 
     @Test
-    public void Test() {
+    public void test() {
         ByteArrayInputStream in = new ByteArrayInputStream("0\n".getBytes());
         InputStream inputStream = System.in;
         System.setIn(in);
