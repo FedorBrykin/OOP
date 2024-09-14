@@ -28,13 +28,9 @@ public class BlackjackGame {
     public void playRound() {
         player.clearHand();
         dealer.clearHand();
-
         System.out.println("    ");
         System.out.println("Раунд " + (playerWins + dealerWins + 1));
-
         cardsDealing(player, dealer);
-
-        // Проверка на блэкджек
         if (checkBlackjack(player)) {
             outputTextClosedCard();
             System.out.println("Вы получили блэкджек! ");
@@ -46,20 +42,15 @@ public class BlackjackGame {
             playerLose();
             return;
         }
-
         outputTextClosedCard();
-
         playersTurn(player, dealer);
         if (player.getScore() > MAX_SCORE) {
             System.out.println("    ");
             playerLose();
             return;
         }
-
         dealersTurn(player, dealer);
-
         roundResults(player, dealer);
-
         System.out.println("Счет: Вы - " + playerWins + ", Дилер - " + dealerWins);
     }
 
@@ -75,9 +66,7 @@ public class BlackjackGame {
      */
     public static void main(String[] args) {
         BlackjackGame game = new BlackjackGame();
-
         game.playRound();
-
     }
 
     /**
@@ -111,7 +100,6 @@ public class BlackjackGame {
         System.out.println("-------");
         System.out.println("Дилер открывает закрытую карту: " + dealer.getCard(2));
         deckStatus();
-
         while (dealer.getScore() < 17) {
             System.out.println("    ");
             Card newDealerCard = deck.drawCard();
