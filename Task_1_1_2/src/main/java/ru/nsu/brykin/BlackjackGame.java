@@ -26,7 +26,7 @@ public class BlackjackGame {
     }
 
     /**
-     *
+     * for tests.
      */
     public BlackjackGame(List<Card> cards) {
         deck = new Deck(cards);
@@ -105,7 +105,8 @@ public class BlackjackGame {
                 player.addCard(newCard);
                 System.out.println("Вы открыли карту: " + newCard);
                 if (player.getScore() > 21) {
-                    System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
+                    System.out.println("Ваши карты: " + player.cardsRow() + " => "
+                            + player.getScore());
                     playerLose();
                     return;
                 }
@@ -167,8 +168,8 @@ public class BlackjackGame {
      */
     void outputTextClosedCard() {
         System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
-        System.out.println("Карты дилера: [" + dealer.getCard(1) +
-                ", <закрытая карта>]");
+        System.out.println("Карты дилера: [" + dealer.getCard(1)
+                + ", <закрытая карта>]");
     }
 
     /**

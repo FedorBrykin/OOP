@@ -33,7 +33,9 @@ class PlayersHand {
 
         for (Card card : hand) {
             score += card.getValue();
-            if (card.getValue() == 11) aces++;
+            if (card.getValue() == 11) {
+                aces++;
+            }
         }
 
         while (score > maxScore && aces > 0) {
