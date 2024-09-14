@@ -93,7 +93,7 @@ public class BlackjackGame {
     /**
      * ход игрока.
      */
-    private void playersTurn(PlayersHand player, PlayersHand dealer) {
+    void playersTurn(PlayersHand player, PlayersHand dealer) {
         while (player.getScore() < 17) {
             System.out.println("    ");
             Card newPlayerCard = deck.drawCard();
@@ -106,7 +106,7 @@ public class BlackjackGame {
     /**
      * ход дилера.
      */
-    private void dealersTurn(PlayersHand player, PlayersHand dealer) {
+    void dealersTurn(PlayersHand player, PlayersHand dealer) {
         System.out.println("Ход дилера");
         System.out.println("-------");
         System.out.println("Дилер открывает закрытую карту: " + dealer.getCard(2));
@@ -124,7 +124,7 @@ public class BlackjackGame {
     /**
      * итоги раунда.
      */
-    private void roundResults(PlayersHand player, PlayersHand dealer) {
+    void roundResults(PlayersHand player, PlayersHand dealer) {
         System.out.println("    ");
         if (dealer.getScore() > MAX_SCORE || player.getScore() > dealer.getScore()) {
             playerWin();
@@ -138,7 +138,7 @@ public class BlackjackGame {
     /**
      * игрок выиграл.
      */
-    private void playerWin() {
+    void playerWin() {
         System.out.println("Вы выиграли раунд!");
         playerWins++;
     }

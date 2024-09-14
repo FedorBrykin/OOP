@@ -43,4 +43,57 @@ class BlackjackGameTest {
         assertEquals(20, player.getScore());
     }
 
+    @Test
+    void testCheckBlackjackPlayerWins() {
+        player.addCard(new Card("Черви", "Туз")); // 11
+        player.addCard(new Card("Черви", "Король")); // 10
+
+        assertTrue(game.checkBlackjack(player), "Вы получили блэкджек! ");
+    }
+
+    @Test
+    void testCheckBlackjackDealerWins() {
+        dealer.addCard(new Card("Черви", "Туз")); // 11
+        dealer.addCard(new Card("Черви", "Король")); // 10
+
+        assertTrue(game.checkBlackjack(dealer), "Дилер получил блэкджек! ");
+    }
+
+    @Test
+    void testPlayersTurnBusted() {
+        PlayersHand playerHand = new PlayersHand();
+        playerHand.addCard(new Card("Черви", "Девятка")); // 9
+        playerHand.addCard(new Card("Черви", "Десятка")); // 10
+        playerHand.addCard(new Card("Черви", "Король")); // 10
+
+        game.playersTurn(playerHand, new PlayersHand());
+
+        assertTrue(playerHand.getScore() > 21, "Вы проиграли раунд!");
+    }
+
+    @Test
+    void testDealersTurnDealerBusted() {
+        PlayersHand dealerHand = new PlayersHand();
+        dealerHand.addCard(new Card("Черви", "Девятка")); // 9
+        dealerHand.addCard(new Card("Черви", "Восьмёрка")); // 8
+        dealerHand.addCard(new Card("Черви", "Пятёрка")); // 5
+
+        game.dealersTurn(new PlayersHand(), dealerHand);
+
+        assertTrue(dealerHand.getScore() > 21, "Вы выиграли раунд!");
+    }
+
+    @Test
+    void testRoundResultsDraw() {
+        PlayersHand playerHand = new PlayersHand();
+        PlayersHand dealerHand = new PlayersHand();
+
+        playerHand.addCard(new Card("Черви", "Десятка")); // 10
+        playerHand.addCard(new Card("Черви", "Девятка")); // 9
+        dealerHand.addCard(new Card("Черви", "Восьмёрка")); // 8
+        dealerHand.addCard(new Card("Черви", "Туз")); // 11
+
+        game.roundResults(playerHand, dealerHand);
+        assertEquals(dealerHand.getScore(), playerHand.getScore(), "Ничья!");
+    }
 }
