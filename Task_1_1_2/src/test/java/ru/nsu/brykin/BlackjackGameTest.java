@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 class BlackjackGameTest {
     private Card card = new Card("Пик", "Король");
@@ -136,5 +138,47 @@ class BlackjackGameTest {
         game.dealersTurn(new PlayersHand(), dealerHand);
 
         assertTrue(dealerHand.getScore() >= 17); // Проверяем, что дилер достиг 17 очков
+    }
+
+    // Проверка, что игрок набирает 21 с 3 картами
+    @Test
+    void testPlayerReaches21WithThreeCards() {
+        PlayersHand playerHand = new PlayersHand();
+        playerHand.addCard(new Card("Черви", "Король"));
+        playerHand.addCard(new Card("Черви", "Пятёрка"));
+        playerHand.addCard(new Card("Черви", "Шестёрка")); // 10 + 5 + 6 = 21
+
+        game.roundResults(playerHand, new PlayersHand());
+        assertEquals(1, game.getPlayerWins());
+    }
+
+    // Проверка, что нигде не происходит деления на ноль или других ошибок
+    @Test
+    void testGameHandlesUnexpectedCardValues() {
+        PlayersHand playerHand = new PlayersHand();
+        PlayersHand dealerHand = new PlayersHand();
+
+        // Добавление карт, которые не должны влиять на логику
+        playerHand.addCard(new Card("Черви", "Пятёрка"));
+        playerHand.addCard(new Card("Черви", "Пятёрка"));
+
+        dealerHand.addCard(new Card("Черви", "Пятёрка"));
+        dealerHand.addCard(new Card("Черви", "Пятёрка"));
+
+        game.roundResults(playerHand, dealerHand);
+        assertEquals(0, game.getPlayerWins());
+        assertEquals(0, game.getDealerWins());
+    }
+
+    @Test
+    void testGetPlayerWins() {
+        game.getPlayerWins();
+        assertEquals(0, game.getPlayerWins());
+    }
+
+    @Test
+    void testGetDealerWins() {
+        game.getDealerWins();
+        assertEquals(0, game.getDealerWins());
     }
 }

@@ -154,7 +154,7 @@ public class BlackjackGame {
     /**
      * output text when the card is closed.
      */
-    private void outputTextClosedCard() {
+    void outputTextClosedCard() {
         System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
         System.out.println("Карты дилера: [" + dealer.getCard(1) +
                 ", <закрытая карта>]");
@@ -163,7 +163,7 @@ public class BlackjackGame {
     /**
      * карты за столом.
      */
-    private void deckStatus() {
+    void deckStatus() {
         System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
         System.out.println("Карты дилера: " + dealer.cardsRow() + " => " + dealer.getScore());
     }
