@@ -84,16 +84,57 @@ class BlackjackGameTest {
     }
 
     @Test
+    void testRoundResultsPlayerWins() {
+        PlayersHand playerHand = new PlayersHand();
+        PlayersHand dealerHand = new PlayersHand();
+
+        playerHand.addCard(new Card("Черви", "Девятка"));
+        playerHand.addCard(new Card("Черви", "Король"));
+        dealerHand.addCard(new Card("Черви", "Семёрка"));
+        dealerHand.addCard(new Card("Черви", "Пятёрка"));
+
+        game.roundResults(playerHand, dealerHand);
+        assertEquals(1, game.getPlayerWins());
+        assertEquals(0, game.getDealerWins());
+    }
+
+    @Test
+    void testRoundResultsDealerWins() {
+        PlayersHand playerHand = new PlayersHand();
+        PlayersHand dealerHand = new PlayersHand();
+
+        playerHand.addCard(new Card("Черви", "Пятёрка"));
+        dealerHand.addCard(new Card("Черви", "Десятка"));
+        dealerHand.addCard(new Card("Черви", "Король"));
+
+        game.roundResults(playerHand, dealerHand);
+        assertEquals(0, game.getPlayerWins());
+        assertEquals(1, game.getDealerWins());
+    }
+
+    @Test
     void testRoundResultsDraw() {
         PlayersHand playerHand = new PlayersHand();
         PlayersHand dealerHand = new PlayersHand();
 
-        playerHand.addCard(new Card("Черви", "Десятка")); // 10
-        playerHand.addCard(new Card("Черви", "Девятка")); // 9
-        dealerHand.addCard(new Card("Черви", "Восьмёрка")); // 8
-        dealerHand.addCard(new Card("Черви", "Туз")); // 11
+        playerHand.addCard(new Card("Черви", "Десятка"));
+        playerHand.addCard(new Card("Черви", "Восьмёрка"));
+        dealerHand.addCard(new Card("Черви", "Девятка"));
+        dealerHand.addCard(new Card("Черви", "Девятка"));
 
         game.roundResults(playerHand, dealerHand);
-        assertEquals(dealerHand.getScore(), playerHand.getScore(), "Ничья!");
+        assertEquals(0, game.getPlayerWins());
+        assertEquals(0, game.getDealerWins()); // Проверяем что ничья
+    }
+
+    @Test
+    void testDealerTurnDrawsCardAndIncreasesScore() {
+        PlayersHand dealerHand = new PlayersHand();
+        dealerHand.addCard(new Card("Черви", "Шестёрка"));
+        dealerHand.addCard(new Card("Черви", "Пятёрка"));
+
+        game.dealersTurn(new PlayersHand(), dealerHand);
+
+        assertTrue(dealerHand.getScore() >= 17); // Проверяем, что дилер достиг 17 очков
     }
 }

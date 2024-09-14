@@ -167,4 +167,18 @@ public class BlackjackGame {
         System.out.println("Ваши карты: " + player.cardsRow() + " => " + player.getScore());
         System.out.println("Карты дилера: " + dealer.cardsRow() + " => " + dealer.getScore());
     }
+
+    /**
+     * победы игрока.
+     */
+    int getPlayerWins() {
+        return playerWins;
+    }
+
+    /**
+     * победы дилера.
+     */
+    int getDealerWins() {
+        return dealerWins;
+    }
 }
