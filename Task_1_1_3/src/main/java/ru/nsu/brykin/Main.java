@@ -19,18 +19,18 @@ public class Main {
 
         // Парсинг выражения
         Expression e = parser.parse(inputExpression);
-        System.out.println(e.print());
+        e.print();
 
         // Дифференцирование
         System.out.print("Переменная дифференцирования: ");
         String variable = scanner.nextLine();
         Expression de = e.derivative(variable);
-        System.out.println(de.print());
+        de.print();
 
         // Ввод значений переменных
         System.out.print("Значения переменных (пример: x=10; y=13): ");
         String variableAssignments = scanner.nextLine();
-        int result = e.eval(variableAssignments);
+        double result = e.eval(variableAssignments);
         System.out.println(result);
 
         scanner.close();

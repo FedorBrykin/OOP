@@ -1,5 +1,7 @@
 package ru.nsu.brykin;
 
+import java.util.HashMap;
+
 /**
  * класс деления.
  */
@@ -18,8 +20,8 @@ class Div extends Expression {
     /**
      * вывод.
      */
-    public String print() {
-        return "(" + numerator.print() + "/" + denominator.print() + ")";
+    public String toString() {
+        return "(" + numerator.toString() + "/" + denominator.toString() + ")";
     }
 
     /**
@@ -38,7 +40,7 @@ class Div extends Expression {
     /**
      * деление.
      */
-    public int eval(String variableAssignments) {
-        return numerator.eval(variableAssignments) / denominator.eval(variableAssignments);
+    public double evaluate(HashMap<String, Double> dict) {
+        return numerator.evaluate(dict) / denominator.evaluate(dict);
     }
 }

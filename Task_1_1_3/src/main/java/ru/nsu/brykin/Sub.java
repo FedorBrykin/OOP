@@ -1,5 +1,7 @@
 package ru.nsu.brykin;
 
+import java.util.HashMap;
+
 /**
  * класс вычитания.
  */
@@ -18,8 +20,8 @@ class Sub extends Expression {
     /**
      * вывод.
      */
-    public String print() {
-        return "(" + left.print() + "-" + right.print() + ")";
+    public String toString() {
+        return "(" + left.toString() + "-" + right.toString() + ")";
     }
 
     /**
@@ -32,7 +34,7 @@ class Sub extends Expression {
     /**
      * вычитание.
      */
-    public int eval(String variableAssignments) {
-        return left.eval(variableAssignments) - right.eval(variableAssignments);
+    public double evaluate(HashMap<String, Double> dict) {
+        return left.evaluate(dict) - right.evaluate(dict);
     }
 }

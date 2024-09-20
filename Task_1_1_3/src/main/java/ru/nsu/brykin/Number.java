@@ -1,5 +1,7 @@
 package ru.nsu.brykin;
 
+import java.util.HashMap;
+
 /**
  * цифры.
  */
@@ -16,7 +18,7 @@ class Number extends Expression {
     /**
      * вывод.
      */
-    public String print() {
+    public String toString() {
         return Integer.toString(value);
     }
 
@@ -30,7 +32,7 @@ class Number extends Expression {
     /**
      * возврат значения.
      */
-    public int eval(String variableAssignments) {
+    public double evaluate(HashMap<String, Double> dict) {
         return value;
     }
 }
