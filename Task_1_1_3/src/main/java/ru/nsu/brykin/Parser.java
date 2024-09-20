@@ -20,8 +20,12 @@ class Parser {
         int openBrackets = 0;
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
-            if (c == '(') openBrackets++;
-            if (c == ')') openBrackets--;
+            if (c == '(') {
+                openBrackets++;
+            }
+            if (c == ')') {
+                openBrackets--;
+            }
             if (openBrackets == 0) {
                 if (c == '+') {
                     return new Add(parseExpression(expression.substring(0, i)),
@@ -37,8 +41,12 @@ class Parser {
         openBrackets = 0;
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
-            if (c == '(') openBrackets++;
-            if (c == ')') openBrackets--;
+            if (c == '(') {
+                openBrackets++;
+            }
+            if (c == ')') {
+                openBrackets--;
+            }
             if (openBrackets == 0) {
                 if (c == '*') {
                     return new Mul(parseExpression(expression.substring(0, i)),
