@@ -2,6 +2,11 @@ package ru.nsu.brykin;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
@@ -36,5 +41,32 @@ class MainTest {
         e.print();
         de.print();
         assertEquals(0.0, e.eval("x = 25"));
+    }
+
+    @Test
+    public void parceTest() {
+        Parser parser = new Parser();
+        ByteArrayInputStream in = new ByteArrayInputStream("0\n".getBytes());
+        InputStream inputStream = System.in;
+        System.setIn(in);
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        Expression e = parser.parse("(3+(2*x))");
+        final String standardOutput = e.print();;
+        assertTrue(standardOutput.contains("(3+(2*x))"));
+    }
+
+    @Test
+    public void parceTest2() {
+        Parser parser = new Parser();
+        ByteArrayInputStream in = new ByteArrayInputStream("0\n".getBytes());
+        InputStream inputStream = System.in;
+        System.setIn(in);
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        Expression e = parser.parse("(3+(2*x))");
+        Expression de = e.derivative("x");
+        final String standardOutput = de.print();;
+        assertTrue(standardOutput.contains("(0+((0*x)+(2*1)))"));
     }
 }
