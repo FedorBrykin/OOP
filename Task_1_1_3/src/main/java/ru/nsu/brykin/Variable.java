@@ -30,7 +30,7 @@ class Variable extends Expression {
     }
 
     /**
-     * eval.
+     * если переменная не найдена, то она аннулируется.
      */
     public double evaluate(HashMap<String, Double> dict) {
         return dict.getOrDefault(name, 0.0);
