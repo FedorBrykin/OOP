@@ -1,7 +1,6 @@
 package ru.nsu.brykin;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * исходный класс.

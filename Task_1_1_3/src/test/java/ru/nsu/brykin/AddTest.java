@@ -7,6 +7,17 @@ import org.junit.jupiter.api.Test;
 
 class AddTest {
     @Test
+    void addTest() {
+        Expression e = new Add(new Number(3), new Mul(new Number(2),
+                new Variable("x")));
+
+        Expression de = e.derivative("x");
+        de.print();
+
+        assertEquals(23.0, e.eval("x = 10; y = 13"));
+    }
+
+    @Test
     void testToString() {
         Expression left = new Number(2);
         Expression right = new Number(3);
@@ -34,7 +45,6 @@ class AddTest {
         double result = addition.evaluate(dict);
         assertEquals(15.0, result);
     }
-
     @Test
     void testEvaluateZero() {
         HashMap<String, Double> dict = new HashMap<>();
