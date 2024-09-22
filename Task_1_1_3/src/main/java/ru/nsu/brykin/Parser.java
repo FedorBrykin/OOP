@@ -45,15 +45,12 @@ class Parser {
                 }
             }
         }
-
         if (expression.startsWith("(") && expression.endsWith(")")) {
             return parseExpression(expression.substring(1, expression.length() - 1));
         }
-
         if (expression.matches("\\d+")) {
             return new Number(Integer.parseInt(expression));
         }
-
         return new Variable(expression);
     }
 }

@@ -2,18 +2,16 @@ package ru.nsu.brykin;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
 import java.util.HashMap;
+import org.junit.jupiter.api.Test;
 
 class MulTest {
     @Test
     void mulTest() {
         Expression e = new Mul(new Number(42), new Div(new Number(100),
                 new Variable("x")));
-        e.print();
 
         Expression de = e.derivative("x");
-        de.print();
 
         assertEquals(168.0, e.eval("x = 25"));
     }

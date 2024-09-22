@@ -21,4 +21,12 @@ class MainTest {
         final String standardOutput = de.toString();
         assertTrue(standardOutput.contains("(0+((0*x)+(2*1)))"));
     }
+
+    @Test
+    public void parceTest3() {
+        Parser parser = new Parser();
+        Expression e = parser.parse("( 3 + ( 2 * x ) )");
+        final String standardOutput = e.toString();
+        assertTrue(standardOutput.contains("(3+(2*x))"));
+    }
 }

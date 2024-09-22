@@ -12,7 +12,6 @@ class AddTest {
                 new Variable("x")));
 
         Expression de = e.derivative("x");
-        de.print();
 
         assertEquals(23.0, e.eval("x = 10; y = 13"));
     }
@@ -45,6 +44,7 @@ class AddTest {
         double result = addition.evaluate(dict);
         assertEquals(15.0, result);
     }
+
     @Test
     void testEvaluateZero() {
         HashMap<String, Double> dict = new HashMap<>();
