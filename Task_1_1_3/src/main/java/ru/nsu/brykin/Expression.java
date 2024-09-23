@@ -27,7 +27,7 @@ abstract class Expression {
         return vars;
     }
 
-    abstract protected double evaluate(HashMap<String, Double> dict);
+    protected abstract double evaluate(HashMap<String, Double> dict);
 
     /**
      * вывод.

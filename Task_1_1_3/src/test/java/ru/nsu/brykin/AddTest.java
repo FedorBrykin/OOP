@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class AddTest {
     @Test
     void addTest() {
-        Expression e = new Sub(new Div( new Add(new Number(2), new Mul(new Number(2),
+        Expression e = new Sub(new Div(new Add(new Number(2), new Mul(new Number(2),
                 new Variable("x"))), new Number(2)), new Number(10));
 
         assertEquals(1.0, e.eval("x = 10; y = 13"));
