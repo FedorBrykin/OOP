@@ -4,14 +4,25 @@ package ru.nsu.brykin;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.Objects;
 
+/**
+ * матрица смежности.
+ */
 class AdjacencyMatrixGraph implements Graph {
     Map<String, Integer> vertexIndexMap;
     String[] vertices;
     private boolean[][] adjMatrix;
     private int vertexCount;
 
+    /**
+     * матрица смежности.
+     */
     public AdjacencyMatrixGraph(int capacity) {
         vertexIndexMap = new HashMap<>();
         vertices = new String[capacity];
