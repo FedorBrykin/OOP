@@ -21,8 +21,8 @@ class AdjacencyListGraphTest {
     void testAddVertex() {
         graph.addVertex("A");
         assertTrue(graph.getNeighbors("A").isEmpty());
-        graph.addVertex("A"); // добавление дубликата
-        assertTrue(graph.getNeighbors("A").isEmpty()); // должно остаться пустым
+        graph.addVertex("A");
+        assertTrue(graph.getNeighbors("A").isEmpty());
     }
 
     @Test
@@ -69,21 +69,7 @@ class AdjacencyListGraphTest {
         assertTrue(neighbors.contains("B"));
 
         neighbors = graph.getNeighbors("B");
-        assertTrue(neighbors.isEmpty()); // B не имеет соседей
-    }
-
-    @Test
-    void testTopologicalSort() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addEdge("A", "B");
-        graph.addEdge("B", "C");
-
-        List<String> sorted = graph.topologicalSort();
-        assertEquals(3, sorted.size());
-        assertTrue(sorted.indexOf("A") < sorted.indexOf("B"));
-        assertTrue(sorted.indexOf("B") < sorted.indexOf("C"));
+        assertTrue(neighbors.isEmpty());
     }
 
     @Test

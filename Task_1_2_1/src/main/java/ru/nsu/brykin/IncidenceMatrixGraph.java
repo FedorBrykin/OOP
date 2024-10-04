@@ -1,6 +1,5 @@
 package ru.nsu.brykin;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,17 +7,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
-
 
 /**
  * матрица инцидентности.
  */
 public class IncidenceMatrixGraph implements Graph {
-    private List<String> vertices;
-    Map<String, Integer> vertexIndex;
-    int[][] incidenceMatrix;
-    int edgeCount;
+    private List<Vertex> vertices;
+    private Map<Vertex, Integer> vertexIndex;
+    private int[][] incidenceMatrix;
+    private int edgeCount;
+    private String headVertex = "";
 
     /**
      * матрица инцидентности.
@@ -31,30 +29,37 @@ public class IncidenceMatrixGraph implements Graph {
     }
 
     /**
-     * добавление вершины.
+     * вершина+.
      */
     @Override
-    public void addVertex(String vertex) {
+    public void addVertex(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
         if (!vertexIndex.containsKey(vertex)) {
+            if (vertices.isEmpty()) {//                 ПРОВЕРИТЬ
+                headVertex = String.valueOf(vertex);
+            }
             vertices.add(vertex);
             vertexIndex.put(vertex, vertices.size() - 1);
             int[][] newMatrix = new int[vertices.size()][edgeCount];
             for (int i = 0; i < incidenceMatrix.length; i++) {
-                System.arraycopy(incidenceMatrix[i], 0, newMatrix[i], 0,
-                        incidenceMatrix[i].length);
+                System.arraycopy(incidenceMatrix[i], 0, newMatrix[i], 0, incidenceMatrix[i].length);
             }
             incidenceMatrix = newMatrix;
         }
     }
 
     /**
-     * удаление вершины.
+     * вершина-.
      */
     @Override
-    public void removeVertex(String vertex) {
+    public void removeVertex(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
         if (vertexIndex.containsKey(vertex)) {
             int index = vertexIndex.remove(vertex);
             vertices.remove(index);
+            if (vertices.isEmpty()) {//                 ПРОВЕРИТЬ
+                headVertex = String.valueOf(vertex);
+            }
             for (int i = index; i < vertices.size(); i++) {
                 vertexIndex.put(vertices.get(i), i);
             }
@@ -70,12 +75,14 @@ public class IncidenceMatrixGraph implements Graph {
     }
 
     /**
-     * добавление ребра.
+     * ребро+.
      */
     @Override
-    public void addEdge(String fromVertex, String toVertex) {
-        addVertex(fromVertex);
-        addVertex(toVertex);
+    public void addEdge(String fromVertexName, String toVertexName) {
+        Vertex fromVertex = new Vertex(fromVertexName);
+        Vertex toVertex = new Vertex(toVertexName);
+        addVertex(fromVertexName);
+        addVertex(toVertexName);
         int fromIndex = vertexIndex.get(fromVertex);
         int toIndex = vertexIndex.get(toVertex);
         int[][] newMatrix = new int[vertices.size()][edgeCount + 1];
@@ -89,15 +96,15 @@ public class IncidenceMatrixGraph implements Graph {
     }
 
     /**
-     * удаление ребра.
+     * ребро-.
      */
     @Override
-    public void removeEdge(String fromVertex, String toVertex) {
+    public void removeEdge(String fromVertexName, String toVertexName) {
+        Vertex fromVertex = new Vertex(fromVertexName);
+        Vertex toVertex = new Vertex(toVertexName);
         if (vertexIndex.containsKey(fromVertex) && vertexIndex.containsKey(toVertex)) {
             int fromIdx = vertexIndex.get(fromVertex);
             int toIdx = vertexIndex.get(toVertex);
-
-            // Найти столбец инцидентности для удаления
             for (int j = 0; j < edgeCount; j++) {
                 if (incidenceMatrix[fromIdx][j] == 1 && incidenceMatrix[toIdx][j] == -1) {
                     for (int i = 0; i < vertices.size(); i++) {
@@ -109,18 +116,22 @@ public class IncidenceMatrixGraph implements Graph {
         }
     }
 
+
     /**
      * соседи.
      */
     @Override
-    public List<String> getNeighbors(String vertex) {
+    public List<String> getNeighbors(String vertexName) {
         List<String> neighbors = new ArrayList<>();
-        int vertexIdx = vertexIndex.get(vertex);
-        for (int i = 0; i < incidenceMatrix[vertexIdx].length; i++) {
-            if (incidenceMatrix[vertexIdx][i] == 1) {
-                for (int j = 0; j < incidenceMatrix.length; j++) {
-                    if (incidenceMatrix[j][i] == -1) {
-                        neighbors.add(vertices.get(j));
+        Vertex vertex = new Vertex(vertexName);
+        if (vertexIndex.containsKey(vertex)) {
+            int vertexIdx = vertexIndex.get(vertex);
+            for (int i = 0; i < incidenceMatrix[vertexIdx].length; i++) {
+                if (incidenceMatrix[vertexIdx][i] == 1) {
+                    for (int j = 0; j < incidenceMatrix.length; j++) {
+                        if (incidenceMatrix[j][i] == -1) {
+                            neighbors.add(vertices.get(j).getName());
+                        }
                     }
                 }
             }
@@ -129,7 +140,7 @@ public class IncidenceMatrixGraph implements Graph {
     }
 
     /**
-     * чтение из файла.
+     * из файла.
      */
     @Override
     public void readFromFile(String fileName) {
@@ -152,11 +163,14 @@ public class IncidenceMatrixGraph implements Graph {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.join(",", vertices));
-        sb.append("\n");
-        for (int[] row : incidenceMatrix) {
-            for (int cell : row) {
-                sb.append(cell).append(" ");
+        sb.append("Vertices: ");
+        for (Vertex v : vertices) {
+            sb.append(v.getName()).append(" ");
+        }
+        sb.append("\nIncidence Matrix:\n");
+        for (int i = 0; i < vertices.size(); i++) {
+            for (int j = 0; j < edgeCount; j++) {
+                sb.append(incidenceMatrix[i][j]).append(" ");
             }
             sb.append("\n");
         }
@@ -164,49 +178,16 @@ public class IncidenceMatrixGraph implements Graph {
     }
 
     /**
-     * сортировка.
+     * все вершины.
      */
-    public List<String> topologicalSort() {
-        Map<String, Integer> inDegree = new HashMap<>();
-        for (String vertex : vertices) {
-            inDegree.put(vertex, 0);
-        }
-        for (int j = 0; j < edgeCount; j++) {
-            for (int i = 0; i < vertices.size(); i++) {
-                if (incidenceMatrix[i][j] == -1) {
-                    String toVertex = vertices.get(i);
-                    inDegree.put(toVertex, inDegree.get(toVertex) + 1);
-                }
-            }
-        }
-        Stack<String> stack = new Stack<>();
-        for (String vertex : vertices) {
-            if (inDegree.get(vertex) == 0) {
-                stack.push(vertex);
-            }
-        }
-        List<String> sortedList = new ArrayList<>();
-        while (!stack.isEmpty()) {
-            String vertex = stack.pop();
-            sortedList.add(vertex);
-            int vertexIdx = vertexIndex.get(vertex);
-            for (int j = 0; j < edgeCount; j++) {
-                if (incidenceMatrix[vertexIdx][j] == 1) {
-                    for (int i = 0; i < vertices.size(); i++) {
-                        if (incidenceMatrix[i][j] == -1) {
-                            String toVertex = vertices.get(i);
-                            inDegree.put(toVertex, inDegree.get(toVertex) - 1);
-                            if (inDegree.get(toVertex) == 0) {
-                                stack.push(toVertex);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (sortedList.size() != vertices.size()) {
-            throw new RuntimeException("Граф содержит циклы!");
-        }
-        return sortedList;
+    public ArrayList<Vertex> getAllVertices() {
+        return new ArrayList<>(vertices);
+    }
+
+    /**
+     * вершина1.
+     */
+    public String HeadV() {
+        return headVertex;
     }
 }

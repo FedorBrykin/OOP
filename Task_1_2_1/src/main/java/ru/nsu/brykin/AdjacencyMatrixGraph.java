@@ -1,6 +1,5 @@
 package ru.nsu.brykin;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,63 +7,68 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
-import java.util.Objects;
 
 /**
  * матрица смежности.
  */
-public class AdjacencyMatrixGraph implements Graph {
-    Map<String, Integer> vertexIndexMap;
-    String[] vertices;
+public class AdjacencyMatrixGraph implements Graph<Vertex> {
+    Map<Vertex, Integer> vertexIndexMap;
+    private Vertex[] vertices;
     private boolean[][] adjMatrix;
     private int vertexCount;
+    private String headVertex = "";
 
     /**
      * матрица смежности.
      */
     public AdjacencyMatrixGraph(int capacity) {
         vertexIndexMap = new HashMap<>();
-        vertices = new String[capacity];
+        vertices = new Vertex[capacity];
         adjMatrix = new boolean[capacity][capacity];
         vertexCount = 0;
     }
 
     /**
-     * добавление вершины.
+     * вершина+.
      */
     @Override
-    public void addVertex(String vertex) {
+    public void addVertex(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
         if (!vertexIndexMap.containsKey(vertex)) {
+            if (vertexCount == 0) {
+                headVertex = String.valueOf(vertex);
+            }
             vertexIndexMap.put(vertex, vertexCount);
             vertices[vertexCount++] = vertex;
         }
     }
 
     /**
-     * удаление вершины.
+     * вершина-.
      */
     @Override
-    public void removeVertex(String vertex) {
+    public void removeVertex(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
         if (vertexIndexMap.containsKey(vertex)) {
+            if (vertexCount == 1) {
+                headVertex = "";
+            }
             int index = vertexIndexMap.remove(vertex);
             for (int i = 0; i < vertexCount; i++) {
                 adjMatrix[i][index] = false; // Удаление всех рёбер
                 adjMatrix[index][i] = false;
             }
-        }
-        for (int i = 0; i < vertexCount; i++) {
-            if (Objects.equals(vertices[i], vertex)) {
-                vertices[i].replace(vertex, "");
-            }
+            vertices[index] = null; // Удаляем вершину из массива
         }
     }
 
     /**
-     * добавление ребра.
+     * ребро+.
      */
     @Override
-    public void addEdge(String fromVertex, String toVertex) {
+    public void addEdge(String fromVertexName, String toVertexName) {
+        Vertex fromVertex = new Vertex(fromVertexName);
+        Vertex toVertex = new Vertex(toVertexName);
         if (vertexIndexMap.containsKey(fromVertex) && vertexIndexMap.containsKey(toVertex)) {
             int fromIndex = vertexIndexMap.get(fromVertex);
             int toIndex = vertexIndexMap.get(toVertex);
@@ -73,10 +77,12 @@ public class AdjacencyMatrixGraph implements Graph {
     }
 
     /**
-     * удаление ребра.
+     * ребро-.
      */
     @Override
-    public void removeEdge(String fromVertex, String toVertex) {
+    public void removeEdge(String fromVertexName, String toVertexName) {
+        Vertex fromVertex = new Vertex(fromVertexName);
+        Vertex toVertex = new Vertex(toVertexName);
         if (vertexIndexMap.containsKey(fromVertex) && vertexIndexMap.containsKey(toVertex)) {
             int fromIndex = vertexIndexMap.get(fromVertex);
             int toIndex = vertexIndexMap.get(toVertex);
@@ -88,13 +94,14 @@ public class AdjacencyMatrixGraph implements Graph {
      * соседи.
      */
     @Override
-    public List<String> getNeighbors(String vertex) {
+    public List<String> getNeighbors(String vertexName) {
         List<String> neighbors = new ArrayList<>();
+        Vertex vertex = new Vertex(vertexName);
         if (vertexIndexMap.containsKey(vertex)) {
             int index = vertexIndexMap.get(vertex);
             for (int i = 0; i < vertexCount; i++) {
                 if (adjMatrix[index][i]) {
-                    neighbors.add(vertices[i]);
+                    neighbors.add(vertices[i].getName());
                 }
             }
         }
@@ -146,36 +153,17 @@ public class AdjacencyMatrixGraph implements Graph {
     }
 
     /**
-     * сортировка.
+     * все вершины.
      */
-    public List<String> topologicalSort() {
-        List<String> result = new ArrayList<>();
-        boolean[] visited = new boolean[vertexCount];
-        Stack<String> stack = new Stack<>();
-
-        for (int i = 0; i < vertexCount; i++) {
-            if (!visited[i]) {
-                topologicalSortUtil(i, visited, stack);
-            }
-        }
-
-        while (!stack.isEmpty()) {
-            result.add(stack.pop());
-        }
-        return result;
+    public ArrayList<Vertex> getAllVertices() {
+        return new ArrayList<>(List.of(vertices));
     }
 
     /**
-     * для сортировки.
+     * первая вершина.
      */
-    private void topologicalSortUtil(int v, boolean[] visited, Stack<String> stack) {
-        visited[v] = true;
-
-        for (int i = 0; i < vertexCount; i++) {
-            if (adjMatrix[v][i] && !visited[i]) {
-                topologicalSortUtil(i, visited, stack);
-            }
-        }
-        stack.push(vertices[v]);
+    public String HeadV() {
+        return headVertex;
     }
 }
+

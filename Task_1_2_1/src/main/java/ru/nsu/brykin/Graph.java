@@ -3,26 +3,26 @@ package ru.nsu.brykin;
 import java.util.List;
 
 /**
- * интерфейс.
+ * граф.
  */
-interface Graph {
+interface Graph<T> {
     /**
-     * добавление вершины.
+     * вершина+.
      */
     void addVertex(String vertex);
 
     /**
-     * удаление вершины.
+     * вершина-.
      */
     void removeVertex(String vertex);
 
     /**
-     * добавление ребра.
+     * ребро+.
      */
     void addEdge(String fromVertex, String toVertex);
 
     /**
-     * удаление ребра.
+     * ребро-.
      */
     void removeEdge(String fromVertex, String toVertex);
 
@@ -32,7 +32,7 @@ interface Graph {
     List<String> getNeighbors(String vertex);
 
     /**
-     * чтение из файла.
+     * из файла.
      */
     void readFromFile(String fileName);
 
@@ -40,4 +40,9 @@ interface Graph {
      * toString.
      */
     String toString();
+
+    /**
+     * вершина1.
+     */
+    String HeadV();
 }

@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * список смежности.
  */
-public class AdjacencyListGraph implements Graph {
-    private Map<String, List<String>> adjList;
+public class AdjacencyListGraph implements Graph<Vertex> {
+    private Map<Vertex, List<Vertex>> adjList;
+    private String headVertex = "";
 
     /**
-     * new.
+     * список смежности.
      */
     public AdjacencyListGraph() {
         adjList = new HashMap<>();
@@ -26,8 +26,12 @@ public class AdjacencyListGraph implements Graph {
      * добавление вершины.
      */
     @Override
-    public void addVertex(String vertex) {
+    public void addVertex(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
         if (!adjList.containsKey(vertex)) {
+            if (adjList.isEmpty()) {
+                headVertex = String.valueOf(vertex);
+            }
             adjList.put(vertex, new ArrayList<>());
         }
     }
@@ -36,18 +40,24 @@ public class AdjacencyListGraph implements Graph {
      * удаление вершины.
      */
     @Override
-    public void removeVertex(String vertex) {
+    public void removeVertex(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
         adjList.remove(vertex);
         adjList.values().forEach(e -> e.remove(vertex));
+        if (adjList.isEmpty()) {
+            headVertex = "";
+        }
     }
 
     /**
      * добавление ребра.
      */
     @Override
-    public void addEdge(String fromVertex, String toVertex) {
-        addVertex(fromVertex);
-        addVertex(toVertex);
+    public void addEdge(String fromVertexName, String toVertexName) {
+        Vertex fromVertex = new Vertex(fromVertexName);
+        Vertex toVertex = new Vertex(toVertexName);
+        addVertex(fromVertexName);
+        addVertex(toVertexName);
         adjList.get(fromVertex).add(toVertex);
     }
 
@@ -55,7 +65,9 @@ public class AdjacencyListGraph implements Graph {
      * удаление ребра.
      */
     @Override
-    public void removeEdge(String fromVertex, String toVertex) {
+    public void removeEdge(String fromVertexName, String toVertexName) {
+        Vertex fromVertex = new Vertex(fromVertexName);
+        Vertex toVertex = new Vertex(toVertexName);
         if (adjList.containsKey(fromVertex)) {
             adjList.get(fromVertex).remove(toVertex);
         }
@@ -65,8 +77,14 @@ public class AdjacencyListGraph implements Graph {
      * соседи.
      */
     @Override
-    public List<String> getNeighbors(String vertex) {
-        return adjList.getOrDefault(vertex, new ArrayList<>());
+    public List<String> getNeighbors(String vertexName) {
+        Vertex vertex = new Vertex(vertexName);
+        List<Vertex> neighbors = adjList.getOrDefault(vertex, new ArrayList<>());
+        List<String> neighborNames = new ArrayList<>();
+        for (Vertex neighbor : neighbors) {
+            neighborNames.add(neighbor.getName());
+        }
+        return neighborNames;
     }
 
     /**
@@ -96,34 +114,16 @@ public class AdjacencyListGraph implements Graph {
     }
 
     /**
-     * сортировка.
+     * все вершины.
      */
-    public List<String> topologicalSort() {
-        Map<String, Boolean> visited = new HashMap<>();
-        Stack<String> stack = new Stack<>();
-        for (String vertex : adjList.keySet()) {
-            if (!visited.getOrDefault(vertex, false)) {
-                topologicalSortUtil(vertex, visited, stack);
-            }
-        }
-        List<String> sortedList = new ArrayList<>();
-        while (!stack.empty()) {
-            sortedList.add(stack.pop());
-        }
-        return sortedList;
+    public ArrayList<Vertex> getAllVertices() {
+        return new ArrayList<>(adjList.keySet());
     }
 
     /**
-     * для сортировки.
+     * первая вершина.
      */
-    private void topologicalSortUtil(String vertex, Map<String, Boolean> visited,
-                                     Stack<String> stack) {
-        visited.put(vertex, true);
-        for (String neighbor : adjList.get(vertex)) {
-            if (!visited.getOrDefault(neighbor, false)) {
-                topologicalSortUtil(neighbor, visited, stack);
-            }
-        }
-        stack.push(vertex);
+    public String HeadV() {
+        return headVertex;
     }
 }
