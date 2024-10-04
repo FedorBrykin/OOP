@@ -14,7 +14,7 @@ import java.util.Stack;
 /**
  * матрица инцидентности.
  */
-class IncidenceMatrixGraph implements Graph {
+public class IncidenceMatrixGraph implements Graph {
     private List<String> vertices;
     Map<String, Integer> vertexIndex;
     int[][] incidenceMatrix;

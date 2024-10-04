@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * матрица смежности.
  */
-class AdjacencyMatrixGraph implements Graph {
+public class AdjacencyMatrixGraph implements Graph {
     Map<String, Integer> vertexIndexMap;
     String[] vertices;
     private boolean[][] adjMatrix;

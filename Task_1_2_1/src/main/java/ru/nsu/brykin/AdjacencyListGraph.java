@@ -12,7 +12,7 @@ import java.util.Stack;
 /**
  * список смежности.
  */
-class AdjacencyListGraph implements Graph {
+public class AdjacencyListGraph implements Graph {
     private Map<String, List<String>> adjList;
 
     /**
