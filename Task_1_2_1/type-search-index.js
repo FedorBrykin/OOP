@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"ru.nsu.brykin","l":"AdjacencyListGraph"},{"p":"ru.nsu.brykin","l":"AdjacencyMatrixGraph"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"ru.nsu.brykin","l":"IncidenceMatrixGraph"}]
+typeSearchIndex = [{"p":"ru.nsu.brykin","l":"AdjacencyListGraph"},{"p":"ru.nsu.brykin","l":"AdjacencyMatrixGraph"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"ru.nsu.brykin","l":"Edge"},{"p":"ru.nsu.brykin","l":"IncidenceMatrixGraph"},{"p":"ru.nsu.brykin","l":"TopologicalSort"},{"p":"ru.nsu.brykin","l":"Vertex"}]

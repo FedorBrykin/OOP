@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -155,7 +155,7 @@ extends java.lang.Object</pre>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">AdjacencyListGraph</a></span>()</code></th>
 <td class="colLast">
-<div class="block">new.</div>
+<div class="block">список смежности.</div>
 </td>
 </tr>
 </table>
@@ -178,56 +178,63 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addEdge(java.lang.String,java.lang.String)">addEdge</a></span>&#8203;(java.lang.String&nbsp;fromVertex,
-       java.lang.String&nbsp;toVertex)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addEdge(java.lang.String,java.lang.String)">addEdge</a></span>&#8203;(java.lang.String&nbsp;fromVertexName,
+       java.lang.String&nbsp;toVertexName)</code></th>
 <td class="colLast">
 <div class="block">добавление ребра.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVertex(java.lang.String)">addVertex</a></span>&#8203;(java.lang.String&nbsp;vertex)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVertex(java.lang.String)">addVertex</a></span>&#8203;(java.lang.String&nbsp;vertexName)</code></th>
 <td class="colLast">
 <div class="block">добавление вершины.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>java.util.ArrayList&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllVertices()">getAllVertices</a></span>()</code></th>
+<td class="colLast">
+<div class="block">все вершины.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNeighbors(java.lang.String)">getNeighbors</a></span>&#8203;(java.lang.String&nbsp;vertex)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNeighbors(java.lang.String)">getNeighbors</a></span>&#8203;(java.lang.String&nbsp;vertexName)</code></th>
 <td class="colLast">
 <div class="block">соседи.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#HeadV()">HeadV</a></span>()</code></th>
+<td class="colLast">
+<div class="block">первая вершина.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#readFromFile(java.lang.String)">readFromFile</a></span>&#8203;(java.lang.String&nbsp;fileName)</code></th>
 <td class="colLast">
 <div class="block">чтение из файла.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEdge(java.lang.String,java.lang.String)">removeEdge</a></span>&#8203;(java.lang.String&nbsp;fromVertex,
-          java.lang.String&nbsp;toVertex)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEdge(java.lang.String,java.lang.String)">removeEdge</a></span>&#8203;(java.lang.String&nbsp;fromVertexName,
+          java.lang.String&nbsp;toVertexName)</code></th>
 <td class="colLast">
 <div class="block">удаление ребра.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeVertex(java.lang.String)">removeVertex</a></span>&#8203;(java.lang.String&nbsp;vertex)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeVertex(java.lang.String)">removeVertex</a></span>&#8203;(java.lang.String&nbsp;vertexName)</code></th>
 <td class="colLast">
 <div class="block">удаление вершины.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#topologicalSort()">topologicalSort</a></span>()</code></th>
-<td class="colLast">
-<div class="block">сортировка.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -265,7 +272,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>AdjacencyListGraph</h4>
 <pre>public&nbsp;AdjacencyListGraph()</pre>
-<div class="block">new.</div>
+<div class="block">список смежности.</div>
 </li>
 </ul>
 </li>
@@ -284,7 +291,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addVertex</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addVertex&#8203;(java.lang.String&nbsp;vertex)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;addVertex&#8203;(java.lang.String&nbsp;vertexName)</pre>
 <div class="block">добавление вершины.</div>
 </li>
 </ul>
@@ -294,7 +301,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeVertex</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;removeVertex&#8203;(java.lang.String&nbsp;vertex)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;removeVertex&#8203;(java.lang.String&nbsp;vertexName)</pre>
 <div class="block">удаление вершины.</div>
 </li>
 </ul>
@@ -304,8 +311,8 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addEdge</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addEdge&#8203;(java.lang.String&nbsp;fromVertex,
-                    java.lang.String&nbsp;toVertex)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;addEdge&#8203;(java.lang.String&nbsp;fromVertexName,
+                    java.lang.String&nbsp;toVertexName)</pre>
 <div class="block">добавление ребра.</div>
 </li>
 </ul>
@@ -315,8 +322,8 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeEdge</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;removeEdge&#8203;(java.lang.String&nbsp;fromVertex,
-                       java.lang.String&nbsp;toVertex)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;removeEdge&#8203;(java.lang.String&nbsp;fromVertexName,
+                       java.lang.String&nbsp;toVertexName)</pre>
 <div class="block">удаление ребра.</div>
 </li>
 </ul>
@@ -326,7 +333,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getNeighbors</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getNeighbors&#8203;(java.lang.String&nbsp;vertex)</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getNeighbors&#8203;(java.lang.String&nbsp;vertexName)</pre>
 <div class="block">соседи.</div>
 </li>
 </ul>
@@ -354,14 +361,24 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="topologicalSort()">
+<a id="getAllVertices()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllVertices</h4>
+<pre class="methodSignature">public&nbsp;java.util.ArrayList&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&gt;&nbsp;getAllVertices()</pre>
+<div class="block">все вершины.</div>
+</li>
+</ul>
+<a id="HeadV()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>topologicalSort</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;topologicalSort()</pre>
-<div class="block">сортировка.</div>
+<h4>HeadV</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;HeadV()</pre>
+<div class="block">первая вершина.</div>
 </li>
 </ul>
 </li>
