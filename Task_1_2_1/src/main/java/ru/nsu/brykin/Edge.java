@@ -1,40 +1,19 @@
 package ru.nsu.brykin;
 
-/**
- * рёбра.
- */
-public class Edge {
-    private Vertex from;
-    private Vertex to;
+public class Edge<T> {
+    private final Vertex<T> from;
+    private final Vertex<T> to;
 
-    /**
-     * рёбра.
-     */
-    public Edge(Vertex from, Vertex to) {
+    public Edge(Vertex<T> from, Vertex<T> to) {
         this.from = from;
         this.to = to;
     }
 
-    /**
-     * из.
-     */
-    public Vertex getFrom() {
+    public Vertex<T> getFrom() {
         return from;
     }
 
-    /**
-     * в.
-     */
-    public Vertex getTo() {
+    public Vertex<T> getTo() {
         return to;
     }
-
-    /**
-     * toString.
-     */
-    @Override
-    public String toString() {
-        return from + " -> " + to;
-    }
 }
-

@@ -1,65 +1,46 @@
 package ru.nsu.brykin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-import java.util.HashSet;
+import java.util.*;
 
-/**
- * сорт.
- */
 public class TopologicalSort<T> {
-    private Graph<T> graph;
 
-    /**
-     * топсорт.
-     */
-    public TopologicalSort(Graph<T> graph) {
-        this.graph = graph;
-    }
+    public List<Vertex<T>> sort(Graph<T> graph) {
+        List<Vertex<T>> sortedList = new ArrayList<>();
+        Map<Vertex<T>, Integer> inDegreeMap = new HashMap<>();
 
-    /**
-     * сорт.
-     */
-    public List<String> sort() {
-        List<String> sortedList = new ArrayList<>();
-        Set<String> visited = new HashSet<>();
-        Stack<String> stack = new Stack<>();
-        for (String vertex : getAllVertices()) {
-            if (!visited.contains(vertex)) {
-                topologicalSortUtil(vertex, visited, stack);
+        for (Vertex<T> vertex : graph.getAllVertices()) {
+            inDegreeMap.put(vertex, 0);
+        }
+
+        for (Vertex<T> vertex : graph.getAllVertices()) {
+            for (Vertex<T> neighbor : graph.getNeighbors(vertex)) {
+                inDegreeMap.put(neighbor, inDegreeMap.get(neighbor) + 1);
             }
         }
-        while (!stack.isEmpty()) {
-            sortedList.add(stack.pop());
+
+        Queue<Vertex<T>> zeroInDegreeQueue = new LinkedList<>();
+        for (Map.Entry<Vertex<T>, Integer> entry : inDegreeMap.entrySet()) {
+            if (entry.getValue() == 0) {
+                zeroInDegreeQueue.add(entry.getKey());
+            }
         }
+
+        while (!zeroInDegreeQueue.isEmpty()) {
+            Vertex<T> current = zeroInDegreeQueue.poll();
+            sortedList.add(current);
+
+            for (Vertex<T> neighbor : graph.getNeighbors(current)) {
+                inDegreeMap.put(neighbor, inDegreeMap.get(neighbor) - 1);
+                if (inDegreeMap.get(neighbor) == 0) {
+                    zeroInDegreeQueue.add(neighbor);
+                }
+            }
+        }
+
+        if (sortedList.size() != graph.getAllVertices().size()) {
+            throw new IllegalStateException("Graph has at least one cycle.");
+        }
+
         return sortedList;
     }
-
-    /**
-     * сорт+.
-     */
-    private void topologicalSortUtil(String vertex, Set<String> visited, Stack<String> stack) {
-        visited.add(vertex);
-        for (String neighbor : graph.getNeighbors(vertex)) {
-            if (!visited.contains(neighbor)) {
-                topologicalSortUtil(neighbor, visited, stack);
-            }
-        }
-        stack.push(vertex);
-    }
-
-    /**
-     * все вершины.
-     */
-    private List<String> getAllVertices() {
-        List<String> vertices = new ArrayList<>();
-        vertices.add(graph.HeadV());
-        for (String vertex : graph.getNeighbors(graph.HeadV())) {
-            vertices.add(vertex);
-        }
-        return vertices;
-    }
 }
-

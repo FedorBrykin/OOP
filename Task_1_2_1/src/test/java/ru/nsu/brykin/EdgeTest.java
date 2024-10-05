@@ -1,9 +1,9 @@
 package ru.nsu.brykin;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 
 public class EdgeTest {
 
@@ -34,14 +34,5 @@ public class EdgeTest {
         Edge edge = new Edge(from, to);
 
         assertEquals(to, edge.getTo());
-    }
-
-    @Test
-    public void testToString() {
-        Vertex from = new Vertex("G");
-        Vertex to = new Vertex("H");
-        Edge edge = new Edge(from, to);
-
-        assertEquals("G -> H", edge.toString());
     }
 }

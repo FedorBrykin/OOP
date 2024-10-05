@@ -2,65 +2,113 @@ package ru.nsu.brykin;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class TopologicalSortTest {
-    @Test
-    void testTopologicalSort1() {
-        AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph(6);
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addEdge("A", "B");
-        graph.addEdge("B", "C");
-        TopologicalSort newSort = new TopologicalSort(graph);
-        List<String> sorted = newSort.sort();
-        assertEquals(3, sorted.size());
-        assertTrue(sorted.indexOf("A") < sorted.indexOf("B"));
-        assertTrue(sorted.indexOf("B") < sorted.indexOf("C"));
+    private TopologicalSort<String> topologicalSort;
+    private Graph<String> graph;
+
+    @BeforeEach
+    void setUp() {
+        topologicalSort = new TopologicalSort<>();
+        graph = new IncidenceMatrixGraph<>();
     }
 
     @Test
-    void testTopologicalSort2() {
-        AdjacencyListGraph graph = new AdjacencyListGraph();
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addEdge("A", "B");
-        graph.addEdge("B", "C");
-        TopologicalSort newSort = new TopologicalSort(graph);
-        List<String> sorted = newSort.sort();
-        assertEquals(3, sorted.size());
-        assertTrue(sorted.indexOf("A") < sorted.indexOf("B"));
-        assertTrue(sorted.indexOf("B") < sorted.indexOf("C"));
+    void testSortWithNoEdges() {
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+
+        List<Vertex<String>> sortedList = topologicalSort.sort(graph);
+        assertEquals(2, sortedList.size());
+        assertTrue(sortedList.contains(vertex1));
+        assertTrue(sortedList.contains(vertex2));
     }
 
     @Test
-    void testTopologicalSort3() {
-        AdjacencyListGraph graph = new AdjacencyListGraph();
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addVertex("D");
-        graph.addEdge("A", "B");
-        graph.addEdge("A", "C");
-        graph.addEdge("B", "D");
-        graph.addEdge("C", "D");
-        TopologicalSort newSort1 = new TopologicalSort(graph);
-        List<String> sorted1 = newSort1.sort();
-        assertTrue(sorted1.indexOf("A") < sorted1.indexOf("B"));
-        assertTrue(sorted1.indexOf("A") < sorted1.indexOf("C"));
-        assertTrue(sorted1.indexOf("B") < sorted1.indexOf("D"));
-        assertTrue(sorted1.indexOf("C") < sorted1.indexOf("D"));
+    void testSortWithCycle() {
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
 
-        TopologicalSort newSort2 = new TopologicalSort(graph);
-        List<String> sorted2 = newSort2.sort();
-        assertTrue(sorted2.indexOf("A") < sorted2.indexOf("B"));
-        assertTrue(sorted2.indexOf("A") < sorted2.indexOf("C"));
-        assertTrue(sorted2.indexOf("B") < sorted2.indexOf("D"));
-        assertTrue(sorted2.indexOf("C") < sorted2.indexOf("D"));
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addEdge(vertex1, vertex2);
+        graph.addEdge(vertex2, vertex1); // Цикл
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            topologicalSort.sort(graph);
+        });
+
+        assertEquals("Graph has at least one cycle.", exception.getMessage());
+    }
+
+    @Test
+    void testSortEmptyGraph() {
+        List<Vertex<String>> sortedList = topologicalSort.sort(graph);
+        assertTrue(sortedList.isEmpty());
+    }
+}
+
+class GraphTest {
+    private Graph<String> incidenceMatrixGraph;
+    private Graph<String> adjacencyListGraph;
+
+    @BeforeEach
+    void setUp() {
+        incidenceMatrixGraph = new IncidenceMatrixGraph<>();
+        adjacencyListGraph = new AdjacencyListGraph<>();
+    }
+
+    @Test
+    void testAddVertex() {
+        Vertex<String> vertex = new Vertex<>("A");
+        incidenceMatrixGraph.addVertex(vertex);
+        adjacencyListGraph.addVertex(vertex);
+
+        assertEquals(1, incidenceMatrixGraph.getAllVertices().size());
+        assertEquals(1, adjacencyListGraph.getAllVertices().size());
+    }
+
+    @Test
+    void testGetVertices() {
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        incidenceMatrixGraph.addVertex(vertex1);
+        incidenceMatrixGraph.addVertex(vertex2);
+        adjacencyListGraph.addVertex(vertex1);
+        adjacencyListGraph.addVertex(vertex2);
+
+        List<Vertex<String>> verticesIncidence = incidenceMatrixGraph.getAllVertices();
+        List<Vertex<String>> verticesAdjacency = adjacencyListGraph.getAllVertices();
+
+        assertEquals(2, verticesIncidence.size());
+        assertEquals(2, verticesAdjacency.size());
+        assertTrue(verticesIncidence.contains(vertex1));
+        assertTrue(verticesIncidence.contains(vertex2));
+        assertTrue(verticesAdjacency.contains(vertex1));
+        assertTrue(verticesAdjacency.contains(vertex2));
+    }
+
+    @Test
+    void testRemoveVertex() {
+        Vertex<String> vertex = new Vertex<>("A");
+
+        incidenceMatrixGraph.addVertex(vertex);
+        adjacencyListGraph.addVertex(vertex);
+
+        incidenceMatrixGraph.removeVertex(vertex);
+        adjacencyListGraph.removeVertex(vertex);
+
+        assertEquals(0, incidenceMatrixGraph.getAllVertices().size());
+        assertEquals(0, adjacencyListGraph.getAllVertices().size());
     }
 }

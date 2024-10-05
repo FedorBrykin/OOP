@@ -1,5 +1,6 @@
 package ru.nsu.brykin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,27 +10,27 @@ interface Graph<T> {
     /**
      * вершина+.
      */
-    void addVertex(String vertex);
+    void addVertex(Vertex<T> vertex);
 
     /**
      * вершина-.
      */
-    void removeVertex(String vertex);
+    void removeVertex(Vertex<T> vertex);
 
     /**
      * ребро+.
      */
-    void addEdge(String fromVertex, String toVertex);
+    void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex);
 
     /**
      * ребро-.
      */
-    void removeEdge(String fromVertex, String toVertex);
+    void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex);
 
     /**
      * соседи.
      */
-    List<String> getNeighbors(String vertex);
+    List<Vertex<T>> getNeighbors(Vertex<T> vertex);
 
     /**
      * из файла.
@@ -44,5 +45,10 @@ interface Graph<T> {
     /**
      * вершина1.
      */
-    String HeadV();
+    Vertex<T> HeadV();
+
+    /**
+     * все вершины.
+     */
+    ArrayList<Vertex<T>> getAllVertices();
 }

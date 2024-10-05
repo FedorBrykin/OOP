@@ -1,169 +1,102 @@
 package ru.nsu.brykin;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
-/**
- * матрица смежности.
- */
-public class AdjacencyMatrixGraph implements Graph<Vertex> {
-    Map<Vertex, Integer> vertexIndexMap;
-    private Vertex[] vertices;
-    private boolean[][] adjMatrix;
-    private int vertexCount;
-    private String headVertex = "";
+public class AdjacencyMatrixGraph<T> implements Graph<T> {
+    private final List<Vertex<T>> vertices = new ArrayList<>();
+    private final boolean[][] adjacencyMatrix;
 
-    /**
-     * матрица смежности.
-     */
-    public AdjacencyMatrixGraph(int capacity) {
-        vertexIndexMap = new HashMap<>();
-        vertices = new Vertex[capacity];
-        adjMatrix = new boolean[capacity][capacity];
-        vertexCount = 0;
+    public AdjacencyMatrixGraph(int size) {
+        adjacencyMatrix = new boolean[size][size];
     }
 
-    /**
-     * вершина+.
-     */
     @Override
-    public void addVertex(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
-        if (!vertexIndexMap.containsKey(vertex)) {
-            if (vertexCount == 0) {
-                headVertex = String.valueOf(vertex);
+    public void addVertex(Vertex<T> vertex) {
+        if (!vertices.contains(vertex)) {
+            vertices.add(vertex);
+        }
+    }
+
+    @Override
+    public void removeVertex(Vertex<T> vertex) {
+        int index = vertices.indexOf(vertex);
+        if (index >= 0) {
+            vertices.remove(index);
+            for (int i = 0; i < vertices.size(); i++) {
+                adjacencyMatrix[index][i] = false;
+                adjacencyMatrix[i][index] = false;
             }
-            vertexIndexMap.put(vertex, vertexCount);
-            vertices[vertexCount++] = vertex;
         }
     }
 
-    /**
-     * вершина-.
-     */
     @Override
-    public void removeVertex(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
-        if (vertexIndexMap.containsKey(vertex)) {
-            if (vertexCount == 1) {
-                headVertex = "";
-            }
-            int index = vertexIndexMap.remove(vertex);
-            for (int i = 0; i < vertexCount; i++) {
-                adjMatrix[i][index] = false; // Удаление всех рёбер
-                adjMatrix[index][i] = false;
-            }
-            vertices[index] = null; // Удаляем вершину из массива
+    public void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
+        int fromIndex = vertices.indexOf(fromVertex);
+        int toIndex = vertices.indexOf(toVertex);
+        if (fromIndex >= 0 && toIndex >= 0) {
+            adjacencyMatrix[fromIndex][toIndex] = true;
         }
     }
 
-    /**
-     * ребро+.
-     */
     @Override
-    public void addEdge(String fromVertexName, String toVertexName) {
-        Vertex fromVertex = new Vertex(fromVertexName);
-        Vertex toVertex = new Vertex(toVertexName);
-        if (vertexIndexMap.containsKey(fromVertex) && vertexIndexMap.containsKey(toVertex)) {
-            int fromIndex = vertexIndexMap.get(fromVertex);
-            int toIndex = vertexIndexMap.get(toVertex);
-            adjMatrix[fromIndex][toIndex] = true;
+    public void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
+        int fromIndex = vertices.indexOf(fromVertex);
+        int toIndex = vertices.indexOf(toVertex);
+        if (fromIndex >= 0 && toIndex >= 0) {
+            adjacencyMatrix[fromIndex][toIndex] = false;
         }
     }
 
-    /**
-     * ребро-.
-     */
     @Override
-    public void removeEdge(String fromVertexName, String toVertexName) {
-        Vertex fromVertex = new Vertex(fromVertexName);
-        Vertex toVertex = new Vertex(toVertexName);
-        if (vertexIndexMap.containsKey(fromVertex) && vertexIndexMap.containsKey(toVertex)) {
-            int fromIndex = vertexIndexMap.get(fromVertex);
-            int toIndex = vertexIndexMap.get(toVertex);
-            adjMatrix[fromIndex][toIndex] = false;
-        }
-    }
-
-    /**
-     * соседи.
-     */
-    @Override
-    public List<String> getNeighbors(String vertexName) {
-        List<String> neighbors = new ArrayList<>();
-        Vertex vertex = new Vertex(vertexName);
-        if (vertexIndexMap.containsKey(vertex)) {
-            int index = vertexIndexMap.get(vertex);
-            for (int i = 0; i < vertexCount; i++) {
-                if (adjMatrix[index][i]) {
-                    neighbors.add(vertices[i].getName());
+    public List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
+        List<Vertex<T>> neighbors = new ArrayList<>();
+        int index = vertices.indexOf(vertex);
+        if (index >= 0) {
+            for (int i = 0; i < vertices.size(); i++) {
+                if (adjacencyMatrix[index][i]) {
+                    neighbors.add(vertices.get(i));
                 }
             }
         }
         return neighbors;
     }
 
-    /**
-     * чтение из файла.
-     */
     @Override
     public void readFromFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(" ");
-                addVertex(parts[0]);
-                addVertex(parts[1]);
-                addEdge(parts[0], parts[1]);
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            int vertexCount = Integer.parseInt(scanner.nextLine());
+            for (int i = 0; i < vertexCount; i++) {
+                addVertex((Vertex<T>) new Vertex<>(i));
             }
-        } catch (IOException e) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(" ");
+                if (parts.length == 2) {
+                    Vertex<T> from = (Vertex<T>) new Vertex<>(parts[0]);
+                    Vertex<T> to = (Vertex<T>) new Vertex<>(parts[1]);
+                    addEdge(from, to);
+                }
+            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * toString.
-     */
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Vertices: ");
-        for (int i = 0; i < vertexCount; i++) {
-            if (vertices[i] != null) {
-                sb.append(vertices[i]).append(" ");
-            }
-        }
-        sb.append("\nAdjacency Matrix:\n");
-        for (int i = 0; i < vertexCount; i++) {
-            if (vertices[i] != null) {
-                for (int j = 0; j < vertexCount; j++) {
-                    if (vertices[j] != null) {
-                        sb.append(adjMatrix[i][j] ? 1 : 0).append(" ");
-                    }
-                }
-                sb.append("\n");
-            }
-        }
-        return sb.toString();
+        return Arrays.deepToString(adjacencyMatrix);
     }
 
-    /**
-     * все вершины.
-     */
-    public ArrayList<Vertex> getAllVertices() {
-        return new ArrayList<>(List.of(vertices));
+    @Override
+    public Vertex<T> HeadV() {
+        return vertices.isEmpty() ? null : vertices.get(0);
     }
 
-    /**
-     * первая вершина.
-     */
-    public String HeadV() {
-        return headVertex;
+    @Override
+    public ArrayList<Vertex<T>> getAllVertices() {
+        return new ArrayList<>(vertices);
     }
 }
-

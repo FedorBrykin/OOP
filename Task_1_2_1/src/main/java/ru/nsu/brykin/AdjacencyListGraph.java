@@ -1,129 +1,78 @@
 package ru.nsu.brykin;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
-/**
- * список смежности.
- */
-public class AdjacencyListGraph implements Graph<Vertex> {
-    private Map<Vertex, List<Vertex>> adjList;
-    private String headVertex = "";
+public class AdjacencyListGraph<T> implements Graph<T> {
+    private final Map<Vertex<T>, List<Vertex<T>>> adjList = new HashMap<>();
 
-    /**
-     * список смежности.
-     */
-    public AdjacencyListGraph() {
-        adjList = new HashMap<>();
+    @Override
+    public void addVertex(Vertex<T> vertex) {
+        adjList.putIfAbsent(vertex, new ArrayList<>());
     }
 
-    /**
-     * добавление вершины.
-     */
     @Override
-    public void addVertex(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
-        if (!adjList.containsKey(vertex)) {
-            if (adjList.isEmpty()) {
-                headVertex = String.valueOf(vertex);
-            }
-            adjList.put(vertex, new ArrayList<>());
-        }
-    }
-
-    /**
-     * удаление вершины.
-     */
-    @Override
-    public void removeVertex(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
+    public void removeVertex(Vertex<T> vertex) {
         adjList.remove(vertex);
-        adjList.values().forEach(e -> e.remove(vertex));
-        if (adjList.isEmpty()) {
-            headVertex = "";
+        for (List<Vertex<T>> neighbors : adjList.values()) {
+            neighbors.remove(vertex);
         }
     }
 
-    /**
-     * добавление ребра.
-     */
     @Override
-    public void addEdge(String fromVertexName, String toVertexName) {
-        Vertex fromVertex = new Vertex(fromVertexName);
-        Vertex toVertex = new Vertex(toVertexName);
-        addVertex(fromVertexName);
-        addVertex(toVertexName);
+    public void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
+        addVertex(fromVertex);
+        addVertex(toVertex);
         adjList.get(fromVertex).add(toVertex);
     }
 
-    /**
-     * удаление ребра.
-     */
     @Override
-    public void removeEdge(String fromVertexName, String toVertexName) {
-        Vertex fromVertex = new Vertex(fromVertexName);
-        Vertex toVertex = new Vertex(toVertexName);
-        if (adjList.containsKey(fromVertex)) {
-            adjList.get(fromVertex).remove(toVertex);
+    public void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
+        List<Vertex<T>> neighbors = adjList.get(fromVertex);
+        if (neighbors != null) {
+            neighbors.remove(toVertex);
         }
     }
 
-    /**
-     * соседи.
-     */
     @Override
-    public List<String> getNeighbors(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
-        List<Vertex> neighbors = adjList.getOrDefault(vertex, new ArrayList<>());
-        List<String> neighborNames = new ArrayList<>();
-        for (Vertex neighbor : neighbors) {
-            neighborNames.add(neighbor.getName());
-        }
-        return neighborNames;
+    public List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
+        return adjList.getOrDefault(vertex, new ArrayList<>());
     }
 
-    /**
-     * чтение из файла.
-     */
     @Override
     public void readFromFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(" ");
-                addVertex(parts[0]);
-                addVertex(parts[1]);
-                addEdge(parts[0], parts[1]);
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            int vertexCount = Integer.parseInt(scanner.nextLine());
+            for (int i = 0; i < vertexCount; i++) {
+                addVertex((Vertex<T>) new Vertex<>(i));
             }
-        } catch (IOException e) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(" ");
+                if (parts.length == 2) {
+                    Vertex<T> from = (Vertex<T>) new Vertex<>(parts[0]);
+                    Vertex<T> to = (Vertex<T>) new Vertex<>(parts[1]);
+                    addEdge(from, to);
+                }
+            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * toString.
-     */
     @Override
     public String toString() {
         return adjList.toString();
     }
 
-    /**
-     * все вершины.
-     */
-    public ArrayList<Vertex> getAllVertices() {
-        return new ArrayList<>(adjList.keySet());
+    @Override
+    public Vertex<T> HeadV() {
+        return adjList.keySet().iterator().next();
     }
 
-    /**
-     * первая вершина.
-     */
-    public String HeadV() {
-        return headVertex;
+    @Override
+    public ArrayList<Vertex<T>> getAllVertices() {
+        return new ArrayList<>(adjList.keySet());
     }
 }

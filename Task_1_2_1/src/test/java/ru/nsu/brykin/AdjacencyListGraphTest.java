@@ -10,77 +10,103 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 class AdjacencyListGraphTest {
-    private AdjacencyListGraph graph;
+    private AdjacencyListGraph<String> graph;
 
     @BeforeEach
     void setUp() {
-        graph = new AdjacencyListGraph();
+        graph = new AdjacencyListGraph<>();
     }
 
     @Test
     void testAddVertex() {
-        graph.addVertex("A");
-        assertTrue(graph.getNeighbors("A").isEmpty());
-        graph.addVertex("A");
-        assertTrue(graph.getNeighbors("A").isEmpty());
+        Vertex<String> vertexA = new Vertex<>("A");
+        graph.addVertex(vertexA);
+
+        assertEquals(1, graph.getAllVertices().size());
+        assertTrue(graph.getAllVertices().contains(vertexA));
     }
 
     @Test
     void testRemoveVertex() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
+        Vertex<String> vertexA = new Vertex<>("A");
+        graph.addVertex(vertexA);
+        graph.removeVertex(vertexA);
 
-        graph.removeVertex("A");
-        assertFalse(graph.getNeighbors("B").contains("A"));
-        assertTrue(graph.getNeighbors("B").isEmpty());
-        assertTrue(graph.getNeighbors("A").isEmpty());
+        assertEquals(0, graph.getAllVertices().size());
+        assertFalse(graph.getAllVertices().contains(vertexA));
     }
 
     @Test
     void testAddEdge() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
+        Vertex<String> vertexA = new Vertex<>("A");
+        Vertex<String> vertexB = new Vertex<>("B");
+        graph.addEdge(vertexA, vertexB);
 
-        List<String> neighborsOfA = graph.getNeighbors("A");
-        assertEquals(1, neighborsOfA.size());
-        assertTrue(neighborsOfA.contains("B"));
+        List<Vertex<String>> neighbors = graph.getNeighbors(vertexA);
+        assertEquals(1, neighbors.size());
+        assertTrue(neighbors.contains(vertexB));
     }
 
     @Test
     void testRemoveEdge() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
-        graph.removeEdge("A", "B");
+        Vertex<String> vertexA = new Vertex<>("A");
+        Vertex<String> vertexB = new Vertex<>("B");
+        graph.addEdge(vertexA, vertexB);
+        graph.removeEdge(vertexA, vertexB);
 
-        assertFalse(graph.getNeighbors("A").contains("B"));
+        List<Vertex<String>> neighbors = graph.getNeighbors(vertexA);
+        assertEquals(0, neighbors.size());
     }
 
     @Test
     void testGetNeighbors() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
+        Vertex<String> vertexA = new Vertex<>("A");
+        Vertex<String> vertexB = new Vertex<>("B");
+        Vertex<String> vertexC = new Vertex<>("C");
 
-        List<String> neighbors = graph.getNeighbors("A");
-        assertEquals(1, neighbors.size());
-        assertTrue(neighbors.contains("B"));
+        graph.addEdge(vertexA, vertexB);
+        graph.addEdge(vertexA, vertexC);
 
-        neighbors = graph.getNeighbors("B");
-        assertTrue(neighbors.isEmpty());
+        List<Vertex<String>> neighbors = graph.getNeighbors(vertexA);
+        assertEquals(2, neighbors.size());
+        assertTrue(neighbors.contains(vertexB));
+        assertTrue(neighbors.contains(vertexC));
     }
 
     @Test
     void testToString() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
+        Vertex<String> vertexA = new Vertex<>("A");
+        Vertex<String> vertexB = new Vertex<>("B");
 
-        String graphString = graph.toString();
-        assertTrue(graphString.contains("A"));
-        assertTrue(graphString.contains("B"));
-        assertTrue(graphString.contains("A=[B]"));
+        graph.addVertex(vertexA);
+        graph.addVertex(vertexB);
+        graph.addEdge(vertexA, vertexB);
+
+        String expectedString = "{A=[B], B=[]}";
+        assertEquals(expectedString, graph.toString());
+    }
+
+    @Test
+    void testGetAllVertices() {
+        Vertex<String> vertexA = new Vertex<>("A");
+        Vertex<String> vertexB = new Vertex<>("B");
+
+        graph.addVertex(vertexA);
+        graph.addVertex(vertexB);
+
+        List<Vertex<String>> vertices = graph.getAllVertices();
+        assertEquals(2, vertices.size());
+        assertTrue(vertices.contains(vertexA));
+        assertTrue(vertices.contains(vertexB));
+    }
+
+    @Test
+    void testHeadV() {
+        Vertex<String> vertexA = new Vertex<>("A");
+
+        graph.addVertex(vertexA);
+
+        assertEquals(vertexA, graph.HeadV());
     }
 }
+

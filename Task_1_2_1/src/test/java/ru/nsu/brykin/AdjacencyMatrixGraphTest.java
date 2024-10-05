@@ -1,7 +1,9 @@
 package ru.nsu.brykin;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,56 +11,121 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 class AdjacencyMatrixGraphTest {
-    private AdjacencyMatrixGraph graph;
+    private AdjacencyMatrixGraph<String> graph;
 
     @BeforeEach
     void setUp() {
-        graph = new AdjacencyMatrixGraph(5);
+        graph = new AdjacencyMatrixGraph<>(3);
     }
 
     @Test
     void testAddVertex() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        assertTrue(graph.toString().contains("A"));
-        assertTrue(graph.toString().contains("B"));
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+
+        assertEquals(2, graph.getAllVertices().size());
+        assertTrue(graph.getAllVertices().contains(vertex1));
+        assertTrue(graph.getAllVertices().contains(vertex2));
     }
 
     @Test
     void testRemoveVertex() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.removeVertex("A");
-        assertFalse(graph.vertexIndexMap.containsKey("A"));
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.removeVertex(vertex1);
+
+        assertEquals(1, graph.getAllVertices().size());
+        assertFalse(graph.getAllVertices().contains(vertex1));
     }
 
     @Test
     void testAddEdge() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
-        assertTrue(graph.getNeighbors("A").contains("B"));
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addEdge(vertex1, vertex2);
+
+        List<Vertex<String>> neighbors = graph.getNeighbors(vertex1);
+        assertEquals(1, neighbors.size());
+        assertTrue(neighbors.contains(vertex2));
     }
 
     @Test
     void testRemoveEdge() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addEdge("A", "B");
-        graph.removeEdge("A", "B");
-        assertFalse(graph.getNeighbors("A").contains("B"));
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addEdge(vertex1, vertex2);
+        graph.removeEdge(vertex1, vertex2);
+
+        List<Vertex<String>> neighbors = graph.getNeighbors(vertex1);
+        assertEquals(0, neighbors.size());
     }
 
     @Test
     void testGetNeighbors() {
-        graph.addVertex("A");
-        graph.addVertex("B");
-        graph.addVertex("C");
-        graph.addEdge("A", "B");
-        graph.addEdge("A", "C");
-        List<String> neighbors = graph.getNeighbors("A");
-        assertTrue(neighbors.contains("B"));
-        assertTrue(neighbors.contains("C"));
-        assertFalse(neighbors.contains("A"));
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+        Vertex<String> vertex3 = new Vertex<>("C");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addVertex(vertex3);
+
+        graph.addEdge(vertex1, vertex2);
+        graph.addEdge(vertex1, vertex3);
+
+        List<Vertex<String>> neighbors = graph.getNeighbors(vertex1);
+        assertEquals(2, neighbors.size());
+        assertTrue(neighbors.contains(vertex2));
+        assertTrue(neighbors.contains(vertex3));
+    }
+
+    @Test
+    void testToString() {
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+        graph.addEdge(vertex1, vertex2);
+        String expectedString = "[[false, true, false], [false, false, false], " +
+                "[false, false, false]]";
+        assertEquals(expectedString, graph.toString());
+    }
+
+    @Test
+    void testHeadV() {
+        assertNull(graph.HeadV()); // Граф пустой
+
+        Vertex<String> vertex1 = new Vertex<>("A");
+        graph.addVertex(vertex1);
+
+        assertEquals(vertex1, graph.HeadV()); // Проверяем, что возвращается первая вершина
+    }
+
+    @Test
+    void testGetAllVertices() {
+        Vertex<String> vertex1 = new Vertex<>("A");
+        Vertex<String> vertex2 = new Vertex<>("B");
+
+        graph.addVertex(vertex1);
+        graph.addVertex(vertex2);
+
+        List<Vertex<String>> vertices = graph.getAllVertices();
+
+        assertEquals(2, vertices.size());
+        assertTrue(vertices.contains(vertex1));
+        assertTrue(vertices.contains(vertex2));
     }
 }

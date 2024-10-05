@@ -1,193 +1,90 @@
 package ru.nsu.brykin;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
-/**
- * матрица инцидентности.
- */
-public class IncidenceMatrixGraph implements Graph {
-    private List<Vertex> vertices;
-    private Map<Vertex, Integer> vertexIndex;
-    private int[][] incidenceMatrix;
-    private int edgeCount;
-    private String headVertex = "";
+public class IncidenceMatrixGraph<T> implements Graph<T> {
+    private final List<Vertex<T>> vertices = new ArrayList<>();
+    private final List<Edge<T>> edges = new ArrayList<>();
 
-    /**
-     * матрица инцидентности.
-     */
-    public IncidenceMatrixGraph() {
-        vertices = new ArrayList<>();
-        vertexIndex = new HashMap<>();
-        incidenceMatrix = new int[0][0];
-        edgeCount = 0;
-    }
+    public IncidenceMatrixGraph() {}
 
-    /**
-     * вершина+.
-     */
     @Override
-    public void addVertex(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
-        if (!vertexIndex.containsKey(vertex)) {
-            if (vertices.isEmpty()) {//                 ПРОВЕРИТЬ
-                headVertex = String.valueOf(vertex);
-            }
+    public void addVertex(Vertex<T> vertex) {
+        if (!vertices.contains(vertex)) {
             vertices.add(vertex);
-            vertexIndex.put(vertex, vertices.size() - 1);
-            int[][] newMatrix = new int[vertices.size()][edgeCount];
-            for (int i = 0; i < incidenceMatrix.length; i++) {
-                System.arraycopy(incidenceMatrix[i], 0, newMatrix[i], 0, incidenceMatrix[i].length);
-            }
-            incidenceMatrix = newMatrix;
         }
     }
 
-    /**
-     * вершина-.
-     */
     @Override
-    public void removeVertex(String vertexName) {
-        Vertex vertex = new Vertex(vertexName);
-        if (vertexIndex.containsKey(vertex)) {
-            int index = vertexIndex.remove(vertex);
+    public void removeVertex(Vertex<T> vertex) {
+        int index = vertices.indexOf(vertex);
+        if (index >= 0) {
             vertices.remove(index);
-            if (vertices.isEmpty()) {//                 ПРОВЕРИТЬ
-                headVertex = String.valueOf(vertex);
-            }
-            for (int i = index; i < vertices.size(); i++) {
-                vertexIndex.put(vertices.get(i), i);
-            }
-            int[][] newMatrix = new int[vertices.size()][edgeCount];
-            for (int i = 0; i < index; i++) {
-                newMatrix[i] = incidenceMatrix[i];
-            }
-            for (int i = index; i < vertices.size(); i++) {
-                newMatrix[i] = incidenceMatrix[i + 1];
-            }
-            incidenceMatrix = newMatrix;
+            edges.removeIf(edge -> edge.getFrom().equals(vertex) || edge.getTo().equals(vertex));
         }
     }
 
-    /**
-     * ребро+.
-     */
     @Override
-    public void addEdge(String fromVertexName, String toVertexName) {
-        Vertex fromVertex = new Vertex(fromVertexName);
-        Vertex toVertex = new Vertex(toVertexName);
-        addVertex(fromVertexName);
-        addVertex(toVertexName);
-        int fromIndex = vertexIndex.get(fromVertex);
-        int toIndex = vertexIndex.get(toVertex);
-        int[][] newMatrix = new int[vertices.size()][edgeCount + 1];
-        for (int i = 0; i < vertices.size(); i++) {
-            System.arraycopy(incidenceMatrix[i], 0, newMatrix[i], 0, incidenceMatrix[i].length);
-        }
-        newMatrix[fromIndex][edgeCount] = 1;
-        newMatrix[toIndex][edgeCount] = -1;
-        incidenceMatrix = newMatrix;
-        edgeCount++;
+    public void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
+        addVertex(fromVertex);
+        addVertex(toVertex);
+        edges.add(new Edge<>(fromVertex, toVertex));
     }
 
-    /**
-     * ребро-.
-     */
     @Override
-    public void removeEdge(String fromVertexName, String toVertexName) {
-        Vertex fromVertex = new Vertex(fromVertexName);
-        Vertex toVertex = new Vertex(toVertexName);
-        if (vertexIndex.containsKey(fromVertex) && vertexIndex.containsKey(toVertex)) {
-            int fromIdx = vertexIndex.get(fromVertex);
-            int toIdx = vertexIndex.get(toVertex);
-            for (int j = 0; j < edgeCount; j++) {
-                if (incidenceMatrix[fromIdx][j] == 1 && incidenceMatrix[toIdx][j] == -1) {
-                    for (int i = 0; i < vertices.size(); i++) {
-                        incidenceMatrix[i][j] = 0;
-                    }
-                    break;
-                }
-            }
-        }
+    public void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
+        edges.removeIf(edge -> edge.getFrom().equals(fromVertex) && edge.getTo().equals(toVertex));
     }
 
-
-    /**
-     * соседи.
-     */
     @Override
-    public List<String> getNeighbors(String vertexName) {
-        List<String> neighbors = new ArrayList<>();
-        Vertex vertex = new Vertex(vertexName);
-        if (vertexIndex.containsKey(vertex)) {
-            int vertexIdx = vertexIndex.get(vertex);
-            for (int i = 0; i < incidenceMatrix[vertexIdx].length; i++) {
-                if (incidenceMatrix[vertexIdx][i] == 1) {
-                    for (int j = 0; j < incidenceMatrix.length; j++) {
-                        if (incidenceMatrix[j][i] == -1) {
-                            neighbors.add(vertices.get(j).getName());
-                        }
-                    }
-                }
+    public List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
+        List<Vertex<T>> neighbors = new ArrayList<>();
+        for (Edge<T> edge : edges) {
+            if (edge.getFrom().equals(vertex)) {
+                neighbors.add(edge.getTo());
+            } else if (edge.getTo().equals(vertex)) {
+                neighbors.add(edge.getFrom());
             }
         }
         return neighbors;
     }
 
-    /**
-     * из файла.
-     */
     @Override
     public void readFromFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(" ");
-                addVertex(parts[0]);
-                addVertex(parts[1]);
-                addEdge(parts[0], parts[1]);
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            int vertexCount = Integer.parseInt(scanner.nextLine());
+            for (int i = 0; i < vertexCount; i++) {
+                addVertex((Vertex<T>) new Vertex<>(i));
             }
-        } catch (IOException e) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(" ");
+                if (parts.length == 2) {
+                    Vertex<T> from = (Vertex<T>) new Vertex<>(parts[0]);
+                    Vertex<T> to = (Vertex<T>) new Vertex<>(parts[1]);
+                    addEdge(from, to);
+                }
+            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * toString.
-     */
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Vertices: ");
-        for (Vertex v : vertices) {
-            sb.append(v.getName()).append(" ");
-        }
-        sb.append("\nIncidence Matrix:\n");
-        for (int i = 0; i < vertices.size(); i++) {
-            for (int j = 0; j < edgeCount; j++) {
-                sb.append(incidenceMatrix[i][j]).append(" ");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
+        return edges.toString();
     }
 
-    /**
-     * все вершины.
-     */
-    public ArrayList<Vertex> getAllVertices() {
+    @Override
+    public Vertex<T> HeadV() {
+        return vertices.isEmpty() ? null : vertices.get(0);
+    }
+
+    @Override
+    public ArrayList<Vertex<T>> getAllVertices() {
         return new ArrayList<>(vertices);
-    }
-
-    /**
-     * вершина1.
-     */
-    public String HeadV() {
-        return headVertex;
     }
 }

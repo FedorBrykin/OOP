@@ -1,50 +1,34 @@
 package ru.nsu.brykin;
 
-/**
- * вершины.
- */
-public class Vertex {
-    private String name;
+import java.util.Objects;
 
-    /**
-     * в.
-     */
-    public Vertex(String name) {
+public class Vertex<T> {
+    private final T name;
+
+    public Vertex(T name) {
         this.name = name;
     }
 
-    /**
-     * имя.
-     */
-    public String getName() {
+    public T getName() {
         return name;
     }
 
-    /**
-     * toString.
-     */
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    /**
-     * сравнение.
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Vertex)) return false;
-        Vertex other = (Vertex) obj;
-        return name.equals(other.name);
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Vertex<?> vertex = (Vertex<?>) obj;
+        return Objects.equals(name, vertex.name);
     }
 
-    /**
-     * hashCode.
-     */
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return name.toString();
     }
 }
 
