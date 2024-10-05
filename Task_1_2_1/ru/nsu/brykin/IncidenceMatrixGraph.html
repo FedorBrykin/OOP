@@ -115,14 +115,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <main role="main">
 <div class="header">
 <div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">ru.nsu.brykin</a></div>
-<h2 title="Class IncidenceMatrixGraph" class="title">Class IncidenceMatrixGraph</h2>
+<h2 title="Class IncidenceMatrixGraph" class="title">Class IncidenceMatrixGraph&lt;T&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>ru.nsu.brykin.IncidenceMatrixGraph</li>
+<li>ru.nsu.brykin.IncidenceMatrixGraph&lt;T&gt;</li>
 </ul>
 </li>
 </ul>
@@ -130,9 +130,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <hr>
-<pre>public class <span class="typeNameLabel">IncidenceMatrixGraph</span>
+<pre>public class <span class="typeNameLabel">IncidenceMatrixGraph&lt;T&gt;</span>
 extends java.lang.Object</pre>
-<div class="block">матрица инцидентности.</div>
 </li>
 </ul>
 </div>
@@ -154,9 +153,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">IncidenceMatrixGraph</a></span>()</code></th>
-<td class="colLast">
-<div class="block">матрица инцидентности.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -178,68 +175,50 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addEdge(java.lang.String,java.lang.String)">addEdge</a></span>&#8203;(java.lang.String&nbsp;fromVertexName,
-       java.lang.String&nbsp;toVertexName)</code></th>
-<td class="colLast">
-<div class="block">ребро+.</div>
-</td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addEdge(ru.nsu.brykin.Vertex,ru.nsu.brykin.Vertex)">addEdge</a></span>&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;fromVertex,
+       <a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;toVertex)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVertex(java.lang.String)">addVertex</a></span>&#8203;(java.lang.String&nbsp;vertexName)</code></th>
-<td class="colLast">
-<div class="block">вершина+.</div>
-</td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addVertex(ru.nsu.brykin.Vertex)">addVertex</a></span>&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;vertex)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.ArrayList&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.ArrayList&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllVertices()">getAllVertices</a></span>()</code></th>
-<td class="colLast">
-<div class="block">все вершины.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNeighbors(java.lang.String)">getNeighbors</a></span>&#8203;(java.lang.String&nbsp;vertexName)</code></th>
-<td class="colLast">
-<div class="block">соседи.</div>
-</td>
+<td class="colFirst"><code>java.util.List&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNeighbors(ru.nsu.brykin.Vertex)">getNeighbors</a></span>&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;vertex)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colFirst"><code><a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#HeadV()">HeadV</a></span>()</code></th>
-<td class="colLast">
-<div class="block">вершина1.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#readFromFile(java.lang.String)">readFromFile</a></span>&#8203;(java.lang.String&nbsp;fileName)</code></th>
-<td class="colLast">
-<div class="block">из файла.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEdge(java.lang.String,java.lang.String)">removeEdge</a></span>&#8203;(java.lang.String&nbsp;fromVertexName,
-          java.lang.String&nbsp;toVertexName)</code></th>
-<td class="colLast">
-<div class="block">ребро-.</div>
-</td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEdge(ru.nsu.brykin.Vertex,ru.nsu.brykin.Vertex)">removeEdge</a></span>&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;fromVertex,
+          <a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;toVertex)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeVertex(java.lang.String)">removeVertex</a></span>&#8203;(java.lang.String&nbsp;vertexName)</code></th>
-<td class="colLast">
-<div class="block">вершина-.</div>
-</td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeVertex(ru.nsu.brykin.Vertex)">removeVertex</a></span>&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;vertex)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">toString.</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -272,7 +251,6 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>IncidenceMatrixGraph</h4>
 <pre>public&nbsp;IncidenceMatrixGraph()</pre>
-<div class="block">матрица инцидентности.</div>
 </li>
 </ul>
 </li>
@@ -285,56 +263,51 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="addVertex(java.lang.String)">
+<a id="addVertex(ru.nsu.brykin.Vertex)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addVertex</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addVertex&#8203;(java.lang.String&nbsp;vertexName)</pre>
-<div class="block">вершина+.</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;addVertex&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;vertex)</pre>
 </li>
 </ul>
-<a id="removeVertex(java.lang.String)">
+<a id="removeVertex(ru.nsu.brykin.Vertex)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeVertex</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;removeVertex&#8203;(java.lang.String&nbsp;vertexName)</pre>
-<div class="block">вершина-.</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;removeVertex&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;vertex)</pre>
 </li>
 </ul>
-<a id="addEdge(java.lang.String,java.lang.String)">
+<a id="addEdge(ru.nsu.brykin.Vertex,ru.nsu.brykin.Vertex)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addEdge</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addEdge&#8203;(java.lang.String&nbsp;fromVertexName,
-                    java.lang.String&nbsp;toVertexName)</pre>
-<div class="block">ребро+.</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;addEdge&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;fromVertex,
+                    <a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;toVertex)</pre>
 </li>
 </ul>
-<a id="removeEdge(java.lang.String,java.lang.String)">
+<a id="removeEdge(ru.nsu.brykin.Vertex,ru.nsu.brykin.Vertex)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeEdge</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;removeEdge&#8203;(java.lang.String&nbsp;fromVertexName,
-                       java.lang.String&nbsp;toVertexName)</pre>
-<div class="block">ребро-.</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;removeEdge&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;fromVertex,
+                       <a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;toVertex)</pre>
 </li>
 </ul>
-<a id="getNeighbors(java.lang.String)">
+<a id="getNeighbors(ru.nsu.brykin.Vertex)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getNeighbors</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getNeighbors&#8203;(java.lang.String&nbsp;vertexName)</pre>
-<div class="block">соседи.</div>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&gt;&nbsp;getNeighbors&#8203;(<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;vertex)</pre>
 </li>
 </ul>
 <a id="readFromFile(java.lang.String)">
@@ -344,7 +317,6 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>readFromFile</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;readFromFile&#8203;(java.lang.String&nbsp;fileName)</pre>
-<div class="block">из файла.</div>
 </li>
 </ul>
 <a id="toString()">
@@ -354,31 +326,28 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">toString.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 </dl>
 </li>
 </ul>
-<a id="getAllVertices()">
+<a id="HeadV()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getAllVertices</h4>
-<pre class="methodSignature">public&nbsp;java.util.ArrayList&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&gt;&nbsp;getAllVertices()</pre>
-<div class="block">все вершины.</div>
+<h4>HeadV</h4>
+<pre class="methodSignature">public&nbsp;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&nbsp;HeadV()</pre>
 </li>
 </ul>
-<a id="HeadV()">
+<a id="getAllVertices()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>HeadV</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;HeadV()</pre>
-<div class="block">вершина1.</div>
+<h4>getAllVertices</h4>
+<pre class="methodSignature">public&nbsp;java.util.ArrayList&lt;<a href="Vertex.html" title="class in ru.nsu.brykin">Vertex</a>&lt;<a href="IncidenceMatrixGraph.html" title="type parameter in IncidenceMatrixGraph">T</a>&gt;&gt;&nbsp;getAllVertices()</pre>
 </li>
 </ul>
 </li>
