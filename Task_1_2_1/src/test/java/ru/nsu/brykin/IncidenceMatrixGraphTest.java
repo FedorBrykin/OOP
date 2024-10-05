@@ -1,14 +1,16 @@
 package ru.nsu.brykin;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class IncidenceMatrixGraphTest {
     private IncidenceMatrixGraph<String> graph;
@@ -114,5 +116,78 @@ class IncidenceMatrixGraphTest {
         assertEquals(2, vertices.size());
         assertTrue(vertices.contains(vertex1));
         assertTrue(vertices.contains(vertex2));
+    }
+}
+
+class IncidenceMatrixGraphTest2 {
+    private IncidenceMatrixGraph<String> graph;
+    private final String testFilePath = "testGraph.txt";
+
+    @BeforeEach
+    void setUp() {
+        graph = new IncidenceMatrixGraph<>();
+    }
+
+    @AfterEach
+    void tearDown() {
+        File file = new File(testFilePath);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    @Test
+    void testReadFromFile_ValidInput() throws IOException {
+        // Создаем тестовый файл с корректными данными
+        try (FileWriter writer = new FileWriter(testFilePath)) {
+            writer.write("3\n"); // Количество вершин
+            writer.write("0 1\n");
+            writer.write("1 2\n");
+            writer.write("2 0\n");
+        }
+        assertDoesNotThrow(() -> graph.readFromFile(testFilePath));
+        Vertex<String> v0 = new Vertex<>("0");
+        Vertex<String> v1 = new Vertex<>("1");
+        Vertex<String> v2 = new Vertex<>("2");
+
+        List<Vertex<String>> neighborsOfV0 = graph.getNeighbors(v0);
+        List<Vertex<String>> neighborsOfV1 = graph.getNeighbors(v1);
+        List<Vertex<String>> neighborsOfV2 = graph.getNeighbors(v2);
+
+        assertTrue(neighborsOfV0.contains(v1));
+        assertTrue(neighborsOfV0.contains(v2));
+        assertTrue(neighborsOfV1.contains(v0));
+        assertTrue(neighborsOfV1.contains(v2));
+        assertTrue(neighborsOfV2.contains(v0));
+        assertTrue(neighborsOfV2.contains(v1));
+    }
+
+    @Test
+    void testReadFromFile_InvalidVertexCount() throws IOException {
+        // Создаем файл с некорректным количеством вершин
+        try (FileWriter writer = new FileWriter(testFilePath)) {
+            writer.write("invalid_number\n");
+        }
+
+        // Проверяем, что при чтении выбрасывается исключение
+        assertThrows(NumberFormatException.class, () -> graph.readFromFile(testFilePath));
+    }
+
+    @Test
+    void testReadFromFile_InvalidEdgeFormat() throws IOException {
+        // Создаем файл с некорректным форматом рёбер
+        try (FileWriter writer = new FileWriter(testFilePath)) {
+            writer.write("2\n");
+            writer.write("0 1\n");
+            writer.write("invalid_edge_format\n");
+        }
+        assertDoesNotThrow(() -> graph.readFromFile(testFilePath));
+        assertEquals(1, graph.getNeighbors(new Vertex<>("0")).size());
+    }
+
+    @Test
+    void testReadFromFile_NonExistentFile() {
+        // Проверяем, что при чтении несуществующего файла выбрасывается исключение
+        assertThrows(FileNotFoundException.class, () -> graph.readFromFile("non_existent_file.txt"));
     }
 }
