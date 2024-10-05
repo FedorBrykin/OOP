@@ -2,7 +2,9 @@ package ru.nsu.brykin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class IncidenceMatrixGraph<T> implements Graph<T> {
     private final List<Vertex<T>> vertices = new ArrayList<>();
@@ -52,26 +54,22 @@ public class IncidenceMatrixGraph<T> implements Graph<T> {
     }
 
     @Override
-    public void readFromFile(String fileName) {
-        try (Scanner scanner = new Scanner(new File(fileName))) {
-            int vertexCount = Integer.parseInt(scanner.nextLine());
-            for (int i = 0; i < vertexCount; i++) {
-                addVertex((Vertex<T>) new Vertex<>(i));
+    public void readFromFile(String fileName) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(fileName));
+        int vertexCount = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < vertexCount; i++) {
+            addVertex((Vertex<T>) new Vertex<>(i));
+        }
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] parts = line.split(" ");
+            if (parts.length == 2) {
+                Vertex<T> from = (Vertex<T>) new Vertex<>(parts[0]);
+                Vertex<T> to = (Vertex<T>) new Vertex<>(parts[1]);
+                addEdge(from, to);
             }
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(" ");
-                if (parts.length == 2) {
-                    Vertex<T> from = (Vertex<T>) new Vertex<>(parts[0]);
-                    Vertex<T> to = (Vertex<T>) new Vertex<>(parts[1]);
-                    addEdge(from, to);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
-
 
     @Override
     public String toString() {

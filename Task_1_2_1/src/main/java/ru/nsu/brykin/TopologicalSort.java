@@ -1,9 +1,13 @@
 package ru.nsu.brykin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class TopologicalSort<T> {
-
     public List<Vertex<T>> sort(Graph<T> graph) {
         List<Vertex<T>> sortedList = new ArrayList<>();
         Map<Vertex<T>, Integer> inDegreeMap = new HashMap<>();

@@ -1,5 +1,6 @@
 package ru.nsu.brykin;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ interface Graph<T> {
     /**
      * из файла.
      */
-    void readFromFile(String fileName);
+    void readFromFile(String fileName) throws FileNotFoundException;
 
     /**
      * toString.
