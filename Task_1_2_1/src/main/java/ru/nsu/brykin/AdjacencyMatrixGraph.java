@@ -7,15 +7,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-
+/**
+ * матрица смежности.
+ */
 public class AdjacencyMatrixGraph<T> implements Graph<T> {
     private final List<Vertex<T>> vertices = new ArrayList<>();
     private final boolean[][] adjacencyMatrix;
 
+    /**
+     * матрица смежности.
+     */
     public AdjacencyMatrixGraph(int size) {
         adjacencyMatrix = new boolean[size][size];
     }
 
+    /**
+     * вершина+.
+     */
     @Override
     public void addVertex(Vertex<T> vertex) {
         if (!vertices.contains(vertex)) {
@@ -23,6 +31,9 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * вершина-.
+     */
     @Override
     public void removeVertex(Vertex<T> vertex) {
         int index = vertices.indexOf(vertex);
@@ -35,6 +46,9 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * ребро+.
+     */
     @Override
     public void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
         int fromIndex = vertices.indexOf(fromVertex);
@@ -44,6 +58,9 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * ребро-.
+     */
     @Override
     public void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
         int fromIndex = vertices.indexOf(fromVertex);
@@ -53,6 +70,9 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * соседи.
+     */
     @Override
     public List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
         List<Vertex<T>> neighbors = new ArrayList<>();
@@ -67,6 +87,9 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
         return neighbors;
     }
 
+    /**
+     * из файла.
+     */
     @Override
     public void readFromFile(String fileName) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(fileName));
@@ -86,16 +109,25 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
     }
 
 
+    /**
+     * toString.
+     */
     @Override
     public String toString() {
         return Arrays.deepToString(adjacencyMatrix);
     }
 
+    /**
+     * вершина1.
+     */
     @Override
     public Vertex<T> HeadV() {
         return vertices.isEmpty() ? null : vertices.get(0);
     }
 
+    /**
+     * все вершины.
+     */
     @Override
     public ArrayList<Vertex<T>> getAllVertices() {
         return new ArrayList<>(vertices);

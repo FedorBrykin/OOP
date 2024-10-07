@@ -6,12 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * матрица инцидентности.
+ */
 public class IncidenceMatrixGraph<T> implements Graph<T> {
     private final List<Vertex<T>> vertices = new ArrayList<>();
     private final List<Edge<T>> edges = new ArrayList<>();
 
+    /**
+     * матрица инцидентности.
+     */
     public IncidenceMatrixGraph() {}
 
+    /**
+     * вершина+.
+     */
     @Override
     public void addVertex(Vertex<T> vertex) {
         if (!vertices.contains(vertex)) {
@@ -19,6 +28,9 @@ public class IncidenceMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * вершина-.
+     */
     @Override
     public void removeVertex(Vertex<T> vertex) {
         int index = vertices.indexOf(vertex);
@@ -28,6 +40,9 @@ public class IncidenceMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * ребро+.
+     */
     @Override
     public void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
         addVertex(fromVertex);
@@ -35,11 +50,17 @@ public class IncidenceMatrixGraph<T> implements Graph<T> {
         edges.add(new Edge<>(fromVertex, toVertex));
     }
 
+    /**
+     * ребро-.
+     */
     @Override
     public void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
         edges.removeIf(edge -> edge.getFrom().equals(fromVertex) && edge.getTo().equals(toVertex));
     }
 
+    /**
+     * соседи.
+     */
     @Override
     public List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
         List<Vertex<T>> neighbors = new ArrayList<>();
@@ -53,6 +74,9 @@ public class IncidenceMatrixGraph<T> implements Graph<T> {
         return neighbors;
     }
 
+    /**
+     * из файла.
+     */
     @Override
     public void readFromFile(String fileName) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(fileName));
@@ -71,16 +95,25 @@ public class IncidenceMatrixGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * toString.
+     */
     @Override
     public String toString() {
         return edges.toString();
     }
 
+    /**
+     * вершина1.
+     */
     @Override
     public Vertex<T> HeadV() {
         return vertices.isEmpty() ? null : vertices.get(0);
     }
 
+    /**
+     * все вершины.
+     */
     @Override
     public ArrayList<Vertex<T>> getAllVertices() {
         return new ArrayList<>(vertices);

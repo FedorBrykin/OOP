@@ -20,7 +20,7 @@ class AdjacencyMatrixGraphSortTest {
 
     @BeforeEach
     void setUp() {
-        graph = new AdjacencyMatrixGraph<>(5); // Предположим, что максимальный размер графа 5
+        graph = new AdjacencyMatrixGraph<>(5);
     }
 
     @AfterEach
@@ -33,9 +33,8 @@ class AdjacencyMatrixGraphSortTest {
 
     @Test
     void testReadFromFile_ValidInput() throws IOException {
-        // Создаем тестовый файл
         try (FileWriter writer = new FileWriter(testFilePath)) {
-            writer.write("3\n"); // Количество вершин
+            writer.write("3\n");
             writer.write("0 1\n");
             writer.write("1 2\n");
             writer.write("2 0\n");
@@ -46,12 +45,9 @@ class AdjacencyMatrixGraphSortTest {
 
     @Test
     void testReadFromFile_InvalidVertexCount() throws IOException {
-        // Создаем файл с некорректным количеством вершин
         try (FileWriter writer = new FileWriter(testFilePath)) {
             writer.write("invalid_number\n");
         }
-
-        // Проверяем, что при чтении выбрасывается исключение
         assertThrows(NumberFormatException.class, () -> graph.readFromFile(testFilePath));
     }
 
@@ -68,7 +64,6 @@ class AdjacencyMatrixGraphSortTest {
 
     @Test
     void testReadFromFile_NonExistentFile() {
-        // Проверяем, что при чтении несуществующего файла выбрасывается исключение
         assertThrows(FileNotFoundException.class, () -> graph.readFromFile("non_existent_file.txt"));
     }
 }

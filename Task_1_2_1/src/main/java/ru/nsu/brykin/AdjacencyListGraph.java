@@ -8,15 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-
+/**
+ * список смежности.
+ */
 public class AdjacencyListGraph<T> implements Graph<T> {
     private final Map<Vertex<T>, List<Vertex<T>>> adjList = new HashMap<>();
 
+    /**
+     * вершина+.
+     */
     @Override
     public void addVertex(Vertex<T> vertex) {
         adjList.putIfAbsent(vertex, new ArrayList<>());
     }
 
+    /**
+     * вершина-.
+     */
     @Override
     public void removeVertex(Vertex<T> vertex) {
         adjList.remove(vertex);
@@ -25,6 +33,9 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * ребро+.
+     */
     @Override
     public void addEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
         addVertex(fromVertex);
@@ -32,6 +43,9 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         adjList.get(fromVertex).add(toVertex);
     }
 
+    /**
+     * ребро-.
+     */
     @Override
     public void removeEdge(Vertex<T> fromVertex, Vertex<T> toVertex) {
         List<Vertex<T>> neighbors = adjList.get(fromVertex);
@@ -40,11 +54,17 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * соседи.
+     */
     @Override
     public List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
         return adjList.getOrDefault(vertex, new ArrayList<>());
     }
 
+    /**
+     * из файла.
+     */
     @Override
     public void readFromFile(String fileName) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(fileName));
@@ -64,16 +84,25 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
     }
 
+    /**
+     * toString.
+     */
     @Override
     public String toString() {
         return adjList.toString();
     }
 
+    /**
+     * первая вершина.
+     */
     @Override
     public Vertex<T> HeadV() {
         return adjList.keySet().iterator().next();
     }
 
+    /**
+     * все вершины.
+     */
     @Override
     public ArrayList<Vertex<T>> getAllVertices() {
         return new ArrayList<>(adjList.keySet());

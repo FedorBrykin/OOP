@@ -111,7 +111,7 @@ class AdjacencyMatrixGraphTest {
         Vertex<String> vertex1 = new Vertex<>("A");
         graph.addVertex(vertex1);
 
-        assertEquals(vertex1, graph.HeadV()); // Проверяем, что возвращается первая вершина
+        assertEquals(vertex1, graph.HeadV());
     }
 
     @Test
