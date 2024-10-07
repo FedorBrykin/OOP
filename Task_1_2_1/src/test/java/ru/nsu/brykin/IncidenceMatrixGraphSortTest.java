@@ -1,19 +1,18 @@
 package ru.nsu.brykin;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class IncidenceMatrixGraphSortTest {
     private IncidenceMatrixGraph<String> graph;
@@ -76,6 +75,7 @@ class IncidenceMatrixGraphSortTest {
 
     @Test
     void testReadFromFile_NonExistentFile() {
-        assertThrows(FileNotFoundException.class, () -> graph.readFromFile("non_existent_file.txt"));
+        assertThrows(FileNotFoundException.class,
+                () -> graph.readFromFile("non_existent_file.txt"));
     }
 }

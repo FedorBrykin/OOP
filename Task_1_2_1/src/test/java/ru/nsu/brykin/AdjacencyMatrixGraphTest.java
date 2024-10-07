@@ -1,14 +1,13 @@
 package ru.nsu.brykin;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class AdjacencyMatrixGraphTest {
     private AdjacencyMatrixGraph<String> graph;
@@ -99,8 +98,8 @@ class AdjacencyMatrixGraphTest {
         graph.addVertex(vertex1);
         graph.addVertex(vertex2);
         graph.addEdge(vertex1, vertex2);
-        String expectedString = "[[false, true, false], [false, false, false], " +
-                "[false, false, false]]";
+        String expectedString = "[[false, true, false], [false, false, false], "
+                + "[false, false, false]]";
         assertEquals(expectedString, graph.toString());
     }
 
