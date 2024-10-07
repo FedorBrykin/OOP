@@ -45,11 +45,11 @@ class IncidenceMatrixGraphSortTest {
         Vertex<String> v2 = new Vertex<>("2");
         List<Vertex<String>> neighborsOfV0 = graph.getNeighbors(v0);
         List<Vertex<String>> neighborsOfV1 = graph.getNeighbors(v1);
-        List<Vertex<String>> neighborsOfV2 = graph.getNeighbors(v2);
         assertTrue(neighborsOfV0.contains(v1));
         assertTrue(neighborsOfV0.contains(v2));
         assertTrue(neighborsOfV1.contains(v0));
         assertTrue(neighborsOfV1.contains(v2));
+        List<Vertex<String>> neighborsOfV2 = graph.getNeighbors(v2);
         assertTrue(neighborsOfV2.contains(v0));
         assertTrue(neighborsOfV2.contains(v1));
     }

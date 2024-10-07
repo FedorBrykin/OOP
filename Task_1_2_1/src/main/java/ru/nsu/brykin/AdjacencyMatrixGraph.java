@@ -121,7 +121,7 @@ public class AdjacencyMatrixGraph<T> implements Graph<T> {
      * вершина1.
      */
     @Override
-    public Vertex<T> HeadV() {
+    public Vertex<T> headV() {
         return vertices.isEmpty() ? null : vertices.get(0);
     }
 

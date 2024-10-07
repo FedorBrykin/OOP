@@ -46,7 +46,7 @@ interface Graph<T> {
     /**
      * вершина1.
      */
-    Vertex<T> HeadV();
+    Vertex<T> headV();
 
     /**
      * все вершины.

@@ -96,7 +96,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
      * первая вершина.
      */
     @Override
-    public Vertex<T> HeadV() {
+    public Vertex<T> headV() {
         return adjList.keySet().iterator().next();
     }
 

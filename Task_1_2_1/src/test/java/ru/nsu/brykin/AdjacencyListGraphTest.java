@@ -101,11 +101,11 @@ class AdjacencyListGraphTest {
     }
 
     @Test
-    void testHeadV() {
+    void testheadV() {
         Vertex<String> vertexA = new Vertex<>("A");
 
         graph.addVertex(vertexA);
 
-        assertEquals(vertexA, graph.HeadV());
+        assertEquals(vertexA, graph.headV());
     }
 }

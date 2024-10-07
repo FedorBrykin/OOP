@@ -104,13 +104,13 @@ class AdjacencyMatrixGraphTest {
     }
 
     @Test
-    void testHeadV() {
-        assertNull(graph.HeadV()); // Граф пустой
+    void testheadV() {
+        assertNull(graph.headV()); // Граф пустой
 
         Vertex<String> vertex1 = new Vertex<>("A");
         graph.addVertex(vertex1);
 
-        assertEquals(vertex1, graph.HeadV());
+        assertEquals(vertex1, graph.headV());
     }
 
     @Test

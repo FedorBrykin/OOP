@@ -4,14 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class AdjacencyMatrixGraphSortTest {
 
@@ -64,6 +63,7 @@ class AdjacencyMatrixGraphSortTest {
 
     @Test
     void testReadFromFile_NonExistentFile() {
-        assertThrows(FileNotFoundException.class, () -> graph.readFromFile("non_existent_file.txt"));
+        assertThrows(FileNotFoundException.class,
+                () -> graph.readFromFile("non_existent_file.txt"));
     }
 }
