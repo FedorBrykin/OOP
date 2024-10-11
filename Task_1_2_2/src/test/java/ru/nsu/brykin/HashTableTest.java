@@ -12,6 +12,9 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * тесты.
+ */
 public class HashTableTest {
     private HashTable<String, Integer> hashTable;
 

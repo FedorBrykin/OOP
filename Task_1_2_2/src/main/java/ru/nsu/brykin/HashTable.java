@@ -1,15 +1,15 @@
 package ru.nsu.brykin;
 
+import java.util.AbstractMap;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.AbstractMap;
 
 /**
  * Hash-Table.
  */
-public class HashTable<K, V> implements Iterable<Map.Entry<K,V>> {
+public class HashTable<K, V> implements Iterable<Map.Entry<K, V>> {
     private static final int CAPACITY = 4;
     private static final float RESIZE_F = 0.8f;
 
@@ -35,6 +35,7 @@ public class HashTable<K, V> implements Iterable<Map.Entry<K,V>> {
         K key;
         V value;
         Entry<K, V> next;
+        
         Entry(K key, V value) {
             this.key = key;
             this.value = value;
