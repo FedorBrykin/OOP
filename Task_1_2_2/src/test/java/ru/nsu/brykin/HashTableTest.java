@@ -128,8 +128,20 @@ public class HashTableTest {
         }
         expected.setLength(expected.length() - 2);
         expected.append("}");
-
         assertEquals(expected.toString(), hashTable.toString());
     }
 
+    @Test
+    public void testForEachLoop() {
+        HashTable<String, Number> hashTable = new HashTable<>();
+        hashTable.put("one", 1);
+        hashTable.put("two", 2);
+        hashTable.update("one", 1.0);
+        String expectedOutput = "two = 2\n" + "one = 1.0\n";
+        StringBuilder actualOutput = new StringBuilder();
+        for (Map.Entry<String, Number> entry : hashTable) {
+            actualOutput.append(entry.getKey()).append(" = ").append(entry.getValue()).append("\n");
+        }
+        assertEquals(expectedOutput, actualOutput.toString());
+    }
 }
