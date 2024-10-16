@@ -1,62 +1,63 @@
 package ru.nsu.brykin;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
+
 public class SubstringFinderTest {
-    private void createTestFile(String filename, String content) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            writer.write(content);
-        }
-    }
 
     @Test
     public void testFindSubstringPresent() throws IOException {
-        String filename = "test1.txt";
-        createTestFile(filename, "абракадабра");
-        List<Integer> indices = SubstringFinder.find(filename, "бра");
+        InputStream inputStream = getClass().getResourceAsStream("/test1.txt");
+        SubstringFinder finder = new SubstringFinder();
+        List<Integer> indices = finder.find(inputStream, "бра");
         assertEquals(List.of(1, 8), indices);
-        new File(filename).delete(); // Удаляем тестовый файл
     }
 
     @Test
     public void testFindSubstringAbsent() throws IOException {
-        String filename = "test2.txt";
-        createTestFile(filename, "абракадабра");
-        List<Integer> indices = SubstringFinder.find(filename, "кот");
+        InputStream inputStream = getClass().getResourceAsStream("/test1.txt");
+        SubstringFinder finder = new SubstringFinder();
+        List<Integer> indices = finder.find(inputStream, "кот");
         assertEquals(List.of(), indices);
-        new File(filename).delete();
     }
 
     @Test
     public void testFindEmptyFile() throws IOException {
-        String filename = "test3.txt";
-        createTestFile(filename, "");
-        List<Integer> indices = SubstringFinder.find(filename, "бра");
+        InputStream inputStream = getClass().getResourceAsStream("/test2.txt");
+        SubstringFinder finder = new SubstringFinder();
+        List<Integer> indices = finder.find(inputStream, "бра");
         assertEquals(List.of(), indices);
-        new File(filename).delete();
     }
 
     @Test
     public void testFindMultipleOccurrences() throws IOException {
-        String filename = "test4.txt";
-        createTestFile(filename, "бракабракабра");
-        List<Integer> indices = SubstringFinder.find(filename, "бра");
+        InputStream inputStream = getClass().getResourceAsStream("/test3.txt");
+        SubstringFinder finder = new SubstringFinder();
+        List<Integer> indices = finder.find(inputStream, "бра");
         assertEquals(List.of(0, 5, 10), indices);
-        new File(filename).delete();
     }
 
     @Test
-    public void testFindNonExistentFile() {
-        assertThrows(IOException.class, () -> {
-            SubstringFinder.find("non_existent_file.txt", "бра");
-        });
+    public void testLargeFile() throws IOException {
+        StringBuilder largeContent = new StringBuilder();
+        for (int i = 0; i < 10000; i++) {
+            largeContent.append("абракадабра ");
+        }
+        InputStream inputStream = new ByteArrayInputStream(largeContent.toString().getBytes());
+        SubstringFinder finder = new SubstringFinder();
+        List<Integer> indices = finder.find(inputStream, "бра");
+    }
+
+    @Test
+    public void testOverlappingOccurrences() throws IOException {
+        InputStream inputStream = getClass().getResourceAsStream("/test4.txt");
+        SubstringFinder finder = new SubstringFinder();
+        List<Integer> indices = finder.find(inputStream, "aaaaa");
+        assertEquals(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), indices);
     }
 }
