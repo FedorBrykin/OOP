@@ -2,13 +2,18 @@ package ru.nsu.brykin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+/**
+ * поиск подстроки.
+ */
 public class SubstringFinder {
+    /**
+     * поиск.
+     */
     public List<Integer> find(InputStream inputStream, String substring) throws IOException {
         List<Integer> indices = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
