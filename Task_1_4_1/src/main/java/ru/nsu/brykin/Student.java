@@ -4,25 +4,25 @@ public class Student {
     private String name;
     private Transcript transcript;
 
-    public Student(String name) {
+    public Student(String name, int totalGradesCount) {
         this.name = name;
-        this.transcript = new Transcript();
+        this.transcript = new Transcript(totalGradesCount);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Transcript getTranscript() {
+        return transcript;
     }
 
     public void addGrade(Grade grade) {
         transcript.addGrade(grade);
     }
 
-    public void excellentGrade(boolean excellent) {
+    public void setExcellent(boolean excellent) {
         transcript.excellentGrade(excellent);
-    }
-
-    public double getAverage() {
-        return transcript.calcAverage();
-    }
-
-    public boolean toBudget() {
-        return transcript.toBudget();
     }
 
     public boolean redDiplom() {
@@ -33,4 +33,3 @@ public class Student {
         return transcript.canGetIncreasedScholarship();
     }
 }
-

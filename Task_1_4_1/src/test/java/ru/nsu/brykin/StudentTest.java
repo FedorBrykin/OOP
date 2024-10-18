@@ -3,53 +3,71 @@ package ru.nsu.brykin;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class StudentTest {
-    @Test
-    public void testAddGrade() {
-        Student student = new Student("Fedor B");
-        student.addGrade(new Grade("Math", "exam", 5));
-        assertEquals(5.0, student.getAverage(), 0.01);
+class StudentTest {
+    private Student student;
+
+    @BeforeEach
+    void setUp() {
+        student = new Student("Ivan Ivanov", 5);
     }
 
     @Test
-    public void testSetThesisGradeExcellent() {
-        Student student = new Student("Fedor B");
-        student.addGrade(new Grade("Math", "exam", 5));
-        student.excellentGrade(true);
-        assertTrue(student.redDiplom());
+    void testGetName() {
+        assertEquals("Ivan Ivanov", student.getName());
     }
 
     @Test
-    public void testCanTransferToBudget() {
-        Student student = new Student("Vasya P");
-        student.addGrade(new Grade("Math", "exam", 5));
-        student.addGrade(new Grade("OOP", "exam", 4));
-        assertTrue(student.toBudget());
-        student.addGrade(new Grade("Physics", "exam", 3));
-        assertFalse(student.toBudget());
-    }
-
-    @Test
-    public void testCanGetRedDiplom() {
-        Student student = new Student("Vasya P");
-        student.excellentGrade(true);
-        student.addGrade(new Grade("Math", "exam", 5));
-        student.addGrade(new Grade("Physics", "exam", 5));
-        student.addGrade(new Grade("OOP", "exam", 5));
-        assertTrue(student.redDiplom());
-        student.addGrade(new Grade("OS", "exam", 3));
+    void testRedDiplomWithOneThree() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 3));
+        student.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
         assertFalse(student.redDiplom());
     }
 
     @Test
-    public void testCanGetIncreasedScholarship() {
-        Student student = new Student("Vasya P");
-        student.addGrade(new Grade("Math", "exam", 5));
-        student.addGrade(new Grade("Physics", "exam", 4));
+    void testRedDiplomWithAverageLessThan4_75() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 4));
+        student.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 4));
+        student.addGrade(new Grade("OS", Grade.GradeType.EXAM, 4));
+        assertFalse(student.redDiplom());
+    }
+
+    @Test
+    void testRedDiplomWithFinalProjectGradeFour() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OS", Grade.GradeType.EXAM, 4));
+        assertFalse(student.redDiplom());
+    }
+
+    @Test
+    void testRedDiplomWithAllExcellentExceptOne() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Models", Grade.GradeType.EXAM, 4));
+        assertTrue(student.redDiplom());
+    }
+
+    @Test
+    void testCanGetIncreasedScholarship() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 4));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
         assertTrue(student.canGetIncreasedScholarship());
-        student.addGrade(new Grade("OOP", "exam", 3)); // Средний балл ниже 4.5
+    }
+
+    @Test
+    void testCannotGetIncreasedScholarship() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 3));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 4));
         assertFalse(student.canGetIncreasedScholarship());
     }
 }
