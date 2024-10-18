@@ -152,7 +152,8 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String)">Student</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,int)">Student</a></span>&#8203;(java.lang.String&nbsp;name,
+       int&nbsp;totalGradesCount)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -184,13 +185,13 @@ extends java.lang.Object</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#excellentGrade(boolean)">excellentGrade</a></span>&#8203;(boolean&nbsp;excellent)</code></th>
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>double</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAverage()">getAverage</a></span>()</code></th>
+<td class="colFirst"><code>ru.nsu.brykin.Transcript</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTranscript()">getTranscript</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
@@ -199,8 +200,8 @@ extends java.lang.Object</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toBudget()">toBudget</a></span>()</code></th>
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExcellent(boolean)">setExcellent</a></span>&#8203;(boolean&nbsp;excellent)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -227,13 +228,14 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String)">
+<a id="&lt;init&gt;(java.lang.String,int)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>Student</h4>
-<pre>public&nbsp;Student&#8203;(java.lang.String&nbsp;name)</pre>
+<pre>public&nbsp;Student&#8203;(java.lang.String&nbsp;name,
+               int&nbsp;totalGradesCount)</pre>
 </li>
 </ul>
 </li>
@@ -246,6 +248,24 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getName()</pre>
+</li>
+</ul>
+<a id="getTranscript()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTranscript</h4>
+<pre class="methodSignature">public&nbsp;ru.nsu.brykin.Transcript&nbsp;getTranscript()</pre>
+</li>
+</ul>
 <a id="addGrade(ru.nsu.brykin.Grade)">
 <!--   -->
 </a>
@@ -255,31 +275,13 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;addGrade&#8203;(ru.nsu.brykin.Grade&nbsp;grade)</pre>
 </li>
 </ul>
-<a id="excellentGrade(boolean)">
+<a id="setExcellent(boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>excellentGrade</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;excellentGrade&#8203;(boolean&nbsp;excellent)</pre>
-</li>
-</ul>
-<a id="getAverage()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAverage</h4>
-<pre class="methodSignature">public&nbsp;double&nbsp;getAverage()</pre>
-</li>
-</ul>
-<a id="toBudget()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>toBudget</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;toBudget()</pre>
+<h4>setExcellent</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setExcellent&#8203;(boolean&nbsp;excellent)</pre>
 </li>
 </ul>
 <a id="redDiplom()">
