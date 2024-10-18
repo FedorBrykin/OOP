@@ -2,8 +2,8 @@ package ru.nsu.brykin;
 
 class Grade {
     private String subject;
-    private String type; // "exam" or "credit"
-    private int score; // Score from 2 to 5
+    private String type;
+    private int score;
 
     public Grade(String subject, String type, int score) {
         this.subject = subject;

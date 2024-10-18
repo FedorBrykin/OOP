@@ -1,6 +1,6 @@
 package ru.nsu.brykin;
 
-class Student {
+public class Student {
     private String name;
     private Transcript transcript;
 
