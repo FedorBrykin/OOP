@@ -32,17 +32,22 @@ public class GradeTest {
     }
 
     @Test
-    public void testIsFinal() {
-        Grade examGrade = new Grade("Math", Grade.GradeType.EXAM, 5);
-        Grade creditGrade = new Grade("Physics", Grade.GradeType.CREDIT, 4);
-        assertTrue(examGrade.isFinal());
-        assertFalse(creditGrade.isFinal());
+    void testIsFinalGrade() {
+        Transcript transcript = new Transcript(3);
+        Grade midtermExam = new Grade("Math", Grade.GradeType.EXAM, 5);
+        Grade finalExam = new Grade("Math", Grade.GradeType.EXAM, 4);
+
+        transcript.addGrade(midtermExam);
+        transcript.addGrade(finalExam);
+
+        assertTrue(transcript.isFinalGrade(finalExam)); // Проверяем, что финальная оценка — это последняя
+        assertFalse(transcript.isFinalGrade(midtermExam));
     }
 
     @Test
     public void testCreateGradeWithInvalidScore() {
         try {
-            new Grade("Biology", Grade.GradeType.EXAM, 6);
+            new Grade("Math", Grade.GradeType.EXAM, 6);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
         }

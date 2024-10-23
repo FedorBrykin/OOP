@@ -35,7 +35,6 @@ class Transcript {
     public boolean toBudget() {
         long satisfactoryCount = grades.stream()
                 .filter(Grade::isSatisfactory)
-                .filter(Grade::isFinal)
                 .count();
         return satisfactoryCount == 0;
     }
@@ -46,12 +45,16 @@ class Transcript {
                 .count();
         long satisfactoryCount = grades.stream()
                 .filter(Grade::isSatisfactory)
-                .filter(Grade::isFinal)
                 .count();
         return (excellentCount * 100.0 / totalGradesCount >= 75) && (satisfactoryCount == 0);
     }
 
     public boolean canGetIncreasedScholarship() {
         return calcAverage() >= 4.5;
+    }
+
+    public boolean isFinalGrade(Grade grade) {
+        // Предположим, что grades — это список оценок
+        return grades.get(grades.size() - 1).equals(grade);
     }
 }

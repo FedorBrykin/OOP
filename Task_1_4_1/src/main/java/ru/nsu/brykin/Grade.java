@@ -39,7 +39,8 @@ class Grade {
         return score == 5;
     }
 
-    public boolean isFinal() {
-        return type == GradeType.EXAM;
+    // Метод для определения, является ли оценка финальной
+    public boolean isFinal(boolean isLastGrade) {
+        return isLastGrade; // Финальная оценка — это последняя оценка
     }
 }
