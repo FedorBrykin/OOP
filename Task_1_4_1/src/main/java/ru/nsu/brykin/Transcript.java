@@ -2,11 +2,13 @@ package ru.nsu.brykin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 class Transcript {
     private List<Grade> grades;
     private boolean excellent;
-    private int totalGradesCount; // Общее количество оценок
+    private int totalGradesCount;
 
     public Transcript(int totalGradesCount) {
         this.grades = new ArrayList<>();
@@ -46,15 +48,17 @@ class Transcript {
         long satisfactoryCount = grades.stream()
                 .filter(Grade::isSatisfactory)
                 .count();
-        return (excellentCount * 100.0 / totalGradesCount >= 75) && (satisfactoryCount == 0);
+
+        Map<String, Grade> lastGrades = grades.stream()
+                .collect(Collectors.toMap(Grade::getSubject, grade -> grade,
+                        (old, newone) -> newone));
+        boolean conditionIsMet = lastGrades.values().stream()
+                .allMatch(grade -> grade.getScore() == 5);
+        return (excellentCount * 100.0 / totalGradesCount >= 75) && (satisfactoryCount == 0)
+                && conditionIsMet;
     }
 
     public boolean canGetIncreasedScholarship() {
         return calcAverage() >= 4.5;
-    }
-
-    public boolean isFinalGrade(Grade grade) {
-        // Предположим, что grades — это список оценок
-        return grades.get(grades.size() - 1).equals(grade);
     }
 }

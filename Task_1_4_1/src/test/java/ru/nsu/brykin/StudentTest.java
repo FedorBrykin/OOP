@@ -54,6 +54,17 @@ class StudentTest {
         student.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 5));
         student.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
         student.addGrade(new Grade("Models", Grade.GradeType.EXAM, 4));
+        assertFalse(student.redDiplom());
+    }
+
+    @Test
+    void testRedDiplomWithAllExcellentExceptOneButNotLast() {
+        student.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
+        student.addGrade(new Grade("Models", Grade.GradeType.EXAM, 4));
+        student.addGrade(new Grade("Models", Grade.GradeType.EXAM, 5));
         assertTrue(student.redDiplom());
     }
 

@@ -55,15 +55,6 @@ class TranscriptTest {
     }
 
     @Test
-    void testRedDiplomWithOneThree() {
-        transcript.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
-        transcript.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
-        transcript.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 3));
-        transcript.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
-        assertFalse(transcript.redDiplom());
-    }
-
-    @Test
     void testRedDiplomWithAverageLessThan4_75() {
         transcript.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 4));
@@ -87,14 +78,16 @@ class TranscriptTest {
         transcript.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("OOP", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
+        transcript.addGrade(new Grade("Models", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("Models", Grade.GradeType.EXAM, 4));
-        assertTrue(transcript.redDiplom());
+        assertFalse(transcript.redDiplom());
     }
 
     @Test
-    void testRedDiplomWithMultipleGoodGrades() {
+    void testRedDiplomWithNotLast4() {
         transcript.addGrade(new Grade("Math", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 4));
+        transcript.addGrade(new Grade("Physics", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("OPP", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("OS", Grade.GradeType.EXAM, 5));
         transcript.addGrade(new Grade("Models", Grade.GradeType.EXAM, 5));

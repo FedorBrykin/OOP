@@ -4,7 +4,7 @@ package ru.nsu.brykin;
 class Grade {
     public enum GradeType {
         EXAM,
-        CREDIT;
+        ORDINARY;
     }
     private String subject;
     private GradeType type;
@@ -14,6 +14,10 @@ class Grade {
         this.subject = subject;
         this.type = type;
         setScore(score);
+    }
+
+    public String getSubject() {
+        return subject;
     }
 
     public void setScore(int score) {
@@ -37,10 +41,5 @@ class Grade {
 
     public boolean isExcellent() {
         return score == 5;
-    }
-
-    // Метод для определения, является ли оценка финальной
-    public boolean isFinal(boolean isLastGrade) {
-        return isLastGrade; // Финальная оценка — это последняя оценка
     }
 }
