@@ -9,6 +9,7 @@ class Grade {
         EXAM,
         ORDINARY;
     }
+    
     private String subject;
     private GradeType type;
     private int score;

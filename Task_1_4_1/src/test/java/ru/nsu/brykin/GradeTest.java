@@ -39,7 +39,7 @@ public class GradeTest {
         try {
             new Grade("Math", Grade.GradeType.EXAM, 6);
             fail("Expected IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 }
