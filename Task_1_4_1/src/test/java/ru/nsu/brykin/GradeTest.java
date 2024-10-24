@@ -40,6 +40,7 @@ public class GradeTest {
             new Grade("Math", Grade.GradeType.EXAM, 6);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException ignored) {
+            return;
         }
     }
 }
