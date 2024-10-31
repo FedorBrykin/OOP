@@ -48,11 +48,13 @@ class Div extends Expression {
         Expression simplifiedNumerator = numerator.simplify();
         Expression simplifiedDenominator = denominator.simplify();
 
-        if (simplifiedDenominator instanceof Number && ((Number) simplifiedDenominator).value == 0) {
+        if (simplifiedDenominator instanceof Number
+                && ((Number) simplifiedDenominator).value == 0) {
             throw new ArithmeticException("Division by zero"); // Обработка деления на 0
         }
         if (simplifiedNumerator instanceof Number && simplifiedDenominator instanceof Number) {
-            return new Number((int) simplifiedNumerator.evaluate(new HashMap<>()) / (int) simplifiedDenominator.evaluate(new HashMap<>()));
+            return new Number((int) simplifiedNumerator.evaluate(new HashMap<>())
+                    / (int) simplifiedDenominator.evaluate(new HashMap<>()));
         }
 
         return new Div(simplifiedNumerator, simplifiedDenominator); // возвращаем новое выражение

@@ -42,8 +42,12 @@ class Number extends Expression {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Number)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Number)) {
+            return false;
+        }
         Number other = (Number) obj;
         return Double.compare(this.value, other.value) == 0;
     }

@@ -6,6 +6,9 @@ import java.util.Scanner;
  * работа с пользователем.
  */
 public class Main {
+    /**
+     * main.
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Parser parser = new Parser();

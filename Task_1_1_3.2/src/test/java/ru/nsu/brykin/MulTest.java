@@ -77,6 +77,7 @@ class MulTest {
         double result = multiplication.evaluate(dict);
         assertEquals(-18.0, result);
     }
+
     @Test
     void testMulSimplify() {
         Expression expr = new Mul(new Number(5), new Number(3));

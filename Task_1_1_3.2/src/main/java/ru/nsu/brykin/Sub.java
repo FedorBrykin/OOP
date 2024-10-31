@@ -43,7 +43,8 @@ class Sub extends Expression {
         Expression simplifiedRight = right.simplify();
 
         if (simplifiedLeft instanceof Number && simplifiedRight instanceof Number) {
-            return new Number((int) simplifiedLeft.evaluate(new HashMap<>()) - (int) simplifiedRight.evaluate(new HashMap<>()));
+            return new Number((int) simplifiedLeft.evaluate(new HashMap<>())
+                    - (int) simplifiedRight.evaluate(new HashMap<>()));
         }
         if (simplifiedLeft.equals(simplifiedRight)) {
             return new Number(0); // a - a = 0

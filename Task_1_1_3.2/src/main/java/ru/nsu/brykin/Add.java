@@ -44,7 +44,8 @@ class Add extends Expression {
         Expression simplifiedRight = right.simplify();
 
         if (simplifiedLeft instanceof Number && simplifiedRight instanceof Number) {
-            return new Number((int) simplifiedLeft.evaluate(new HashMap<>()) + (int) simplifiedRight.evaluate(new HashMap<>()));
+            return new Number((int) simplifiedLeft.evaluate(new HashMap<>())
+                    + (int) simplifiedRight.evaluate(new HashMap<>()));
         }
         if (simplifiedLeft instanceof Number && ((Number) simplifiedLeft).value == 0) {
             return simplifiedRight; // a + 0 = a
