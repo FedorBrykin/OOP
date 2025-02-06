@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.brykin","l":"PerformanceTest"},{"p":"ru.nsu.brykin","l":"PrimeGen"},{"p":"ru.nsu.brykin","l":"SeqPrime"},{"p":"ru.nsu.brykin","l":"StreamPrime"},{"p":"ru.nsu.brykin","l":"ThreadPrime"}];updateSearchResults();
