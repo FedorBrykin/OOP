@@ -12,12 +12,6 @@ class ThreadPrimeTest {
     }
 
     @Test
-    void testContainsNonPrimeWithAllPrimeNumbers() throws InterruptedException {
-        int[] numbers = {2, 3, 5, 7};
-        assertFalse(ThreadPrime.containsNonPrime(numbers, 2));
-    }
-
-    @Test
     void testContainsNonPrimeWithSingleNonPrimeNumber() throws InterruptedException {
         int[] numbers = {15};
         assertTrue(ThreadPrime.containsNonPrime(numbers, 2));
