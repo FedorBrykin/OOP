@@ -4,34 +4,36 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SeqPrimeTest {
+    PrimeChecker checker = new SeqPrime();
 
     @Test
-    void testContainsNonPrimeWithNonPrimeNumbers() {
-        int[] numbers = {4, 6, 8, 9, 10};
-        assertTrue(SeqPrime.containsNonPrime(numbers));
+    void testContainsNonPrimeWithNonPrimeNumbers() throws InterruptedException {
+        int[] nonPrimes = {4, 6, 8, 9, 10};
+        assertTrue(checker.containsNonPrime(nonPrimes, 1));
     }
 
     @Test
-    void testContainsNonPrimeWithAllPrimeNumbers() {
-        int[] numbers = {2, 3, 5, 7, 11};
-        assertFalse(SeqPrime.containsNonPrime(numbers));
+    void testContainsNonPrimeWithAllPrimeNumbers() throws InterruptedException {
+        int[] primes = {2, 3, 5, 7, 11};
+        assertFalse(checker.containsNonPrime(primes, 1));
     }
 
     @Test
-    void testContainsNonPrimeWithEmptyArray() {
-        int[] numbers = {};
-        assertFalse(SeqPrime.containsNonPrime(numbers));
+    void testContainsNonPrimeWithEmptyArray() throws InterruptedException {
+        int[] empty = {};
+        assertFalse(checker.containsNonPrime(empty, 1));
     }
 
     @Test
-    void testContainsNonPrimeWithSinglePrimeNumber() {
-        int[] numbers = {13};
-        assertFalse(SeqPrime.containsNonPrime(numbers));
+    void testContainsNonPrimeWithSinglePrimeNumber() throws InterruptedException {
+        int[] singlePrime = {13};
+        assertFalse(checker.containsNonPrime(singlePrime, 1));
+
     }
 
     @Test
-    void testContainsNonPrimeWithSingleNonPrimeNumber() {
-        int[] numbers = {15};
-        assertTrue(SeqPrime.containsNonPrime(numbers));
+    void testContainsNonPrimeWithSingleNonPrimeNumber() throws InterruptedException {
+        int[] singleNonPrime = {15};
+        assertTrue(checker.containsNonPrime(singleNonPrime, 1));
     }
 }

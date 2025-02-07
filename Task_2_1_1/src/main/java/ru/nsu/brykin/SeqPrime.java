@@ -1,24 +1,13 @@
 package ru.nsu.brykin;
 
-public class SeqPrime {
-    public static boolean containsNonPrime(int[] numbers) {
+public class SeqPrime implements PrimeChecker {
+    @Override
+    public boolean containsNonPrime(int[] numbers, int numTreads) {
         for (int number : numbers) {
-            if (!isPrime(number)) {
+            if (!PrimeUtils.isPrime(number)) {
                 return true;
             }
         }
         return false;
-    }
-
-    private static boolean isPrime(int number) {
-        if (number < 2) {
-            return false;
-        }
-        for (int i = 2; i * i <= number; i++) {
-            if (number % i == 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }
