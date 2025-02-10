@@ -81,6 +81,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ThreadPrime</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeChecker</a></span></div>
+<div class="block">theads</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -92,8 +93,10 @@ implements <a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeC
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">ThreadPrime</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int)" class="member-name-link">ThreadPrime</a><wbr>(int&nbsp;numThreads)</code></div>
+<div class="col-last even-row-color">
+<div class="block">число потоков</div>
+</div>
 </div>
 </section>
 </li>
@@ -109,8 +112,7 @@ implements <a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeC
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsNonPrime(int%5B%5D,int)" class="member-name-link">containsNonPrime</a><wbr>(int[]&nbsp;numbers,
- int&nbsp;numThreads)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsNonPrime(int%5B%5D)" class="member-name-link">containsNonPrime</a><wbr>(int[]&nbsp;numbers)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -130,9 +132,10 @@ implements <a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeC
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;()">
+<section class="detail" id="&lt;init&gt;(int)">
 <h3>ThreadPrime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ThreadPrime</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ThreadPrime</span><wbr><span class="parameters">(int&nbsp;numThreads)</span></div>
+<div class="block">число потоков</div>
 </section>
 </li>
 </ul>
@@ -144,14 +147,13 @@ implements <a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeC
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="containsNonPrime(int[],int)">
+<section class="detail" id="containsNonPrime(int[])">
 <h3>containsNonPrime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">containsNonPrime</span><wbr><span class="parameters">(int[]&nbsp;numbers,
- int&nbsp;numThreads)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">containsNonPrime</span><wbr><span class="parameters">(int[]&nbsp;numbers)</span>
                          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link">InterruptedException</a></span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="PrimeChecker.html#containsNonPrime(int%5B%5D,int)">containsNonPrime</a></code>&nbsp;in interface&nbsp;<code><a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeChecker</a></code></dd>
+<dd><code><a href="PrimeChecker.html#containsNonPrime(int%5B%5D)">containsNonPrime</a></code>&nbsp;in interface&nbsp;<code><a href="PrimeChecker.html" title="interface in ru.nsu.brykin">PrimeChecker</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link">InterruptedException</a></code></dd>
 </dl>
