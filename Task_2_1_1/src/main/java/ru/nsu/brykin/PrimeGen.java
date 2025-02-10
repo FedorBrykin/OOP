@@ -2,7 +2,13 @@ package ru.nsu.brykin;
 
 import java.util.Random;
 
+/**
+ * список
+ */
 public class PrimeGen {
+    /**
+     * создание списка
+     */
     public static int[] generateLargePrimeArray(int size) {
         int[] primes = new int[size];
         Random random = new Random();
@@ -19,6 +25,9 @@ public class PrimeGen {
         return primes;
     }
 
+    /**
+     * делимость
+     */
     private static boolean isPrime(int number) {
         if (number < 2) {
             return false;

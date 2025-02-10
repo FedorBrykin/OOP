@@ -2,9 +2,21 @@ package ru.nsu.brykin;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * theads
+ */
 public class ThreadPrime implements PrimeChecker {
+    private final int numThreads;
+
+    /**
+     * число потоков
+     */
+    public ThreadPrime(int numThreads) {
+        this.numThreads = numThreads;
+    }
+
     @Override
-    public boolean containsNonPrime(int[] numbers, int numThreads) throws InterruptedException {
+    public boolean containsNonPrime(int[] numbers) throws InterruptedException {
         AtomicBoolean result = new AtomicBoolean(false);
         int chunkSize = (numbers.length + numThreads - 1) / numThreads;
         Thread[] threads = new Thread[numThreads];

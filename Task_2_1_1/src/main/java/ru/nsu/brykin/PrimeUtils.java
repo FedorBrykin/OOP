@@ -1,6 +1,12 @@
 package ru.nsu.brykin;
 
+/**
+ * утилиты
+ */
 public class PrimeUtils {
+    /**
+     * проверка на делимость
+     */
     public static boolean isPrime(int number) {
         if (number < 2) {
             return false;
