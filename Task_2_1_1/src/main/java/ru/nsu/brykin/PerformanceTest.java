@@ -1,5 +1,8 @@
 package ru.nsu.brykin;
 
+/**
+ * тестовые значения.
+ */
 public class PerformanceTest {
     public static void main(String[] args) throws InterruptedException {
         int[] largePrimes = PrimeGen.generateLargePrimeArray(1000000);

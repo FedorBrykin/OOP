@@ -1,7 +1,7 @@
 package ru.nsu.brykin;
 
 /**
- * последовательный
+ * последовательный.
  */
 public class SeqPrime implements PrimeChecker {
     @Override

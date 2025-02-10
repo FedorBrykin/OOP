@@ -9,7 +9,7 @@ public class ThreadPrime implements PrimeChecker {
     private final int numThreads;
 
     /**
-     * число потоков
+     * число потоков.
      */
     public ThreadPrime(int numThreads) {
         this.numThreads = numThreads;

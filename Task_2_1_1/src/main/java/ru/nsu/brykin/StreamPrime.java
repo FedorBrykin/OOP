@@ -3,7 +3,7 @@ package ru.nsu.brykin;
 import java.util.Arrays;
 
 /**
- * streams
+ * streams.
  */
 public class StreamPrime implements PrimeChecker {
     @Override
