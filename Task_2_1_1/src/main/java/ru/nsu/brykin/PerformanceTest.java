@@ -4,6 +4,9 @@ package ru.nsu.brykin;
  * тестовые значения.
  */
 public class PerformanceTest {
+    /**
+     * запуск.
+     */
     public static void main(String[] args) throws InterruptedException {
         int[] largePrimes = PrimeGen.generateLargePrimeArray(1000000);
 
@@ -13,7 +16,8 @@ public class PerformanceTest {
         boolean sequentialResult = checker1.containsNonPrime(largePrimes);
         long endTime = System.nanoTime();
         System.out.println("Sequential result: " + sequentialResult);
-        System.out.println("Sequential execution time: " + (endTime - startTime) / 1000000 + " ms");
+        System.out.println("Sequential execution time: "
+                + (endTime - startTime) / 1000000 + " ms");
         System.out.println(' ');
 
         // 2 потока
@@ -22,7 +26,8 @@ public class PerformanceTest {
         boolean parallelThreadResult2 = checker2.containsNonPrime(largePrimes);
         endTime = System.nanoTime();
         System.out.println("Parallel Thread2 result: " + parallelThreadResult2);
-        System.out.println("Parallel Thread2 execution time: " + (endTime - startTime) / 1000000 + " ms");
+        System.out.println("Parallel Thread2 execution time: "
+                + (endTime - startTime) / 1000000 + " ms");
         System.out.println(' ');
 
         // 3 потока
@@ -31,7 +36,8 @@ public class PerformanceTest {
         boolean parallelThreadResult3 = checker3.containsNonPrime(largePrimes);
         endTime = System.nanoTime();
         System.out.println("Parallel Thread3 result: " + parallelThreadResult3);
-        System.out.println("Parallel Thread3 execution time: " + (endTime - startTime) / 1000000 + " ms");
+        System.out.println("Parallel Thread3 execution time: "
+                + (endTime - startTime) / 1000000 + " ms");
         System.out.println(' ');
 
         // 4 потока
@@ -40,7 +46,8 @@ public class PerformanceTest {
         boolean parallelThreadResult4 = checker4.containsNonPrime(largePrimes);
         endTime = System.nanoTime();
         System.out.println("Parallel Thread4 result: " + parallelThreadResult4);
-        System.out.println("Parallel Thread4 execution time: " + (endTime - startTime) / 1000000 + " ms");
+        System.out.println("Parallel Thread4 execution time: "
+                + (endTime - startTime) / 1000000 + " ms");
         System.out.println(' ');
 
         // parallelStream
@@ -49,6 +56,7 @@ public class PerformanceTest {
         boolean parallelStreamResult = checker5.containsNonPrime(largePrimes);
         endTime = System.nanoTime();
         System.out.println("Parallel Stream result: " + parallelStreamResult);
-        System.out.println("Parallel Stream execution time: " + (endTime - startTime) / 1000000 + " ms");
+        System.out.println("Parallel Stream execution time: "
+                + (endTime - startTime) / 1000000 + " ms");
     }
 }

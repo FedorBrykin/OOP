@@ -3,7 +3,7 @@ package ru.nsu.brykin;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * theads
+ * theads.
  */
 public class ThreadPrime implements PrimeChecker {
     private final int numThreads;
@@ -35,7 +35,8 @@ public class ThreadPrime implements PrimeChecker {
         return result.get();
     }
 
-    private record PrimeCheckTask(int[] numbers, int start, int end, AtomicBoolean result) implements Runnable {
+    private record PrimeCheckTask(int[] numbers, int start, int end,
+                                  AtomicBoolean result) implements Runnable {
         @Override
         public void run() {
             for (int i = start; i < end; i++) {
