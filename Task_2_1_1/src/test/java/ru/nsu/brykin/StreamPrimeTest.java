@@ -1,46 +1,32 @@
 package ru.nsu.brykin;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.stream.Stream;
 /**
  * тесты для стримов.
  */
 class StreamPrimeTest {
+    private final PrimeChecker checker = new StreamPrime();
 
-    PrimeChecker checker = new StreamPrime();
-
-    @Test
-    void testContainsNonPrimeWithNonPrimeNumbers() throws InterruptedException {
-        int[] nonPrimes = {4, 6, 8, 9, 10};
-        assertTrue(checker.containsNonPrime(nonPrimes));
+    private static Stream<Arguments> testData() {
+        return Stream.of(
+                Arguments.of(new int[]{4, 6, 8, 9, 10}, true),
+                Arguments.of(new int[]{2, 3, 5, 7, 11}, false),
+                Arguments.of(new int[]{}, false),
+                Arguments.of(new int[]{13}, false),
+                Arguments.of(new int[]{15}, true)
+        );
     }
 
-    @Test
-    void testContainsNonPrimeWithAllPrimeNumbers() throws InterruptedException {
-        int[] primes = {2, 3, 5, 7, 11};
-        assertFalse(checker.containsNonPrime(primes));
-    }
-
-    @Test
-    void testContainsNonPrimeWithEmptyArray() throws InterruptedException {
-        int[] empty = {};
-        assertFalse(checker.containsNonPrime(empty));
-    }
-
-    @Test
-    void testContainsNonPrimeWithSinglePrimeNumber() throws InterruptedException {
-        int[] singlePrime = {13};
-        assertFalse(checker.containsNonPrime(singlePrime));
-
-    }
-
-    @Test
-    void testContainsNonPrimeWithSingleNonPrimeNumber() throws InterruptedException {
-        int[] singleNonPrime = {15};
-        assertTrue(checker.containsNonPrime(singleNonPrime));
+    @ParameterizedTest
+    @MethodSource("testData")
+    void testContainsNonPrime(int[] numbers, boolean expectedResult) throws InterruptedException {
+        assertEquals(expectedResult, checker.containsNonPrime(numbers));
     }
 }
