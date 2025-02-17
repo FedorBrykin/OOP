@@ -1,11 +1,17 @@
 package ru.nsu.brykin;
 
+/**
+ * курьер в пиццерии.
+ */
 public class Courier extends Thread {
     private final int trunkCapacity;
     private final int deliveryTime;
     private final Storage storage;
     private final Pizzeria pizzeria;
 
+    /**
+     * курьер.
+     */
     public Courier(int trunkCapacity, int deliveryTime, Storage storage, Pizzeria pizzeria) {
         this.trunkCapacity = trunkCapacity;
         this.deliveryTime = deliveryTime;

@@ -1,5 +1,8 @@
 package ru.nsu.brykin;
 
+/**
+ * для json-ов.
+ */
 class Config {
     private int N;
     private int M;

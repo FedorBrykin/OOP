@@ -1,8 +1,12 @@
 package ru.nsu.brykin;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Test;
+
+/**
+ * указ!.
+ */
 class OrderTest {
     @Test
     void testOrderCreation() {

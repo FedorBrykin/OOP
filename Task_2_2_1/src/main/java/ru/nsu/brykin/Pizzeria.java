@@ -1,5 +1,8 @@
 package ru.nsu.brykin;
 
+/**
+ * пиццерия.
+ */
 public class Pizzeria {
     private final OrderQueue orderQueue = new OrderQueue();
     private final Storage storage;
@@ -8,6 +11,9 @@ public class Pizzeria {
     private boolean isOpen = true;
     private int activeOrders = 0; // Счетчик активных заказов
 
+    /**
+     * как всё устроено.
+     */
     public Pizzeria(int N, int M, int T, int[] bakerSpeeds, int[] courierCapacities, int[] courierDeliveryTimes) {
         this.storage = new Storage(T);
         this.bakers = new Baker[N];
@@ -20,6 +26,9 @@ public class Pizzeria {
         }
     }
 
+    /**
+     * мы открыты.
+     */
     public void start() {
         for (Baker baker : bakers) {
             baker.start();
@@ -29,6 +38,9 @@ public class Pizzeria {
         }
     }
 
+    /**
+     * мы закрыты.
+     */
     public void stop() {
         isOpen = false;
         for (Baker baker : bakers) {
@@ -39,6 +51,9 @@ public class Pizzeria {
         }
     }
 
+    /**
+     * заказ принят(или нет?).
+     */
     public void placeOrder(Order order) {
         if (!isOpen) {
             System.out.println("[" + order.getOrderId() + "] [заказ отклонен: пиццерия закрыта]");
@@ -50,12 +65,17 @@ public class Pizzeria {
         }
     }
 
+    /**
+     * заказ выполнен.
+     */
     // Уменьшаем счетчик активных заказов
     public synchronized void completeOrder() {
         activeOrders--;
-        notifyAll();
     }
 
+    /**
+     * всё, пошли домой.
+     */
     public boolean isWorkCompleted() {
         synchronized (orderQueue) {
             synchronized (storage) {

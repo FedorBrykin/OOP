@@ -1,10 +1,16 @@
 package ru.nsu.brykin;
 
+/**
+ * пекарь в пиццерии.
+ */
 public class Baker extends Thread {
     private final int speed;
     private final Storage storage;
     private final OrderQueue orderQueue;
 
+    /**
+     * пекарь.
+     */
     public Baker(int speed, Storage storage, OrderQueue orderQueue) {
         this.speed = speed;
         this.storage = storage;

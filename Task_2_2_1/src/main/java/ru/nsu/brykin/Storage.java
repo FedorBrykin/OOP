@@ -3,15 +3,24 @@ package ru.nsu.brykin;
 import java.util.Queue;
 import java.util.LinkedList;
 
+/**
+ * хранилише.
+ */
 public class Storage {
     private final Queue<Order> orders;
     private final int capacity;
 
+    /**
+     * клююююч!.
+     */
     public Storage(int capacity) {
         this.capacity = capacity;
         this.orders = new LinkedList<>();
     }
 
+    /**
+     * +заказ.
+     */
     public synchronized void addOrder(Order order) throws InterruptedException {
         while (orders.size() >= capacity) {
             wait();
@@ -20,6 +29,9 @@ public class Storage {
         notifyAll();
     }
 
+    /**
+     * "я возьму!".
+     */
     public synchronized Order takeOrder() throws InterruptedException {
         while (orders.isEmpty()) {
             wait();
@@ -29,6 +41,9 @@ public class Storage {
         return order;
     }
 
+    /**
+     * всё?.
+     */
     public synchronized boolean isEmpty() {
         return orders.isEmpty();
     }

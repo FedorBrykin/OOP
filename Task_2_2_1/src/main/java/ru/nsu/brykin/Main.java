@@ -7,13 +7,22 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * main.
+ */
 public class Main {
+    /**
+     * main.
+     */
     public static void main(String[] args) throws Exception {
         Config config = loadConfig("config.json");
         Pizzeria pizzeria = createPizzeria(config);
         runPizzeria(pizzeria, 10, 1000);
     }
 
+    /**
+     * берём данные из конфига.
+     */
     private static Config loadConfig(String filename) throws Exception {
         Gson gson = new Gson();
         try (InputStream input = Main.class.getResourceAsStream("/" + filename)) {
@@ -25,6 +34,9 @@ public class Main {
     }
 
 
+    /**
+     * открываем пиццерию.
+     */
     private static Pizzeria createPizzeria(Config config) {
         return new Pizzeria(
                 config.getN(),
@@ -36,6 +48,9 @@ public class Main {
         );
     }
 
+    /**
+     * запуск пиццерии.
+     */
     private static void runPizzeria(Pizzeria pizzeria, int workTimeSeconds, int orderDelayMillis) throws InterruptedException {
         pizzeria.start();
 
