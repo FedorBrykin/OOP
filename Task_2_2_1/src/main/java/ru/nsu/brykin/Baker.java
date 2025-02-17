@@ -1,13 +1,11 @@
 package ru.nsu.brykin;
 
-import java.util.Queue;
-
 public class Baker extends Thread {
     private final int speed;
     private final Storage storage;
-    private final Queue<Order> orderQueue;
+    private final OrderQueue orderQueue;
 
-    public Baker(int speed, Storage storage, Queue<Order> orderQueue) {
+    public Baker(int speed, Storage storage, OrderQueue orderQueue) {
         this.speed = speed;
         this.storage = storage;
         this.orderQueue = orderQueue;
@@ -16,24 +14,11 @@ public class Baker extends Thread {
     @Override
     public void run() {
         while (!isInterrupted()) {
-            Order order;
-            synchronized (orderQueue) {
-                while (orderQueue.isEmpty()) {
-                    try {
-                        orderQueue.wait();
-                    } catch (InterruptedException e) {
-                        interrupt();
-                        return;
-                    }
-                }
-                order = orderQueue.poll();
-                orderQueue.notifyAll();
-            }
-
             try {
-                Thread.sleep(speed * 1000L); // Имитация приготовления пиццы
+                Order order = orderQueue.takeOrder();
+                Thread.sleep(speed * 1000L);
                 storage.addOrder(order);
-                System.out.println("[" + order.getOrderId() + "] [completed]");
+                System.out.println("[" + order.getOrderId() + "] [готово]");
             } catch (InterruptedException e) {
                 interrupt();
                 return;

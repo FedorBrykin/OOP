@@ -11,7 +11,8 @@ class PizzeriaTest {
         int T = 5;
         int[] bakerSpeeds = {1, 2};
         int[] courierCapacities = {1, 2};
-        Pizzeria pizzeria = new Pizzeria(N, M, T, bakerSpeeds, courierCapacities);
+        int[] deliveryTimes = {1, 2};
+        Pizzeria pizzeria = new Pizzeria(N, M, T, bakerSpeeds, courierCapacities, deliveryTimes);
         pizzeria.start();
         for (int i = 1; i <= 5; i++) {
             pizzeria.placeOrder(new Order(i));

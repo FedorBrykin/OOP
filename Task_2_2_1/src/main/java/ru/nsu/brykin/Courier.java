@@ -2,11 +2,13 @@ package ru.nsu.brykin;
 
 public class Courier extends Thread {
     private final int trunkCapacity;
+    private final int deliveryTime;
     private final Storage storage;
     private final Pizzeria pizzeria;
 
-    public Courier(int trunkCapacity, Storage storage, Pizzeria pizzeria) {
+    public Courier(int trunkCapacity, int deliveryTime, Storage storage, Pizzeria pizzeria) {
         this.trunkCapacity = trunkCapacity;
+        this.deliveryTime = deliveryTime;
         this.storage = storage;
         this.pizzeria = pizzeria;
     }
@@ -16,8 +18,8 @@ public class Courier extends Thread {
         while (!isInterrupted()) {
             try {
                 Order order = storage.takeOrder();
-                Thread.sleep(1000);
-                System.out.println("[" + order.getOrderId() + "] [delivered]");
+                Thread.sleep(deliveryTime * 1000L);
+                System.out.println("[" + order.getOrderId() + "] [доставлено]");
                 pizzeria.completeOrder();
             } catch (InterruptedException e) {
                 interrupt();

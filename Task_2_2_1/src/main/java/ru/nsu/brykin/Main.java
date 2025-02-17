@@ -1,42 +1,62 @@
 package ru.nsu.brykin;
 
 
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class Main {
     public static void main(String[] args) throws Exception {
-        Pizzeria pizzeria = new Pizzeria(2, 2, 5, new int[] {1, 2}, new int[] {1, 2});
-        pizzeria.start();
-        boolean isOpen = true;
+        Config config = loadConfig("config.json");
+        Pizzeria pizzeria = createPizzeria(config);
+        runPizzeria(pizzeria, 10, 1000);
+    }
 
-        // Время работы пиццерии (10 секунд)
-        long workTime = 10000; // 10 секунд
-        long startTime = System.currentTimeMillis();
-
-        // Генерация заказов
-        int orderId = 1;
-        while (isOpen) {
-            if (System.currentTimeMillis() - startTime >= workTime) {
-                isOpen = false;
-                System.out.println("Pizzeria closed.");
-                break;
+    private static Config loadConfig(String filename) throws Exception {
+        Gson gson = new Gson();
+        try (InputStream input = Main.class.getResourceAsStream("/" + filename)) {
+            if (input == null) {
+                throw new FileNotFoundException("Файл " + filename + " не найден в classpath");
             }
-            Order order = new Order(orderId);
-            pizzeria.placeOrder(order);
+            return gson.fromJson(new InputStreamReader(input), Config.class);
+        }
+    }
 
-            // Увеличиваем ID заказа
+
+    private static Pizzeria createPizzeria(Config config) {
+        return new Pizzeria(
+                config.getN(),
+                config.getM(),
+                config.getT(),
+                config.getBakerSpeeds(),
+                config.getCourierCapacities(),
+                config.getCourierDeliveryTimes()
+        );
+    }
+
+    private static void runPizzeria(Pizzeria pizzeria, int workTimeSeconds, int orderDelayMillis) throws InterruptedException {
+        pizzeria.start();
+
+        long startTime = System.currentTimeMillis();
+        int orderId = 1;
+
+        while (System.currentTimeMillis() - startTime < workTimeSeconds * 1000L) {
+            pizzeria.placeOrder(new Order(orderId));
+            System.out.println("[" + orderId + "] [заказ принят]");
             orderId++;
+            Thread.sleep(orderDelayMillis);
+        }
 
-            // Задержка между заказами (например, 1 секунда)
+        System.out.println("Пиццерия закрыта для новых заказов.");
+
+        while (!pizzeria.isWorkCompleted()) {
+            System.out.println("Ожидание завершения оставшихся заказов...");
             Thread.sleep(1000);
         }
 
-        // Ждем завершения всех заказов
-        while (!pizzeria.isWorkCompleted()) {
-            System.out.println("waiting...");
-            Thread.sleep(1000); // Проверяем каждую секунду
-        }
-
-        // Завершаем работу пиццерии
         pizzeria.stop();
-        System.out.println("Thats all.");
+        System.out.println("Все заказы завершены. Пиццерия завершила работу.");
     }
 }

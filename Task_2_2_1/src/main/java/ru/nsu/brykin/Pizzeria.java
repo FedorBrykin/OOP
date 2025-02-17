@@ -1,17 +1,14 @@
 package ru.nsu.brykin;
 
-import java.util.Queue;
-import java.util.LinkedList;
-
 public class Pizzeria {
-    private final Queue<Order> orderQueue = new LinkedList<>();
+    private final OrderQueue orderQueue = new OrderQueue();
     private final Storage storage;
     private final Baker[] bakers;
     private final Courier[] couriers;
     private boolean isOpen = true;
-    private int activeOrders = 0;
+    private int activeOrders = 0; // Счетчик активных заказов
 
-    public Pizzeria(int N, int M, int T, int[] bakerSpeeds, int[] courierCapacities) {
+    public Pizzeria(int N, int M, int T, int[] bakerSpeeds, int[] courierCapacities, int[] courierDeliveryTimes) {
         this.storage = new Storage(T);
         this.bakers = new Baker[N];
         for (int i = 0; i < N; i++) {
@@ -19,7 +16,7 @@ public class Pizzeria {
         }
         this.couriers = new Courier[M];
         for (int i = 0; i < M; i++) {
-            couriers[i] = new Courier(courierCapacities[i], storage, this);
+            couriers[i] = new Courier(courierCapacities[i], courierDeliveryTimes[i], storage, this);
         }
     }
 
@@ -44,28 +41,22 @@ public class Pizzeria {
 
     public void placeOrder(Order order) {
         if (!isOpen) {
-            System.out.println("[" + order.getOrderId() + "] [declined]");
+            System.out.println("[" + order.getOrderId() + "] [заказ отклонен: пиццерия закрыта]");
             return;
         }
-
+        orderQueue.addOrder(order);
         synchronized (this) {
-            activeOrders++;
+            activeOrders++; // Увеличиваем счетчик активных заказов
         }
-
-        synchronized (orderQueue) {
-            orderQueue.add(order);
-            orderQueue.notifyAll();
-        }
-
-        System.out.println("[" + order.getOrderId() + "] [accepted]");
     }
 
+    // Уменьшаем счетчик активных заказов
     public synchronized void completeOrder() {
         activeOrders--;
         notifyAll();
     }
 
-    public synchronized boolean isWorkCompleted() {
+    public boolean isWorkCompleted() {
         synchronized (orderQueue) {
             synchronized (storage) {
                 return orderQueue.isEmpty() && storage.isEmpty() && activeOrders == 0;
