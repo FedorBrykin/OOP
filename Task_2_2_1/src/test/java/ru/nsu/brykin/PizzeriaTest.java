@@ -10,14 +10,15 @@ import org.junit.jupiter.api.Test;
 class PizzeriaTest {
     @Test
     void testPizzeriaNoOrders() throws InterruptedException {
-        int N = 2;
-        int M = 2;
-        int T = 5;
+        int n = 2;
+        int m = 2;
+        int t = 5;
         int[] bakerSpeeds = {1, 2};
         int[] courierCapacities = {1, 2};
         int[] courierDeliveryTimes = {1, 1};
 
-        Pizzeria pizzeria = new Pizzeria(N, M, T, bakerSpeeds, courierCapacities, courierDeliveryTimes);
+        Pizzeria pizzeria = new Pizzeria(n, m, t, bakerSpeeds, courierCapacities,
+                courierDeliveryTimes);
         pizzeria.start();
         Thread.sleep(1000);
         pizzeria.stop();
@@ -26,13 +27,14 @@ class PizzeriaTest {
 
     @Test
     void testPizzeriaManyOrders() throws InterruptedException {
-        int N = 2;
-        int M = 2;
-        int T = 5;
+        int n = 2;
+        int m = 2;
+        int t = 5;
         int[] bakerSpeeds = {1, 2};
         int[] courierCapacities = {1, 2};
         int[] courierDeliveryTimes = {1, 1};
-        Pizzeria pizzeria = new Pizzeria(N, M, T, bakerSpeeds, courierCapacities, courierDeliveryTimes);
+        Pizzeria pizzeria = new Pizzeria(n, m, t, bakerSpeeds, courierCapacities,
+                courierDeliveryTimes);
         pizzeria.start();
         for (int i = 1; i <= 10; i++) {
             pizzeria.placeOrder(new Order(i));
@@ -47,13 +49,14 @@ class PizzeriaTest {
 
     @Test
     void testPizzeriaEmptyStorage() throws InterruptedException {
-        int N = 1;
-        int M = 1;
-        int T = 1;
+        int n = 1;
+        int m = 1;
+        int t = 1;
         int[] bakerSpeeds = {1};
         int[] courierCapacities = {1};
         int[] courierDeliveryTimes = {1};
-        Pizzeria pizzeria = new Pizzeria(N, M, T, bakerSpeeds, courierCapacities, courierDeliveryTimes);
+        Pizzeria pizzeria = new Pizzeria(n, m, t, bakerSpeeds, courierCapacities,
+                courierDeliveryTimes);
         pizzeria.start();
         pizzeria.placeOrder(new Order(1));
         Thread.sleep(3000);

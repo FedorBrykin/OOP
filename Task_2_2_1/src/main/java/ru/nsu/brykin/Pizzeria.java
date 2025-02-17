@@ -14,15 +14,17 @@ public class Pizzeria {
     /**
      * как всё устроено.
      */
-    public Pizzeria(int N, int M, int T, int[] bakerSpeeds, int[] courierCapacities, int[] courierDeliveryTimes) {
-        this.storage = new Storage(T);
-        this.bakers = new Baker[N];
-        for (int i = 0; i < N; i++) {
+    public Pizzeria(int n, int m, int t, int[] bakerSpeeds, int[] courierCapacities,
+                    int[] courierDeliveryTimes) {
+        this.storage = new Storage(t);
+        this.bakers = new Baker[n];
+        for (int i = 0; i < n; i++) {
             bakers[i] = new Baker(bakerSpeeds[i], storage, orderQueue);
         }
-        this.couriers = new Courier[M];
-        for (int i = 0; i < M; i++) {
-            couriers[i] = new Courier(courierCapacities[i], courierDeliveryTimes[i], storage, this);
+        this.couriers = new Courier[m];
+        for (int i = 0; i < m; i++) {
+            couriers[i] = new Courier(courierCapacities[i], courierDeliveryTimes[i],
+                    storage, this);
         }
     }
 
@@ -56,7 +58,8 @@ public class Pizzeria {
      */
     public void placeOrder(Order order) {
         if (!isOpen) {
-            System.out.println("[" + order.getOrderId() + "] [заказ отклонен: пиццерия закрыта]");
+            System.out.println("[" + order.getOrderId() +
+                    "] [заказ отклонен: пиццерия закрыта]");
             return;
         }
         orderQueue.addOrder(order);

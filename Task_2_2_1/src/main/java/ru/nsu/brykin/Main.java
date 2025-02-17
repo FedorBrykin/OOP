@@ -2,7 +2,6 @@ package ru.nsu.brykin;
 
 
 import com.google.gson.Gson;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,7 +50,8 @@ public class Main {
     /**
      * запуск пиццерии.
      */
-    private static void runPizzeria(Pizzeria pizzeria, int workTimeSeconds, int orderDelayMillis) throws InterruptedException {
+    private static void runPizzeria(Pizzeria pizzeria, int workTimeSeconds,
+                                    int orderDelayMillis) throws InterruptedException {
         pizzeria.start();
 
         long startTime = System.currentTimeMillis();

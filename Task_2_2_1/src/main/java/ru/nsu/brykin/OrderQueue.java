@@ -1,7 +1,7 @@
 package ru.nsu.brykin;
 
-import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * очередь.
