@@ -58,8 +58,8 @@ public class Pizzeria {
      */
     public void placeOrder(Order order) {
         if (!isOpen) {
-            System.out.println("[" + order.getOrderId() +
-                    "] [заказ отклонен: пиццерия закрыта]");
+            System.out.println("[" + order.getOrderId()
+                    + "] [заказ отклонен: пиццерия закрыта]");
             return;
         }
         orderQueue.addOrder(order);

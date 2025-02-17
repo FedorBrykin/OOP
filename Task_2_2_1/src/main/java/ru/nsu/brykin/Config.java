@@ -4,22 +4,22 @@ package ru.nsu.brykin;
  * для json-ов.
  */
 class Config {
-    private int n;
-    private int m;
-    private int t;
+    private int n1;
+    private int m1;
+    private int t1;
     private int[] bakerSpeeds;
     private int[] courierCapacities;
 
     public int getN() {
-        return n;
+        return n1;
     }
 
     public int getM() {
-        return m;
+        return m1;
     }
 
     public int getT() {
-        return t;
+        return t1;
     }
 
     public int[] getBakerSpeeds() {
