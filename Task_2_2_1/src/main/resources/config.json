@@ -1,0 +1,8 @@
+{
+  "N": 2,
+  "M": 2,
+  "T": 5,
+  "bakerSpeeds": [1, 2],
+  "courierCapacities": [1, 2],
+  "deliveryTimes": [1, 2]
+}
