@@ -28,7 +28,7 @@ public class OrderQueue {
     }
 
     /**
-     * empty?.
+     * проверка на пустоту хранилища.
      */
     public synchronized boolean isEmpty() {
         return queue.isEmpty();
