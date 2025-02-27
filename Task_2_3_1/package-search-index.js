@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ru.nsu.brykin.main"},{"l":"ru.nsu.brykin.model"},{"l":"ru.nsu.brykin.view"}];updateSearchResults();
