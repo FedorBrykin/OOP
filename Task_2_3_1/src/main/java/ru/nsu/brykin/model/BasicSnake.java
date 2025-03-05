@@ -1,31 +1,21 @@
 package ru.nsu.brykin.model;
 
 import java.util.LinkedList;
+import java.util.List;
 
-public class SnakeModel {
-
-    public enum Direction {
-        UP, DOWN, LEFT, RIGHT
-    }
-
-    public static class Point {
-        public int x, y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
+public class BasicSnake implements Snake {
     private LinkedList<Point> body;
     private Direction direction;
 
-    public SnakeModel(int startX, int startY) {
+    public BasicSnake(int startX, int startY, int initialLength) {
         body = new LinkedList<>();
-        body.add(new Point(startX, startY));
+        for (int i = 0; i < initialLength; i++) {
+            body.add(new Point(startX - i, startY));
+        }
         direction = Direction.RIGHT;
     }
 
+    @Override
     public void move() {
         Point head = getHead();
         Point newHead = new Point(head.x, head.y);
@@ -49,23 +39,23 @@ public class SnakeModel {
         body.removeLast();
     }
 
+    @Override
     public void grow() {
-        Point tail = getTail();
+        Point tail = body.getLast();
         body.addLast(new Point(tail.x, tail.y));
     }
 
+    @Override
+    public List<Point> getBody() {
+        return body;
+    }
+
+    @Override
     public Point getHead() {
         return body.getFirst();
     }
 
-    public Point getTail() {
-        return body.getLast();
-    }
-
-    public LinkedList<Point> getBody() {
-        return body;
-    }
-
+    @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
