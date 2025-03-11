@@ -75,7 +75,6 @@ public class GameModel {
         return food;
     }
 
-    // Добавляем метод getConfig()
     public GameConfig getConfig() {
         return config;
     }

@@ -1,5 +1,7 @@
 package ru.nsu.brykin.view;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,27 +25,21 @@ public class GameController {
     private Timeline timeline;
     private double cellWidth;
     private double cellHeight;
+    private BooleanProperty gameOver = new SimpleBooleanProperty(false);
 
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
         gameModel = new GameModel(new GameConfig());
-
-        // Рассчитываем размер клетки на основе размера поля
         cellWidth = gameCanvas.getWidth() / gameModel.getConfig().getWidth();
         cellHeight = gameCanvas.getHeight() / gameModel.getConfig().getHeight();
-
-        gameOverLabel.setVisible(false);
-
-        // Устанавливаем фокус на Canvas
+        gameOverLabel.visibleProperty().bind(gameOver);
         gameCanvas.setFocusTraversable(true);
         gameCanvas.requestFocus();
-
-        // Запуск игрового цикла
         timeline = new Timeline(new KeyFrame(Duration.millis(200), event -> {
             if (gameModel.isGameOver()) {
                 gameOverLabel.setText(gameModel.isWin() ? "You Win!" : "Game Over");
-                gameOverLabel.setVisible(true);
+                gameOver.set(true);
                 timeline.stop();
             } else {
                 gameModel.update();
@@ -77,10 +73,7 @@ public class GameController {
     }
 
     private void drawGame() {
-        // Очищаем Canvas
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
-
-        // Отрисовываем змейку и еду
         drawSnake();
         drawFood();
     }
@@ -95,5 +88,9 @@ public class GameController {
     private void drawFood() {
         gc.setFill(Color.RED);
         gc.fillOval(gameModel.getFood().getX() * cellWidth, gameModel.getFood().getY() * cellHeight, cellWidth, cellHeight);
+    }
+
+    public BooleanProperty gameOverProperty() {
+        return gameOver;
     }
 }
