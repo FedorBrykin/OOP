@@ -1,13 +1,22 @@
 package ru.nsu.brykin.model;
 
+/**
+ * очки.
+ */
 public class Point {
     public int x, y;
 
+    /**
+     * очки.
+     */
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * ==.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Point) {
@@ -17,6 +26,9 @@ public class Point {
         return false;
     }
 
+    /**
+     * hashCode.
+     */
     @Override
     public int hashCode() {
         return 31 * x + y;

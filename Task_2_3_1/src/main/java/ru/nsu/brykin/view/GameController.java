@@ -1,5 +1,7 @@
 package ru.nsu.brykin.view;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -8,11 +10,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 import ru.nsu.brykin.model.*;
 
+/**
+ * играем.
+ */
 public class GameController {
 
     @FXML
@@ -72,12 +75,18 @@ public class GameController {
         }
     }
 
+    /**
+     * теперь я определяю реальность!.
+     */
     private void drawGame() {
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         drawSnake();
         drawFood();
     }
 
+    /**
+     * питон, который съел слона.
+     */
     private void drawSnake() {
         gc.setFill(Color.GREEN);
         for (Point point : gameModel.getSnake().getBody()) {
@@ -85,11 +94,17 @@ public class GameController {
         }
     }
 
+    /**
+     * слон)).
+     */
     private void drawFood() {
         gc.setFill(Color.RED);
         gc.fillOval(gameModel.getFood().getX() * cellWidth, gameModel.getFood().getY() * cellHeight, cellWidth, cellHeight);
     }
 
+    /**
+     * gameOverProperty.
+     */
     public BooleanProperty gameOverProperty() {
         return gameOver;
     }

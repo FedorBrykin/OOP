@@ -1,6 +1,9 @@
 package ru.nsu.brykin.model;
 
 
+/**
+ * В игру Джон, в игру!.
+ */
 public class GameModel {
     private Snake snake;
     private Food food;
@@ -8,6 +11,9 @@ public class GameModel {
     private boolean isGameOver;
     private boolean isWin;
 
+    /**
+     * В игру Джон, в игру!).
+     */
     public GameModel(GameConfig config) {
         this.config = config;
         snake = new BasicSnake(config.getWidth() / 2, config.getHeight() / 2, config.getInitialSnakeLength());
@@ -15,6 +21,9 @@ public class GameModel {
         food.spawn(config.getWidth(), config.getHeight(), snake.getBody());
     }
 
+    /**
+     * релиз не ждёт.
+     */
     public void update() {
         if (isGameOver) {
             return;
@@ -26,6 +35,9 @@ public class GameModel {
         checkWin();
     }
 
+    /**
+     * Титаник должен видеть айсберг!.
+     */
     private void checkCollision() {
         Point head = snake.getHead();
         if (head.x < 0 || head.x >= config.getWidth() || head.y < 0 || head.y >= config.getHeight()) {
@@ -41,6 +53,9 @@ public class GameModel {
         }
     }
 
+    /**
+     * есть поесть?.
+     */
     private void checkFood() {
         if (snake.getHead().x == food.getX() && snake.getHead().y == food.getY()) {
             snake.grow();
@@ -48,6 +63,9 @@ public class GameModel {
         }
     }
 
+    /**
+     * победа.
+     */
     private void checkWin() {
         if (snake.getBody().size() >= config.getWinLength()) {
             isWin = true;
@@ -55,26 +73,44 @@ public class GameModel {
         }
     }
 
+    /**
+     * увы, на этом всё(.
+     */
     private void gameOver() {
         isGameOver = true;
     }
 
+    /**
+     * или нет?.
+     */
     public boolean isGameOver() {
         return isGameOver;
     }
 
+    /**
+     * неужели?.
+     */
     public boolean isWin() {
         return isWin;
     }
 
+    /**
+     * а где?.
+     */
     public Snake getSnake() {
         return snake;
     }
 
+    /**
+     * (п)обедать.
+     */
     public Food getFood() {
         return food;
     }
 
+    /**
+     * правила.
+     */
     public GameConfig getConfig() {
         return config;
     }
