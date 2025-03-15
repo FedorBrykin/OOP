@@ -34,6 +34,9 @@ public class GameController {
     private double cellHeight;
     private BooleanProperty gameOver = new SimpleBooleanProperty(false);
 
+    /**
+     * создание мира.
+     */
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
@@ -57,6 +60,9 @@ public class GameController {
         timeline.play();
     }
 
+    /**
+     * KeyPress.
+     */
     @FXML
     public void handleKeyPress(KeyEvent event) {
         if (gameModel.isGameOver()) {
