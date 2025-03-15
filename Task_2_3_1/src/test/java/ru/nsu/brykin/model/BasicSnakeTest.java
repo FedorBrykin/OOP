@@ -14,8 +14,8 @@ class BasicSnakeTest {
         BasicSnake snake = new BasicSnake(5, 5, 3);
         snake.setDirection(Direction.RIGHT);
         snake.move();
-        assertEquals(6, snake.getHead().x);
-        assertEquals(5, snake.getHead().y);
+        assertEquals(6, snake.getHead().posX);
+        assertEquals(5, snake.getHead().posY);
         assertEquals(3, snake.getBody().size());
     }
 

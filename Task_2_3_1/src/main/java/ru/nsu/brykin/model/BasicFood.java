@@ -7,22 +7,23 @@ import java.util.Random;
  * еда.
  */
 public class BasicFood implements Food {
-    private int x, y;
+    private int posX;
+    private int posY;
 
     /**
-     * координата по x.
+     * координата по posX.
      */
     @Override
     public int getX() {
-        return x;
+        return posX;
     }
 
     /**
-     * координата по y.
+     * координата по posY.
      */
     @Override
     public int getY() {
-        return y;
+        return posY;
     }
 
     /**
@@ -32,9 +33,9 @@ public class BasicFood implements Food {
     public void spawn(int maxX, int maxY, List<Point> snakeBody) {
         Random random = new Random();
         do {
-            x = random.nextInt(maxX);
-            y = random.nextInt(maxY);
-        } while (snakeBody.contains(new Point(x, y)));
+            posX = random.nextInt(maxX);
+            posY = random.nextInt(maxY);
+        } while (snakeBody.contains(new Point(posX, posY)));
     }
 
     /**

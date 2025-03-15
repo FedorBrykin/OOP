@@ -11,7 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import ru.nsu.brykin.model.*;
+import ru.nsu.brykin.model.Direction;
+import ru.nsu.brykin.model.GameConfig;
+import ru.nsu.brykin.model.GameModel;
+import ru.nsu.brykin.model.Point;
+
 
 /**
  * играем.
@@ -72,6 +76,8 @@ public class GameController {
             case RIGHT:
                 gameModel.getSnake().setDirection(Direction.RIGHT);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected direction");
         }
     }
 
@@ -90,7 +96,8 @@ public class GameController {
     private void drawSnake() {
         gc.setFill(Color.GREEN);
         for (Point point : gameModel.getSnake().getBody()) {
-            gc.fillRect(point.x * cellWidth, point.y * cellHeight, cellWidth, cellHeight);
+            gc.fillRect(point.posX * cellWidth,
+                    point.posY * cellHeight, cellWidth, cellHeight);
         }
     }
 
@@ -99,7 +106,8 @@ public class GameController {
      */
     private void drawFood() {
         gc.setFill(Color.RED);
-        gc.fillOval(gameModel.getFood().getX() * cellWidth, gameModel.getFood().getY() * cellHeight, cellWidth, cellHeight);
+        gc.fillOval(gameModel.getFood().getX() * cellWidth,
+                gameModel.getFood().getY() * cellHeight, cellWidth, cellHeight);
     }
 
     /**

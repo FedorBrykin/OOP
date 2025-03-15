@@ -4,14 +4,15 @@ package ru.nsu.brykin.model;
  * очки.
  */
 public class Point {
-    public int x, y;
+    public int posX;
+    public int posY;
 
     /**
      * очки.
      */
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Point(int posX, int posY) {
+        this.posX = posX;
+        this.posY = posY;
     }
 
     /**
@@ -21,7 +22,7 @@ public class Point {
     public boolean equals(Object obj) {
         if (obj instanceof Point) {
             Point other = (Point) obj;
-            return this.x == other.x && this.y == other.y;
+            return this.posX == other.posX && this.posY == other.posY;
         }
         return false;
     }
@@ -31,6 +32,6 @@ public class Point {
      */
     @Override
     public int hashCode() {
-        return 31 * x + y;
+        return 31 * posX + posY;
     }
 }
