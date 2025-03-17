@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+
+<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.brykin.view.GameController">
+    <Canvas fx:id="gameCanvas" width="400" height="400" onKeyPressed="#handleKeyPress" />
+    <Label fx:id="gameOverLabel" text="Game Over" visible="false" />
+</StackPane>
