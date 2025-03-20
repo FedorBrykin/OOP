@@ -11,11 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import ru.nsu.brykin.model.Direction;
-import ru.nsu.brykin.model.GameConfig;
-import ru.nsu.brykin.model.GameModel;
-import ru.nsu.brykin.model.Point;
-
+import ru.nsu.brykin.model.*;
 
 /**
  * играем.
@@ -32,7 +28,7 @@ public class GameController {
     private Timeline timeline;
     private double cellWidth;
     private double cellHeight;
-    private BooleanProperty gameOver = new SimpleBooleanProperty(false);
+    private final BooleanProperty gameOver = new SimpleBooleanProperty(false);
 
     /**
      * создание мира.
@@ -43,9 +39,11 @@ public class GameController {
         gameModel = new GameModel(new GameConfig());
         cellWidth = gameCanvas.getWidth() / gameModel.getConfig().getWidth();
         cellHeight = gameCanvas.getHeight() / gameModel.getConfig().getHeight();
+
         gameOverLabel.visibleProperty().bind(gameOver);
         gameCanvas.setFocusTraversable(true);
         gameCanvas.requestFocus();
+
         timeline = new Timeline(new KeyFrame(Duration.millis(200), event -> {
             if (gameModel.isGameOver()) {
                 gameOverLabel.setText(gameModel.isWin() ? "You Win!" : "Game Over");
@@ -69,21 +67,14 @@ public class GameController {
             return;
         }
 
+        Snake playerSnake = gameModel.getSnakes().get(0);
+
         switch (event.getCode()) {
-            case UP:
-                gameModel.getSnake().setDirection(Direction.UP);
-                break;
-            case DOWN:
-                gameModel.getSnake().setDirection(Direction.DOWN);
-                break;
-            case LEFT:
-                gameModel.getSnake().setDirection(Direction.LEFT);
-                break;
-            case RIGHT:
-                gameModel.getSnake().setDirection(Direction.RIGHT);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected direction");
+            case UP -> playerSnake.setDirection(Direction.UP);
+            case DOWN -> playerSnake.setDirection(Direction.DOWN);
+            case LEFT -> playerSnake.setDirection(Direction.LEFT);
+            case RIGHT -> playerSnake.setDirection(Direction.RIGHT);
+            default -> throw new IllegalStateException("Unexpected direction: " + event.getCode());
         }
     }
 
@@ -92,6 +83,7 @@ public class GameController {
      */
     private void drawGame() {
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+
         drawSnake();
         drawFood();
     }
@@ -100,10 +92,11 @@ public class GameController {
      * питон, который съел слона.
      */
     private void drawSnake() {
-        gc.setFill(Color.GREEN);
-        for (Point point : gameModel.getSnake().getBody()) {
-            gc.fillRect(point.posX * cellWidth,
-                    point.posY * cellHeight, cellWidth, cellHeight);
+        for (Snake snake : gameModel.getSnakes()) {
+            gc.setFill(snake instanceof RobotSnake ? Color.BLUE : Color.GREEN);
+            for (Point point : snake.getBody()) {
+                gc.fillRect(point.posX * cellWidth, point.posY * cellHeight, cellWidth, cellHeight);
+            }
         }
     }
 
