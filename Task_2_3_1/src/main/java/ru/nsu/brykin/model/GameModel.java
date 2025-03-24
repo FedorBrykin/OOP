@@ -24,7 +24,8 @@ public class GameModel {
 
         snakes.add(new RobotSnake(5, 5, config.getInitialSnakeLength(), new RandomBehavior()));
         snakes.add(new RobotSnake(15, 15, config.getInitialSnakeLength(), new ChaseFoodBehavior()));
-        snakes.add(new RobotSnake(10, 10, config.getInitialSnakeLength(), new AvoidObstaclesBehavior()));
+        snakes.add(new RobotSnake(10, 10, config.getInitialSnakeLength(),
+                new AvoidObstaclesBehavior()));
 
         food = new BasicFood();
         food.spawn(config.getWidth(), config.getHeight(), getAllSnakeBodies());

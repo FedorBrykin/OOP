@@ -9,7 +9,8 @@ public class RobotSnake extends BasicSnake {
     /**
      * Конструктор змейки-робота.
      */
-    public RobotSnake(int startX, int startY, int initialLength, BehaviorStrategy behaviorStrategy) {
+    public RobotSnake(int startX, int startY, int initialLength,
+                      BehaviorStrategy behaviorStrategy) {
         super(startX, startY, initialLength);
         this.behaviorStrategy = behaviorStrategy;
     }

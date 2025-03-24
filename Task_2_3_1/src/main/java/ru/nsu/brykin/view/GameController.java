@@ -11,7 +11,13 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import ru.nsu.brykin.model.*;
+import ru.nsu.brykin.model.Direction;
+import ru.nsu.brykin.model.GameConfig;
+import ru.nsu.brykin.model.GameModel;
+import ru.nsu.brykin.model.Point;
+import ru.nsu.brykin.model.RobotSnake;
+import ru.nsu.brykin.model.Snake;
+
 
 /**
  * играем.
