@@ -185,4 +185,21 @@ public class GameModel {
         }
         return obstacles;
     }
+
+    /**
+     * Проверяет, занята ли точка препятствием (границы поля или тела змеек).
+     */
+    public boolean isPointOccupied(Point point) {
+        if (point.posX < 0 || point.posX >= config.getWidth()
+                || point.posY < 0 || point.posY >= config.getHeight()) {
+            return true;
+        }
+        for (Snake snake : snakes) {
+            if (snake.getBody().contains(point)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
