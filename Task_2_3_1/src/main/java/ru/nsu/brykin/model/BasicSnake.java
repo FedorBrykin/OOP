@@ -27,24 +27,7 @@ public class BasicSnake implements Snake {
     @Override
     public void move() {
         Point head = getHead();
-        Point newHead = new Point(head.posX, head.posY);
-
-        switch (direction) {
-            case UP:
-                newHead.posY--;
-                break;
-            case DOWN:
-                newHead.posY++;
-                break;
-            case LEFT:
-                newHead.posX--;
-                break;
-            case RIGHT:
-                newHead.posX++;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected direction: " + direction);
-        }
+        Point newHead = direction.movePoint(head);
 
         body.addFirst(newHead);
         body.removeLast();
