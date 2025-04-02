@@ -42,21 +42,21 @@ public class PrimeCheckerTest {
     public void testAllPrimes() throws Exception {
         List<Integer> primes = Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19);
         boolean result = master.checkForComposite(primes);
-        assertFalse("Ожидалось, что все числа простые", result);
+        assertFalse("все числа простые", result);
     }
 
     @Test
     public void testAllComposites() throws Exception {
         List<Integer> composites = Arrays.asList(4, 6, 8, 9, 10, 12, 14, 15);
         boolean result = master.checkForComposite(composites);
-        assertTrue("Ожидалось, что все числа составные", result);
+        assertTrue("все числа составные", result);
     }
 
     @Test
     public void testMixedNumbers() throws Exception {
         List<Integer> mixed = Arrays.asList(2, 3, 4, 5, 6, 7, 8, 9);
         boolean result = master.checkForComposite(mixed);
-        assertTrue("Ожидалось наличие составных чисел", result);
+        assertTrue("наличие составных чисел", result);
     }
 
     @Test
