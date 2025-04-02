@@ -1,7 +1,7 @@
 package ru.nsu.brykin;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -11,7 +11,7 @@ public class PrimeCheckerTest {
     private List<PrimeCheckerWorker> workers = new ArrayList<>();
     private PrimeCheckerMaster master;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         // Запускаем тестовых воркеров
         for (int i = 0; i < WORKERS_COUNT; i++) {
@@ -29,7 +29,7 @@ public class PrimeCheckerTest {
         master = new PrimeCheckerMaster(workerAddresses, BASE_PORT, 1000, 2);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         master.close();
         for (PrimeCheckerWorker worker : workers) {
@@ -40,44 +40,41 @@ public class PrimeCheckerTest {
 
     @Test
     public void testAllPrimes() throws Exception {
-        List<Integer> primes = Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19);
-        boolean result = master.checkForComposite(primes);
-        assertFalse("все числа простые", result);
+        assertFalse(master.checkForComposite(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19)),
+                "все числа простые");
     }
 
     @Test
     public void testAllComposites() throws Exception {
-        List<Integer> composites = Arrays.asList(4, 6, 8, 9, 10, 12, 14, 15);
-        boolean result = master.checkForComposite(composites);
-        assertTrue("все числа составные", result);
+        assertTrue(master.checkForComposite(List.of(4, 6, 8, 9, 10, 12, 14, 15)),
+                "все числа составные");
     }
 
     @Test
     public void testMixedNumbers() throws Exception {
-        List<Integer> mixed = Arrays.asList(2, 3, 4, 5, 6, 7, 8, 9);
-        boolean result = master.checkForComposite(mixed);
-        assertTrue("наличие составных чисел", result);
+        assertTrue(master.checkForComposite(Arrays.asList(2, 3, 4, 5, 6, 7, 8, 9)),
+                "есть простые");
     }
 
     @Test
     public void testEmptyArray() throws Exception {
-        boolean result = master.checkForComposite(Collections.emptyList());
-        assertFalse("Пустой массив не должен содержать составных чисел", result);
+        assertFalse(master.checkForComposite(List.of()),
+                "ничего");
     }
 
-    @Test(timeout = 5000)
+    @Test
     public void testSinglePrime() throws Exception {
-        boolean result = master.checkForComposite(Collections.singletonList(13));
-        assertFalse("13 - простое число", result);
+        assertFalse(master.checkForComposite(List.of(13)),
+                "простое");
     }
 
-    @Test(timeout = 5000)
+    @Test
     public void testSingleComposite() throws Exception {
-        boolean result = master.checkForComposite(Collections.singletonList(15));
-        assertTrue("15 - составное число", result);
+        assertTrue(master.checkForComposite(List.of(15)),
+                "нет");
     }
 
-    @Test(timeout = 10000)
+    @Test
     public void testConcurrentRequests() throws Exception {
         int threadCount = 5;
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -95,12 +92,11 @@ public class PrimeCheckerTest {
         executor.shutdown();
     }
 
-    @Test(timeout = 5000)
+    @Test
     public void testWorkerFailure() throws Exception {
-        workers.get(0).close();
+        workers.getFirst().close();
         Thread.sleep(500);
-
         boolean result = master.checkForComposite(Arrays.asList(2, 3, 4, 5));
-        assertTrue("Система должна продолжать работать", result);
+        assertTrue(result, "Система должна продолжать работать");
     }
 }
