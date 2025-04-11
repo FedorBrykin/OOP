@@ -1,102 +1,121 @@
 package ru.nsu.brykin;
 
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-import java.util.*;
-import java.util.concurrent.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 public class PrimeCheckerTest {
-    private static final int BASE_PORT = 12350;
-    private static final int WORKERS_COUNT = 3;
-    private List<PrimeCheckerWorker> workers = new ArrayList<>();
-    private PrimeCheckerMaster master;
+    private static final int TEST_PORT = 8080;
+    private PrimeCheckerWorker worker;
+    private Thread workerThread;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        // Запускаем тестовых воркеров
-        for (int i = 0; i < WORKERS_COUNT; i++) {
-            int port = BASE_PORT + i;
-            PrimeCheckerWorker worker = new PrimeCheckerWorker(port);
-            worker.start();
-            workers.add(worker);
-        }
-
-        // Создаем мастера
-        List<String> workerAddresses = new ArrayList<>();
-        for (int i = 0; i < WORKERS_COUNT; i++) {
-            workerAddresses.add("127.0.0.1:" + (BASE_PORT + i));
-        }
-        master = new PrimeCheckerMaster(workerAddresses, BASE_PORT, 1000, 2);
+    void startWorker() throws IOException {
+        worker = new PrimeCheckerWorker();
+        workerThread = new Thread(() -> {
+            try {
+                worker.startServer(TEST_PORT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        workerThread.start();
+        // Даем время на запуск сервера
+        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        master.close();
-        for (PrimeCheckerWorker worker : workers) {
-            worker.close();
+    void stopWorker() {
+        worker.stopServer();
+        workerThread.interrupt();
+    }
+
+    @Test
+    @Timeout(5)
+    void testSinglePrimeBatch() throws Exception {
+        try (Socket socket = new Socket("localhost", TEST_PORT);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            List<Integer> primes = Arrays.asList(2, 3, 5, 7, 11);
+            out.writeObject(primes);
+            out.flush();
+
+            boolean result = (Boolean) in.readObject();
+            assertFalse(result, "Batch should not contain composite numbers");
         }
-        Thread.sleep(200);
     }
 
     @Test
-    public void testAllPrimes() throws Exception {
-        assertFalse(master.checkForComposite(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19)),
-                "все числа простые");
+    @Timeout(5)
+    void testSingleCompositeBatch() throws Exception {
+        try (Socket socket = new Socket("localhost", TEST_PORT);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            List<Integer> composites = Arrays.asList(4, 6, 8, 9, 10);
+            out.writeObject(composites);
+            out.flush();
+
+            boolean result = (Boolean) in.readObject();
+            assertTrue(result, "Batch should contain composite numbers");
+        }
     }
 
     @Test
-    public void testAllComposites() throws Exception {
-        assertTrue(master.checkForComposite(List.of(4, 6, 8, 9, 10, 12, 14, 15)),
-                "все числа составные");
+    @Timeout(5)
+    void testMixedBatch() throws Exception {
+        try (Socket socket = new Socket("localhost", TEST_PORT);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            List<Integer> mixed = Arrays.asList(2, 3, 4, 5, 6);
+            out.writeObject(mixed);
+            out.flush();
+
+            boolean result = (Boolean) in.readObject();
+            assertTrue(result, "Mixed batch should contain composite numbers");
+        }
     }
 
     @Test
-    public void testMixedNumbers() throws Exception {
-        assertTrue(master.checkForComposite(Arrays.asList(2, 3, 4, 5, 6, 7, 8, 9)),
-                "есть простые");
-    }
-
-    @Test
-    public void testEmptyArray() throws Exception {
-        assertFalse(master.checkForComposite(List.of()),
-                "ничего");
-    }
-
-    @Test
-    public void testSinglePrime() throws Exception {
-        assertFalse(master.checkForComposite(List.of(13)),
-                "простое");
-    }
-
-    @Test
-    public void testSingleComposite() throws Exception {
-        assertTrue(master.checkForComposite(List.of(15)),
-                "нет");
-    }
-
-    @Test
-    public void testConcurrentRequests() throws Exception {
-        int threadCount = 5;
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+    @Timeout(5)
+    void testConcurrentRequests() throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
         List<Future<Boolean>> futures = new ArrayList<>();
 
-        for (int i = 0; i < threadCount; i++) {
-            List<Integer> numbers = Arrays.asList(12 + i, 13 + i, 14 + i, 15 + i);
-            futures.add(executor.submit(() -> master.checkForComposite(numbers)));
+        for (int i = 0; i < 3; i++) {
+            futures.add(executor.submit(() -> {
+                try (Socket socket = new Socket("localhost", TEST_PORT);
+                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                     ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+                    List<Integer> numbers = Arrays.asList(12, 13, 14, 15);
+                    out.writeObject(numbers);
+                    out.flush();
+                    return (Boolean) in.readObject();
+                }
+            }));
         }
 
         for (Future<Boolean> future : futures) {
-            assertNotNull(future.get(2, TimeUnit.SECONDS));
+            assertTrue(future.get(2, TimeUnit.SECONDS));
         }
 
         executor.shutdown();
-    }
-
-    @Test
-    public void testWorkerFailure() throws Exception {
-        workers.getFirst().close();
-        Thread.sleep(500);
-        boolean result = master.checkForComposite(Arrays.asList(2, 3, 4, 5));
-        assertTrue(result, "Система должна продолжать работать");
     }
 }

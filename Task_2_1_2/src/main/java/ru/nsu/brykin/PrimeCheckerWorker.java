@@ -1,93 +1,110 @@
 package ru.nsu.brykin;
 
-import java.io.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
-import java.util.concurrent.*;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class PrimeCheckerWorker implements AutoCloseable {
-    private final int port;
-    private ServerSocket serverSocket;
-    private final ExecutorService executor;
-    private volatile boolean running = true;
+public class PrimeCheckerWorker {
+    private static final int MULTICAST_PORT = 8888;
+    private static final String MULTICAST_GROUP = "230.0.0.0";
+    private static final int SERVER_PORT = 8080;
 
-    public PrimeCheckerWorker(int port) {
-        this.port = port;
-        this.executor = Executors.newFixedThreadPool(10);
-    }
+    public static void main(String[] args) throws IOException {
+        announcePresence();
 
-    public void start() throws IOException {
-        serverSocket = new ServerSocket(port);
-        System.out.println("Worker started on port " + port);
+        try (ServerSocket serverSocket = new ServerSocket(SERVER_PORT)) {
+            System.out.println("Worker started on " + getLocalAddress() + ":" + SERVER_PORT);
+            while (true) {
+                try (Socket client = serverSocket.accept();
+                     ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+                     ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream())) {
 
-        executor.submit(() -> {
-            while (running) {
-                try {
-                    Socket clientSocket = serverSocket.accept();
-                    executor.submit(() -> handleClient(clientSocket));
-                } catch (SocketException e) {
-                    if (running) {
-                        System.err.println("Worker socket error: " + e.getMessage());
-                    }
-                } catch (IOException e) {
-                    System.err.println("Worker accept error: " + e.getMessage());
-                }
-            }
-        });
-    }
-
-    private void handleClient(Socket clientSocket) {
-        try (DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-             DataInputStream in = new DataInputStream(clientSocket.getInputStream())) {
-
-            while (running) {
-                try {
-                    int number = in.readInt();
-                    if (number == -1) break;
-
-                    boolean isPrime = isPrime(number);
-                    out.writeBoolean(!isPrime);
+                    List<Integer> numbers = (List<Integer>) in.readObject();
+                    boolean hasComposite = checkBatch(numbers);
+                    out.writeObject(hasComposite);
                     out.flush();
-                } catch (EOFException | SocketException e) {
-                    break;
+
                 } catch (Exception e) {
                     System.err.println("Error processing request: " + e.getMessage());
-                    break;
                 }
-            }
-        } catch (Exception e) {
-            System.err.println("Client handling error: " + e.getMessage());
-        } finally {
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                System.err.println("Error closing client socket: " + e.getMessage());
             }
         }
     }
 
-    private boolean isPrime(int number) {
-        if (number <= 1) return false;
-        if (number == 2) return true;
-        if (number % 2 == 0) return false;
-
-        for (int i = 3; i * i <= number; i += 2) {
-            if (number % i == 0) {
-                return false;
+    private static void announcePresence() throws IOException {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                try (DatagramSocket socket = new DatagramSocket()) {
+                    String msg = "PRIME_WORKER:" + SERVER_PORT;
+                    byte[] buf = msg.getBytes();
+                    InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, group, MULTICAST_PORT);
+                    socket.send(packet);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }, 0, 3000); // Отправляем каждые 3 секунды
+    }
+
+    static boolean checkBatch(List<Integer> numbers) {
+        return numbers.stream().anyMatch(n -> !isPrime(n));
+    }
+
+    static boolean isPrime(int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) return false;
         }
         return true;
     }
 
-    @Override
-    public void close() {
-        running = false;
-        executor.shutdownNow();
+    private static String getLocalAddress() {
         try {
-            if (serverSocket != null && !serverSocket.isClosed()) {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "127.0.0.1";
+        }
+    }
+
+    private ServerSocket serverSocket;
+    private volatile boolean running = true;
+
+    // Для тестов
+    public void startServer(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+        while (running) {
+            try (Socket client = serverSocket.accept();
+                 ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+                 ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream())) {
+
+                List<Integer> numbers = (List<Integer>) in.readObject();
+                boolean hasComposite = checkBatch(numbers);
+                out.writeObject(hasComposite);
+                out.flush();
+
+            } catch (Exception e) {
+                if (running) {
+                    System.err.println("Error processing request: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void stopServer() {
+        running = false;
+        try {
+            if (serverSocket != null) {
                 serverSocket.close();
             }
         } catch (IOException e) {
-            System.err.println("Error closing server socket: " + e.getMessage());
+            System.err.println("Error closing server: " + e.getMessage());
         }
+
     }
 }
