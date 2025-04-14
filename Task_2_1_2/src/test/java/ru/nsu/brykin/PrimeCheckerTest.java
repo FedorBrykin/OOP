@@ -34,13 +34,17 @@ public class PrimeCheckerTest {
             try {
                 worker.startServer(TEST_PORT);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Failed to start worker server: " + e.getMessage());
+                throw new RuntimeException("Worker server startup failed", e);
             }
         });
         workerThread.start();
+
         try {
             Thread.sleep(500);
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Worker thread interrupted during startup", e);
         }
     }
 
