@@ -1,8 +1,17 @@
 package ru.nsu.brykin;
 
 
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.MulticastSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,6 +19,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * master.
+ */
 public class PrimeCheckerMaster {
     private static final int MULTICAST_PORT = 8888;
     private static final String MULTICAST_GROUP = "230.0.0.0";
@@ -19,6 +31,9 @@ public class PrimeCheckerMaster {
     private final ConcurrentLinkedQueue<InetSocketAddress> workers = new ConcurrentLinkedQueue<>();
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
+    /**
+     * main.
+     */
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Usage: java PrimeCheckerMaster <numbers_file>");
@@ -30,6 +45,9 @@ public class PrimeCheckerMaster {
         master.processNumbers(args[0]);
     }
 
+    /**
+     * Слушаем сообщения от воркеров.
+     */
     void startDiscoveryListener() {
         new Thread(() -> {
             try (MulticastSocket socket = new MulticastSocket(MULTICAST_PORT)) {
@@ -56,6 +74,9 @@ public class PrimeCheckerMaster {
         }).start();
     }
 
+    /**
+     * Читаем числа и распределяем по воркерам.
+     */
     void processNumbers(String filename) {
         try (Scanner scanner = new Scanner(new File(filename))) {
             List<Integer> batch = new ArrayList<>(BATCH_SIZE);
@@ -74,6 +95,9 @@ public class PrimeCheckerMaster {
         }
     }
 
+    /**
+     * Отправляем воркеру.
+     */
     private void dispatchBatch(List<Integer> batch) {
         while (workers.isEmpty()) {
             System.err.println("No workers available, waiting...");
@@ -108,6 +132,9 @@ public class PrimeCheckerMaster {
         });
     }
 
+    /**
+     * Ищем воркеров.
+     */
     private void sendWorkerDiscoveryRequest() {
         try (DatagramSocket socket = new DatagramSocket()) {
             String msg = "PRIME_MASTER_DISCOVERY";

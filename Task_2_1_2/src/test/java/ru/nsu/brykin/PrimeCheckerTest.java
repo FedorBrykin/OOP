@@ -18,6 +18,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
+/**
+ * Тестики.
+ */
 public class PrimeCheckerTest {
     private static final int TEST_PORT = 8080;
     private PrimeCheckerWorker worker;

@@ -1,9 +1,23 @@
 package ru.nsu.brykin;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ * Воркеры.
+ */
 public class PrimeCheckerWorker {
     private static final int MULTICAST_PORT = 8888;
     private static final String MULTICAST_GROUP = "230.0.0.0";
@@ -13,11 +27,17 @@ public class PrimeCheckerWorker {
     private ServerSocket serverSocket;
     private Timer announcementTimer;
 
+    /**
+     * Запуск воркера.
+     */
     public void start() throws IOException {
         startServer(DEFAULT_PORT);
         startAnnouncement();
     }
 
+    /**
+     * Запуск сервера.
+     */
     public void startServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Worker started on " + getLocalAddress() + ":" + port);
@@ -42,6 +62,9 @@ public class PrimeCheckerWorker {
         }
     }
 
+    /**
+     * Запуск анонсирования.
+     */
     private void startAnnouncement() {
         announcementTimer = new Timer(true);
         announcementTimer.scheduleAtFixedRate(new TimerTask() {
@@ -51,6 +74,9 @@ public class PrimeCheckerWorker {
         }, 0, 3000);
     }
 
+    /**
+     * Отправка сообщения.
+     */
     private void announcePresence() {
         try (DatagramSocket socket = new DatagramSocket()) {
             String msg = "PRIME_WORKER:" + (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
@@ -63,6 +89,9 @@ public class PrimeCheckerWorker {
         }
     }
 
+    /**
+     * Останавливаем сервер.
+     */
     public void stopServer() {
         running = false;
         if (announcementTimer != null) {
@@ -77,10 +106,16 @@ public class PrimeCheckerWorker {
         }
     }
 
+    /**
+     * Проверка чисел.
+     */
     private boolean checkBatch(List<Integer> numbers) {
         return numbers.stream().anyMatch(n -> !isPrime(n));
     }
 
+    /**
+     * Проверка на простоту.
+     */
     private boolean isPrime(int n) {
         if (n <= 1) return false;
         if (n == 2) return true;
@@ -92,6 +127,9 @@ public class PrimeCheckerWorker {
         return true;
     }
 
+    /**
+     * Адрес.
+     */
     private static String getLocalAddress() {
         try {
             return InetAddress.getLocalHost().getHostAddress();
@@ -100,6 +138,9 @@ public class PrimeCheckerWorker {
         }
     }
 
+    /**
+     * main.
+     */
     public static void main(String[] args) {
         PrimeCheckerWorker worker = new PrimeCheckerWorker();
         try {
