@@ -51,7 +51,7 @@ public class PrimeCheckerMaster {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error in discovery listener: " + e.getMessage());
             }
         }).start();
     }
@@ -75,11 +75,15 @@ public class PrimeCheckerMaster {
     }
 
     private void dispatchBatch(List<Integer> batch) {
-        if (workers.isEmpty()) {
+        while (workers.isEmpty()) {
             System.err.println("No workers available, waiting...");
-            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
-            dispatchBatch(batch);
-            return;
+            try {
+                Thread.sleep(1000);
+                sendWorkerDiscoveryRequest();
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+                return;
+            }
         }
 
         InetSocketAddress worker = workers.poll();
@@ -102,5 +106,17 @@ public class PrimeCheckerMaster {
                 dispatchBatch(batch);
             }
         });
+    }
+
+    private void sendWorkerDiscoveryRequest() {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            String msg = "PRIME_MASTER_DISCOVERY";
+            byte[] buf = msg.getBytes();
+            InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, group, MULTICAST_PORT);
+            socket.send(packet);
+        } catch (IOException e) {
+            System.err.println("Error sending discovery request: " + e.getMessage());
+        }
     }
 }
