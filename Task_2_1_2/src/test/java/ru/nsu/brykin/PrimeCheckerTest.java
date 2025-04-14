@@ -40,8 +40,8 @@ public class PrimeCheckerTest {
         workerThread.start();
         try {
             Thread.sleep(500);
+        } catch (InterruptedException ignored) {
         }
-        catch (InterruptedException ignored) {}
     }
 
     @AfterEach

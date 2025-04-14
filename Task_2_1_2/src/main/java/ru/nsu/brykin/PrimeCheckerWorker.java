@@ -79,8 +79,8 @@ public class PrimeCheckerWorker {
      */
     private void announcePresence() {
         try (DatagramSocket socket = new DatagramSocket()) {
-            String msg = "PRIME_WORKER:" +
-                    (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
+            String msg = "PRIME_WORKER:"
+                    + (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
             byte[] buf = msg.getBytes();
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
             DatagramPacket packet = new DatagramPacket(buf, buf.length, group, MULTICAST_PORT);
