@@ -2,6 +2,7 @@ package ru.nsu.brykin;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,8 +38,10 @@ public class PrimeCheckerTest {
             }
         });
         workerThread.start();
-        // Даем время на запуск сервера
-        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+        try {
+            Thread.sleep(500);
+        }
+        catch (InterruptedException ignored) {}
     }
 
     @AfterEach
