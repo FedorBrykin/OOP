@@ -20,12 +20,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * master.
  */
 public class PrimeCheckerMaster {
+    private static final int MAX_RETRIES = 10;
+    private final AtomicBoolean hasComposite = new AtomicBoolean(false);
     private static final int MULTICAST_PORT = 8888;
     private static final String MULTICAST_GROUP = "230.0.0.0";
     private static final int WORKER_TIMEOUT = 5000;
@@ -49,6 +53,24 @@ public class PrimeCheckerMaster {
         PrimeCheckerMaster master = new PrimeCheckerMaster();
         master.startDiscoveryListener();
         master.processNumbers(args[0]);
+        master.awaitCompletion();
+
+        System.out.println("Final result: " +
+                (master.hasCompositeNumbers() ? "COMPOSITE NUMBERS FOUND"
+                        : "ALL NUMBERS ARE PRIME"));
+    }
+
+    public boolean hasCompositeNumbers() {
+        return hasComposite.get();
+    }
+
+    public void awaitCompletion() {
+        executor.shutdown();
+        try {
+            executor.awaitTermination(1, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**
@@ -115,10 +137,39 @@ public class PrimeCheckerMaster {
      */
     private void dispatchBatch(List<Integer> batch) {
         executor.submit(() -> {
-            while (workers.isEmpty()) {
-                waitForWorkers();
+            int retries = 0;
+            while (retries < MAX_RETRIES && !hasComposite.get()) {
+                InetSocketAddress worker = null;
+                try {
+                    worker = workers.poll();
+                    if (worker == null) {
+                        waitForWorkers();
+                        continue;
+                    }
+
+                    try (Socket socket = new Socket();
+                         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                         ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+                        socket.connect(worker, WORKER_TIMEOUT);
+                        out.writeObject(batch);
+                        out.flush();
+
+                        Boolean batchResult = (Boolean) in.readObject();
+                        if (batchResult) {
+                            hasComposite.set(true);
+                        }
+                        workers.add(worker);
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error processing batch with " + worker + ": "
+                            + e.getMessage());
+                    if (++retries == MAX_RETRIES) {
+                        hasComposite.set(true);
+                    }
+                }
             }
-            processBatchWithWorker(batch);
         });
     }
 
