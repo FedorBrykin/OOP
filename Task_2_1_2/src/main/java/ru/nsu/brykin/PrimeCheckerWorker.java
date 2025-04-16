@@ -1,34 +1,28 @@
 package ru.nsu.brykin;
 
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
- * Воркеры.
+ * worker.
  */
 public class PrimeCheckerWorker {
     private static final int MULTICAST_PORT = 8888;
     private static final String MULTICAST_GROUP = "230.0.0.0";
     private static final int DEFAULT_PORT = 9999;
+    private static final int MAX_PARALLEL_TASKS = 10;
+    private static final int ANNOUNCEMENT_INTERVAL_MS = 3000;
 
     private volatile boolean running = true;
     private ServerSocket serverSocket;
     private Timer announcementTimer;
+    private final ExecutorService taskExecutor =
+            Executors.newFixedThreadPool(MAX_PARALLEL_TASKS);
 
     /**
-     * Запуск воркера.
+     * Запускает воркер на стандартном порту.
      */
     public void start() throws IOException {
         startServer(DEFAULT_PORT);
@@ -36,51 +30,71 @@ public class PrimeCheckerWorker {
     }
 
     /**
-     * Запуск сервера.
+     * Запускает сервер для обработки соединений.
      */
     public void startServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Worker started on " + getLocalAddress() + ":" + port);
 
         while (running) {
-            try (Socket client = serverSocket.accept();
-                 ObjectInputStream in = new ObjectInputStream(client.getInputStream());
-                 ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream())) {
-
-                List<Integer> numbers = (List<Integer>) in.readObject();
-                boolean hasComposite = checkBatch(numbers);
-                out.writeObject(hasComposite);
-                out.flush();
-
+            try {
+                Socket client = serverSocket.accept();
+                taskExecutor.submit(() -> handleClient(client));
             } catch (SocketException e) {
                 if (running) {
                     System.err.println("Socket error: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                System.err.println("Error processing request: " + e.getMessage());
             }
         }
     }
 
     /**
-     * Запуск анонсирования.
+     * Обрабатывает подключение.
      */
-    private void startAnnouncement() {
-        announcementTimer = new Timer(true);
-        announcementTimer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                announcePresence();
-            }
-        }, 0, 3000);
+    private void handleClient(Socket client) {
+        try (ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+             ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream())) {
+
+            List<Integer> numbers = (List<Integer>) in.readObject();
+            boolean hasComposite = checkBatch(numbers);
+            out.writeObject(hasComposite);
+            out.flush();
+
+        } catch (Exception e) {
+            System.err.println("Error processing request: " + e.getMessage());
+        } finally {
+            try { client.close(); } catch (IOException ignored) {}
+        }
     }
 
     /**
-     * Отправка сообщения.
+     * Проверяет пачку чисел на наличие составных.
+     */
+    private boolean checkBatch(List<Integer> numbers) {
+        return numbers.stream().anyMatch(n -> !PrimeMathUtils.isPrime(n));
+    }
+
+    /**
+     * Запускает периодическое анонсирование воркера.
+     */
+    private void startAnnouncement() {
+        announcementTimer = new Timer(true);
+        announcementTimer.scheduleAtFixedRate(
+                new TimerTask() {
+                    public void run() { announcePresence(); }
+                },
+                0,
+                ANNOUNCEMENT_INTERVAL_MS
+        );
+    }
+
+    /**
+     * Отправляет сообщение о присутствии.
      */
     private void announcePresence() {
         try (DatagramSocket socket = new DatagramSocket()) {
-            String msg = "PRIME_WORKER:"
-                    + (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
+            String msg = "PRIME_WORKER:" +
+                    (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
             byte[] buf = msg.getBytes();
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
             DatagramPacket packet = new DatagramPacket(buf, buf.length, group, MULTICAST_PORT);
@@ -91,52 +105,21 @@ public class PrimeCheckerWorker {
     }
 
     /**
-     * Останавливаем сервер.
+     * Останавливает воркера.
      */
     public void stopServer() {
         running = false;
-        if (announcementTimer != null) {
-            announcementTimer.cancel();
-        }
+        if (announcementTimer != null) announcementTimer.cancel();
+        taskExecutor.shutdownNow();
         try {
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
-            }
+            if (serverSocket != null) serverSocket.close();
         } catch (IOException e) {
             System.err.println("Error closing server: " + e.getMessage());
         }
     }
 
     /**
-     * Проверка чисел.
-     */
-    private boolean checkBatch(List<Integer> numbers) {
-        return numbers.stream().anyMatch(n -> !isPrime(n));
-    }
-
-    /**
-     * Проверка на простоту.
-     */
-    private boolean isPrime(int n) {
-        if (n <= 1) {
-            return false;
-        }
-        if (n == 2) {
-            return true;
-        }
-        if (n % 2 == 0) {
-            return false;
-        }
-        for (int i = 3; i * i <= n; i += 2) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Адрес.
+     * Возвращает локальный IP.
      */
     private static String getLocalAddress() {
         try {
@@ -147,7 +130,7 @@ public class PrimeCheckerWorker {
     }
 
     /**
-     * main.
+     * Точка входа для запуска воркера.
      */
     public static void main(String[] args) {
         PrimeCheckerWorker worker = new PrimeCheckerWorker();
@@ -157,7 +140,6 @@ public class PrimeCheckerWorker {
                 System.out.println("Shutting down worker...");
                 worker.stopServer();
             }));
-
         } catch (IOException e) {
             System.err.println("Failed to start worker: " + e.getMessage());
             System.exit(1);
