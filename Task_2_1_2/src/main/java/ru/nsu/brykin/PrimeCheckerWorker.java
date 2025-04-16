@@ -71,12 +71,20 @@ public class PrimeCheckerWorker {
             out.writeObject(hasComposite);
             out.flush();
 
+        } catch (IOException e) {
+            System.err.println("Network error processing request: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("Protocol error: invalid data format");
         } catch (Exception e) {
-            System.err.println("Error processing request: " + e.getMessage());
+            System.err.println("Unexpected error: " + e.getMessage());
         } finally {
             try {
-                client.close();
-            } catch (IOException ignored) {}
+                if (!client.isClosed()) {
+                    client.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Error closing client socket: " + e.getMessage());
+            }
         }
     }
 
