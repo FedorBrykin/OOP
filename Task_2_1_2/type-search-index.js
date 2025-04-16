@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.brykin","l":"PrimeCheckerMaster"},{"p":"ru.nsu.brykin","l":"PrimeCheckerWorker"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.brykin","l":"PrimeCheckerMaster"},{"p":"ru.nsu.brykin","l":"PrimeCheckerWorker"},{"p":"ru.nsu.brykin","l":"PrimeMathUtils"}];updateSearchResults();
