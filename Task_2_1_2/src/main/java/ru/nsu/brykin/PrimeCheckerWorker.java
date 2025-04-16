@@ -1,9 +1,20 @@
 package ru.nsu.brykin;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * worker.
@@ -63,7 +74,9 @@ public class PrimeCheckerWorker {
         } catch (Exception e) {
             System.err.println("Error processing request: " + e.getMessage());
         } finally {
-            try { client.close(); } catch (IOException ignored) {}
+            try {
+                client.close();
+            } catch (IOException ignored) {}
         }
     }
 
@@ -81,7 +94,9 @@ public class PrimeCheckerWorker {
         announcementTimer = new Timer(true);
         announcementTimer.scheduleAtFixedRate(
                 new TimerTask() {
-                    public void run() { announcePresence(); }
+                    public void run() {
+                        announcePresence();
+                    }
                 },
                 0,
                 ANNOUNCEMENT_INTERVAL_MS
@@ -93,8 +108,8 @@ public class PrimeCheckerWorker {
      */
     private void announcePresence() {
         try (DatagramSocket socket = new DatagramSocket()) {
-            String msg = "PRIME_WORKER:" +
-                    (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
+            String msg = "PRIME_WORKER:"
+                    + (serverSocket != null ? serverSocket.getLocalPort() : DEFAULT_PORT);
             byte[] buf = msg.getBytes();
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
             DatagramPacket packet = new DatagramPacket(buf, buf.length, group, MULTICAST_PORT);
@@ -109,10 +124,14 @@ public class PrimeCheckerWorker {
      */
     public void stopServer() {
         running = false;
-        if (announcementTimer != null) announcementTimer.cancel();
+        if (announcementTimer != null) {
+            announcementTimer.cancel();
+        }
         taskExecutor.shutdownNow();
         try {
-            if (serverSocket != null) serverSocket.close();
+            if (serverSocket != null) {
+                serverSocket.close();
+            }
         } catch (IOException e) {
             System.err.println("Error closing server: " + e.getMessage());
         }
