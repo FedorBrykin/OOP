@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -127,5 +128,37 @@ public class PrimeCheckerTest {
         }
 
         executor.shutdown();
+    }
+
+    @Test
+    @Timeout(5)
+    void testEmptyBatch() throws Exception {
+        try (Socket socket = new Socket("localhost", TEST_PORT);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            List<Integer> empty = Collections.emptyList();
+            out.writeObject(empty);
+            out.flush();
+
+            boolean result = (Boolean) in.readObject();
+            assertFalse(result, "Empty batch should return false");
+        }
+    }
+
+    @Test
+    @Timeout(5)
+    void testLargePrimeNumber() throws Exception {
+        try (Socket socket = new Socket("localhost", TEST_PORT);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            List<Integer> largePrime = Collections.singletonList(104729); // 10000th prime
+            out.writeObject(largePrime);
+            out.flush();
+
+            boolean result = (Boolean) in.readObject();
+            assertFalse(result, "Large prime number should return false");
+        }
     }
 }
